@@ -1,7 +1,16 @@
 <?php
 session_start();
 // Include the database connection file
-include '../components/connect.php';
+
+if (isset($_SESSION['email'])) {
+  // Unset all session variables
+  $_SESSION = array();
+
+  // Destroy the session
+  session_destroy();
+}
+
+require_once "../components/connect.php";
 
 if(isset($_POST['submit'])) {
   $email = $_POST['email'];
@@ -14,6 +23,13 @@ if(isset($_POST['submit'])) {
   $stmt->execute();
 
   $row_count = $stmt->rowCount();
+
+  $stne = $pdo->prepare("SELECT * FROM `customer` WHERE cus_email = ?");
+  $stne->execute([$email]);
+  $row = $stne->fetch(PDO::FETCH_ASSOC);
+  if($row){
+    $_SESSION['fname'] = $row['cus_fname'];
+  }
 
   if($row_count == 1) {
     $_SESSION['email'] = $email;
@@ -28,11 +44,19 @@ if(isset($_POST['submit'])) {
     $row_count = $stmt->rowCount();
 
     if($row_count == 1) {
+      $stne = $pdo->prepare("SELECT * FROM `employee` WHERE emp_email = ?");
+      $stne->execute([$email]);
+      $row = $stne->fetch(PDO::FETCH_ASSOC);
+      if($row){
+        $_SESSION['fname'] = $row['emp_name'];
+      }
+
       $_SESSION['email'] = $email;
-      header("Location: ../admin/admin.php"); 
+      header("Location: /pizza-database-project/admin/admin.php"); 
     } else {
       echo "Invalid login credentials";
     }
+
   }
 }
 ?>

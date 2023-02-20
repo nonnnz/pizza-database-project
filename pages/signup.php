@@ -1,15 +1,15 @@
 <?php
 
-include($_SERVER['DOCUMENT_ROOT'] . '/pizza-database-project/components/connect.php');
+session_start();
 
-/* session_start();
+require_once "../components/connect.php";
 
 if(isset($_SESSION['user_id'])){
     $user_id = $_SESSION['user_id'];
 }else{
     $user_id = '';
 };
-*/
+
 
 if(isset($_POST['submit'])){
 
@@ -24,12 +24,12 @@ if(isset($_POST['submit'])){
     $gender = $_POST['gender'];
     $email = $_POST['email'];
     $email = filter_var($email, FILTER_SANITIZE_STRING);
-    $password = sha1($_POST['password']);
+    $password = ($_POST['password']);
     $password = filter_var($password, FILTER_SANITIZE_STRING);
-    $confirm_password = sha1($_POST['confirm_password']);
+    $confirm_password = ($_POST['confirm_password']);
     $confirm_password = filter_var($confirm_password, FILTER_SANITIZE_STRING);
 
-    $select_user = $conn->prepare("SELECT * FROM `customer` WHERE cus_email = ? OR cus_phone = ?");
+    $select_user = $pdo->prepare("SELECT * FROM `customer` WHERE cus_email = ? OR cus_phone = ?");
     $select_user->execute([$email, $phone]);
     $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
@@ -39,11 +39,11 @@ if(isset($_POST['submit'])){
         if($password != $confirm_password){
             $message[] = 'confirm password not matched!';
         }else{
-            $insert_user = $conn->prepare("INSERT INTO `customer` (cus_fname, cus_lname, cus_phone, cus_birthdate, cus_gender, cus_email, cus_password) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $insert_user = $pdo->prepare("INSERT INTO `customer` (cus_fname, cus_lname, cus_phone, cus_birthdate, cus_gender, cus_email, cus_password) VALUES (?, ?, ?, ?, ?, ?, ?)");
             $insert_user->execute([$fname, $lname, $phone, $birthdate, $gender, $email, $password]);
-            $select_user = $conn->prepare("SELECT * FROM `customer` WHERE email = ? AND password = ?");
-            $select_user->execute([$email, $password]);
-            $row = $select_user->fetch(PDO::FETCH_ASSOC);
+            // $select_user = $pdo->prepare("SELECT * FROM `customer` WHERE cus_email = ? AND cus_password = ?");
+            // $select_user->execute([$email, $password]);
+            // $row = $select_user->fetch(PDO::FETCH_ASSOC);
             header('Location: home.php');
         }
     }
@@ -86,52 +86,53 @@ php include 'components/user_header.php'; ?> -->
             <label for="firstname" class="form-label">Name</label>
             <div class="row g-3">
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="First name" aria-label="First name">
+                    <input type="text" name="fname" class="form-control" placeholder="First name" aria-label="First name" maxlength="50" required >
                 </div>
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="Last name" aria-label="Last name">
+                    <input type="text" name="lname"class="form-control" placeholder="Last name" aria-label="Last name" maxlength="50" required >
                 </div>
             </div>
             
             <div class="mb-3"> <!-- Phone number -->
                 <label for="phonenumber" class="form-label">Phone number</label>
-                <input type="text" class="form-control" name="tel" placeholder="+66">
+                <input type="text" class="form-control" name="phone" placeholder="+66" maxlength="10" required >
             </div>
 
             <div class="mb-3"> <!-- Date of birth -->
                 <label for="startDate">Date of birthday</label>
-                <input id="startDate" class="form-control" type="date" />
+                <input id="startDate" name="birthdate" class="form-control" type="date" required />
             </div>
 
             <!-- Gender -->
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male" required>
                 <label class="form-check-label" for="inlineRadio1">Male</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="female" required>
                 <label class="form-check-label" for="inlineRadio1">Female</label>
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                <input class="form-check-input" type="radio" name="gender" id="inlineRadio3" value="none" required checked>
                 <label class="form-check-label" for="inlineRadio1">None</label>
             </div>
 
             <div class="mb-3"> <!-- Email -->
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" aria-describedby="email">
+                <input type="email" class="form-control" name="email" aria-describedby="email" maxlength="50" required >
             </div>
             <div class="mb-3"> <!-- Password -->
                 <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" name="password">
+                <input type="password" class="form-control" name="password" maxlength="20" required >
             </div>
             <div class="mb-3"> <!-- Confirm Password -->
                 <label for="confirm password" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" name="c_password">
+                <input type="password" class="form-control" name="confirm_password" maxlength="20" required >
             </div>
             
             <div class="form-group" style="text-align:center;" style="display: flex; justify-content: center;">
-                <button type="submit" name="signup" class="btn btn-primary">Sign Up</button>
+                <!-- <button type="submit" name="submit" class="btn btn-primary">Register</button> -->
+                <input type="submit" name="submit" value="Register" class="btn btn-primary">
             </div>
             
             </fieldset>
