@@ -75,64 +75,92 @@ if(isset($_POST['submit'])){
 php include 'components/user_header.php'; ?> -->
 <!-- header section ends -->
 
-<section class="form-container">
-    <div style="display: flex; justify-content: center;">
-        <form method="post" action="">
+<section class="form-container ">
+    <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; ">
+        <form method="post" action="" style="border:1px solid black; padding: 3rem; border-radius : 1rem ; border-color: green" class="p-4 shadow">
             <fieldset name="register">
-            <legend>Register</legend>
+            <h2 class="text-center">Register</h2>
             <hr>
 
             <!-- F/L name -->
-            <label for="firstname" class="form-label">Name</label>
+            
             <div class="row g-3">
-                <div class="col">
-                    <input type="text" name="fname" class="form-control" placeholder="First name" aria-label="First name" maxlength="50" required >
+                <div class="form-icon" style="display: flex; align-items: start; justify-content: space-between;" >
+                        <img src="https://1112.com/images/form/name_form.svg" style="padding: .75em; ">
+                        <div style="width: 25em;">
+                            <input type="text" name="fname" class="form-control" style="margin-bottom :1rem" placeholder="First name" aria-label="First name" maxlength="50" required >
+                            <input type="text" name="lname"class="form-control" style="margin-bottom :1rem" placeholder="Last name" aria-label="Last name" maxlength="50" required >
+                        </div>
+                        
+                    </div>
+                    
                 </div>
-                <div class="col">
-                    <input type="text" name="lname"class="form-control" placeholder="Last name" aria-label="Last name" maxlength="50" required >
+                
+                <div class="mb-3"> <!-- Phone number -->
+                <div class="form-icon" style="display: flex; align-items: center; justify-content: space-between;" >
+                    <img src="https://1112.com/images/form/phone_form.svg" style ="padding: .75em; margin:auto;">
+                    <div style="width: 25em;">
+                        <input type="text" class="form-control" stlye =  name="phone" placeholder="+66" maxlength="10" required >
+                    </div>
                 </div>
             </div>
             
-            <div class="mb-3"> <!-- Phone number -->
-                <label for="phonenumber" class="form-label">Phone number</label>
-                <input type="text" class="form-control" name="phone" placeholder="+66" maxlength="10" required >
-            </div>
-
             <div class="mb-3"> <!-- Date of birth -->
-                <label for="startDate">Date of birthday</label>
-                <input id="startDate" name="birthdate" class="form-control" type="date" required />
+                <div class="form-icon" style="display: flex; align-items: center; justify-content: center;" >
+                    <img src="https://1112.com/images/form/birthday_form.svg" style ="padding: .5em; " >
+                    <div style="width: 25em;">
+                        <input id="startDate" name="birthdate" class="form-control" type="date" required />
+                    </div>
+                </div>
             </div>
 
             <!-- Gender -->
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male" required>
-                <label class="form-check-label" for="inlineRadio1">Male</label>
+            <div class="form-gender" style="display: flex; align-items: start; justify-content: start;">
+                <div class="form-icon">
+                    <img class="gender_form" src="https://1112.com/images/form/gender_form.svg" style = "padding-left: .5em;  margin:auto;">
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="" type="radio" name="gender" id="inlineRadio1" value="male" required>
+                    <label class="form-check-label" for="inlineRadio1">Male</label>
+                    
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="" type="radio" name="gender" id="inlineRadio2" value="female" required>
+                    <label class="form-check-label" for="inlineRadio1">Female</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="" type="radio" name="gender" id="inlineRadio3" value="none" required checked>
+                    <label class="form-check-label" for="inlineRadio1">None</label>
+                </div>
             </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="female" required>
-                <label class="form-check-label" for="inlineRadio1">Female</label>
-            </div>
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="gender" id="inlineRadio3" value="none" required checked>
-                <label class="form-check-label" for="inlineRadio1">None</label>
+        <!-- Email -->
+            <div class="mb-3" style="display: flex; align-items: center; justify-content: space-between; padding-top:1rem;"> 
+                <div class="form-icon">
+                    <img src="https://1112.com/images/form/mail_form.svg" style = "padding: .75em; margin:auto;">
+                </div>
+                <div class="form-email" >
+                <div style="width: 25em;">
+                    <input type="email" class="form-control" name="email" aria-describedby="email" placeholder="Email" maxlength="50" required >
+                </div>
+                </div>
             </div>
 
-            <div class="mb-3"> <!-- Email -->
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" name="email" aria-describedby="email" maxlength="50" required >
-            </div>
-            <div class="mb-3"> <!-- Password -->
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" name="password" maxlength="20" required >
-            </div>
-            <div class="mb-3"> <!-- Confirm Password -->
-                <label for="confirm password" class="form-label">Confirm Password</label>
-                <input type="password" class="form-control" name="confirm_password" maxlength="20" required >
+        <!-- Password -->
+            <div class="mb-3"> 
+                <div class="form-icon" style="display: flex; align-items: start; justify-content: space-between;" >
+                    <img src="https://1112.com/images/form/password_form.svg" style="padding: .75em; ">
+                    <div style="width: 25em;">
+                        <input type="password" class="form-control" style="margin-bottom :1rem" placeholder="Password" name="password" maxlength="20" required >
+                        <input type="password" class="form-control" style="margin-bottom :1rem" placeholder="Confirm password" name="confirm_password" maxlength="20" required >
+                    </div>
+                    
+                </div>
             </div>
             
             <div class="form-group" style="text-align:center;" style="display: flex; justify-content: center;">
                 <!-- <button type="submit" name="submit" class="btn btn-primary">Register</button> -->
-                <input type="submit" name="submit" value="Register" class="btn btn-primary">
+                <input type="submit" class="btn btn-success " style="padding: 10px 50px;" name="submit" value="Register" >
             </div>
             
             </fieldset>
