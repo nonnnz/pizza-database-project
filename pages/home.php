@@ -36,7 +36,7 @@ if(isset($_SESSION['email'])){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="homestyle.css">
     <script src="script.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
@@ -76,17 +76,33 @@ if(isset($_SESSION['email'])){
     </div>
     <div class="festive-bg" >
         <div class="q_order"style="padding-top :25px; display: flex; justify-content: center;" >
-            <button type="submit" style = "font-size : 23px; border-radius:12px" class="btn btn-success">เริ่มสั่งพิซซ่า ซื้อ 1 แถม 1 ได้เลย!</button>
+            <button type="submit" style = "font-size : 23px; border-radius:12px" class="btn btn-success">START BUY 1 GET 1 NOW!!</button>
         </div>
 
-    <div class="home-category">
+    <div class="home-category" >
 
-        <h3>Category</h3>
+        <h3 style = "margin-left : 8em;">Menu</h3>
         <div class="category_container">
-            <div class="flex-item">
-                <img ng-src="https://cdn.1112.com/1112/public/images/Menu/card_Pizza.png" alt="พิซซ่า" class="img-responsive" src="https://cdn.1112.com/1112/public/images/Menu/card_Pizza.png">
-                <a href="https://1112.com/pizza" class="name"><span>พิซซ่า</span></a>
+            
+            <div class="cate cate1" >
+                <h4 id="bottom">Pizza</h4>
             </div>
+            <div class="cate cate2">
+                <h4 id="bottom">Pizza of the<br>month</h4>
+            </div>
+            <div class="cate cate3">
+                <h4 id="bottom">Appetizer</h4>
+            </div>
+            <div class="cate cate4">
+                <h4 id="bottom">Chicken</h4>
+            </div>
+            <div class="cate cate5">
+                <h4 id="bottom">Pasta</h4>
+            </div>
+            <div class="cate cate6">
+                <h4 id="bottom">Salad & Steak</h4>
+            </div>
+            
         </div>
     </div>
     </div>
