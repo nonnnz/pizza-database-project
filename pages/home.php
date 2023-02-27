@@ -41,25 +41,7 @@ if(isset($_SESSION['email'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-    <div class="header" >
-        <div class="inner_header">
-            <div class="logo_container">
-                <h1>112Pizza</h1>
-            </div>
-            <ul class = "navigation">
-                <li><a href="#">Menu</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <?php if(isset($_SESSION['email'])): ?>
-                    <li><a href="#">Orders</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="login.php">Logout</a></li>
-                <?php else: ?>
-                    <li><a href="login.php">Login</a></li>
-                <?php endif; ?>
-            </ul>
-        </div>
-    </div>
+<?php include 'components/user_header.php'; ?>
 
     <div class="slider-frame">
         <div class="slide-images" style = "margin-top: 80px">
@@ -81,11 +63,11 @@ if(isset($_SESSION['email'])){
 
     <div class="home-category" >
 
-        <h3 style = "margin-left : 8em;">Menu</h3>
+        <h3 href="bogo.php" style = "margin-left : 8em;">Menu</h3>
         <div class="category_container">
             
             <div class="cate cate1" >
-                <h4 id="bottom">Pizza</h4>
+                <h4 href="bogo.php" id="bottom">Pizza</h4>
             </div>
             <div class="cate cate2">
                 <h4 id="bottom">Pizza of the<br>month</h4>
