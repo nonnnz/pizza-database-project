@@ -100,7 +100,7 @@ php include 'components/user_header.php'; ?> -->
                 <div class="form-icon" style="display: flex; align-items: center; justify-content: space-between;" >
                     <img src="https://1112.com/images/form/phone_form.svg" style ="padding: .75em; margin:auto;">
                     <div style="width: 25em;">
-                        <input type="text" class="form-control" stlye =  name="phone" placeholder="+66" maxlength="10" required >
+                        <input type="text" class="form-control"   name="phone" placeholder="+66" maxlength="10" required >
                     </div>
                 </div>
             </div>
