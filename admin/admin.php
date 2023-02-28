@@ -4,17 +4,17 @@ session_start();
 require_once "../components/connect.php";
 
 // Check if user is not logged in
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['user_id'])) {
     // Redirect to login page
     header("Location: ../pages/login.php");
     exit();
 }
 
 // Check if user is logged in and is an admin
-if (isset($_SESSION['email']) && strpos($_SESSION['email'], "@admin.com")) {
+if ($_SESSION['role_id'] != 3) {
     // User is logged in and is an admin
     // Display the admin content here
-    $name = $_SESSION["fname"];
+    $name = $_SESSION["us_fname"];
 } else {
     // User is not an admin, redirect to home page
     header("Location: ../pages/login.php");
@@ -22,17 +22,18 @@ if (isset($_SESSION['email']) && strpos($_SESSION['email'], "@admin.com")) {
 }
 
 
-// Handle deleting a customer
-if (isset($_POST['delete_customer'])) {
-    $cus_id = $_POST['delete_customer'];
-    $stmt = $pdo->prepare('DELETE FROM customer WHERE cus_id = ?');
-    $stmt->execute([$cus_id]);
+// Handle deleting a user
+if (isset($_POST['delete_user'])) {
+    $user_id = $_POST['delete_user'];
+    // echo $_POST['delete_user'];
+    $stmt = $pdo->prepare('DELETE FROM user WHERE user_id = UNHEX(?)');
+    $stmt->execute([$user_id]);
 }
 
-// Fetch all customers from database
-$stmt = $pdo->prepare('SELECT * FROM customer');
+// Fetch all users from database
+$stmt = $pdo->prepare('SELECT * FROM user WHERE role_id = 3');
 $stmt->execute();
-$customers = $stmt->fetchAll();
+$users = $stmt->fetchAll();
 
 ?>
 
@@ -47,42 +48,16 @@ $customers = $stmt->fetchAll();
 </head>
 </head>
 <body>
+
+<?php require_once '../components/admin_header.php'; ?>
+
     <div class="container">
         <h1>Admin Page</h1>
         <p>Welcome, admin <?php echo $name; ?>!</p>
-        <a href="../pages/login.php" class="button">Logout</a>
+        <!-- <a href="../pages/login.php" class="button">Logout</a> -->
 
-        <h2>Customers</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($customers as $customer): ?>
-                    <tr>
-                        <td><?php echo $customer['cus_id'] ?></td>
-                        <td><?php echo $customer['cus_fname'] ?></td>
-                        <td><?php echo $customer['cus_lname'] ?></td>
-                        <td><?php echo $customer['cus_phone'] ?></td>
-                        <td><?php echo $customer['cus_email'] ?></td>
-                        <td>
-                            <form method="post" action="">
-                                <input type="hidden" name="delete_customer" value="<?php echo $customer['cus_id'] ?>">
-                                <button type="submit" class="button">Delete</button>
-                            </form>
-                            <a href="edit_customer.php?id=<?php echo $customer['cus_id'] ?>" class="button">Edit</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <h2>Dashboard</h2>
+ 
     </div>
 </body>
 </html>

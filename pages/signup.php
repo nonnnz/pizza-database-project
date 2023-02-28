@@ -14,22 +14,22 @@ if(isset($_SESSION['user_id'])){
 if(isset($_POST['submit'])){
 
     $fname = $_POST['fname'];
-    $fname = filter_var($fname, FILTER_SANITIZE_STRING);
+    $fname = filter_var($fname);
     $lname = $_POST['lname'];
-    $lname = filter_var($lname, FILTER_SANITIZE_STRING);
+    $lname = filter_var($lname);
     $phone = $_POST['phone'];
-    $phone = filter_var($phone, FILTER_SANITIZE_STRING);
+    $phone = filter_var($phone);
     $birthdate = $_POST['birthdate'];
-    $birthdate = filter_var($birthdate, FILTER_SANITIZE_STRING);
+    $birthdate = filter_var($birthdate);
     $gender = $_POST['gender'];
     $email = $_POST['email'];
-    $email = filter_var($email, FILTER_SANITIZE_STRING);
+    $email = filter_var($email);
     $password = ($_POST['password']);
-    $password = filter_var($password, FILTER_SANITIZE_STRING);
+    $password = filter_var($password);
     $confirm_password = ($_POST['confirm_password']);
-    $confirm_password = filter_var($confirm_password, FILTER_SANITIZE_STRING);
+    $confirm_password = filter_var($confirm_password);
 
-    $select_user = $pdo->prepare("SELECT * FROM `customer` WHERE cus_email = ? OR cus_phone = ?");
+    $select_user = $pdo->prepare("SELECT * FROM `user` WHERE us_email = ? OR us_phone = ?");
     $select_user->execute([$email, $phone]);
     $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
@@ -39,8 +39,8 @@ if(isset($_POST['submit'])){
         if($password != $confirm_password){
             $message[] = 'confirm password not matched!';
         }else{
-            $insert_user = $pdo->prepare("INSERT INTO `customer` (cus_fname, cus_lname, cus_phone, cus_birthdate, cus_gender, cus_email, cus_password) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $insert_user->execute([$fname, $lname, $phone, $birthdate, $gender, $email, $password]);
+            $insert_user = $pdo->prepare("INSERT INTO `user` (user_id, us_fname, us_lname, us_phone, us_birthdate, us_gender, us_email, us_password, role_id) VALUES (UNHEX(REPLACE(UUID(),'-','')), ?, ?, ?, ?, ?, ?, ?, ?)");
+            $insert_user->execute([$fname, $lname, $phone, $birthdate, $gender, $email, $password, 3]);
             // $select_user = $pdo->prepare("SELECT * FROM `customer` WHERE cus_email = ? AND cus_password = ?");
             // $select_user->execute([$email, $password]);
             // $row = $select_user->fetch(PDO::FETCH_ASSOC);
@@ -72,7 +72,7 @@ if(isset($_POST['submit'])){
 <body>
 
 <!-- header section starts  
-php include 'components/user_header.php'; ?> -->
+<?php require_once '../components/user_header.php'; ?>
 <!-- header section ends -->
 
 <section class="form-container ">

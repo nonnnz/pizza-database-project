@@ -2,7 +2,7 @@
 session_start();
 // Include the database connection file
 
-if (isset($_SESSION['email'])) {
+if (isset($_SESSION['user_id'])) {
   // Unset all session variables
   $_SESSION = array();
 
@@ -10,5 +10,5 @@ if (isset($_SESSION['email'])) {
   session_destroy();
 }
 
-header("Location: /pizza-database-project/home.php");
+header("Location: home.php");
 ?>
