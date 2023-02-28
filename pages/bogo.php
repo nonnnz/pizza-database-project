@@ -10,25 +10,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<div class="header" >
-        <div class="inner_header">
-            <div class="logo_container">
-                <h1>112Pizza</h1>
-            </div>
-            <ul class = "navigation">
-                <li><a href="#">Menu</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-                <?php if(isset($_SESSION['email'])): ?>
-                    <li><a href="#">Orders</a></li>
-                    <li><a href="#">Profile</a></li>
-                    <li><a href="login.php">Logout</a></li>
-                <?php else: ?>
-                    <li><a href="login.php">Login</a></li>
-                <?php endif; ?>
-            </ul>
-        </div>
-    </div>
+    
+<?php require_once '../components/user_header.php'; ?>
+
     <div class="home-category" style = "margin-top: 80px ">
 
         <h5 style = "margin-left : 6em;">Menu</h5>

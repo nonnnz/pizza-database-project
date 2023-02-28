@@ -41,7 +41,7 @@ if(isset($_SESSION['email'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-<?php include 'components/user_header.php'; ?>
+<?php require_once '../components/user_header.php'; ?>
 
     <div class="slider-frame">
         <div class="slide-images" style = "margin-top: 80px">
@@ -57,18 +57,22 @@ if(isset($_SESSION['email'])){
         </div>
     </div>
     <div class="festive-bg" >
-        <div class="q_order"style="padding-top :25px; display: flex; justify-content: center;" >
-            <button type="submit" style = "font-size : 23px; border-radius:12px" class="btn btn-success">START BUY 1 GET 1 NOW!!</button>
-        </div>
+        <a href="bogo.php" class="q_order"style="padding-top :25px; display: flex; justify-content: center;">
+            <div  >
+                <button type="submit" style = "font-size : 23px; border-radius:12px" class="btn btn-success">START BUY 1 GET 1 NOW!!</button>
+            </div>
+        </a>
+        
 
     <div class="home-category" >
 
         <h3 href="bogo.php" style = "margin-left : 8em;">Menu</h3>
         <div class="category_container">
-            
-            <div class="cate cate1" >
-                <h4 href="bogo.php" id="bottom">Pizza</h4>
-            </div>
+            <a href="bogo.php" class="cate cate1" >
+                <div >
+                    <h4 id="bottom">Pizza</h4>
+                </div>
+            </a>
             <div class="cate cate2">
                 <h4 id="bottom">Pizza of the<br>month</h4>
             </div>
