@@ -71,7 +71,7 @@ if(isset($_POST['submit'])){
 </head>
 <body>
 
-<!-- header section starts  
+<!-- header section starts   -->
 <?php require_once '../components/user_header.php'; ?>
 <!-- header section ends -->
 
