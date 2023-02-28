@@ -43,7 +43,8 @@ if (isset($_POST['submit'])) {
     $_SESSION['us_fname'] = $user['us_fname'];
     $_SESSION['role_id'] = $user['role_id'];
 
-    echo $_SESSION['user_id'];
+    // echo $_SESSION['user_id'];
+
     // // set roles
     // // $roleID = $user['role_id'];
     // // $role = $_POST[$roleID];
@@ -56,12 +57,12 @@ if (isset($_POST['submit'])) {
     // Check if user is an admin
     if($_SESSION['role_id'] != 3) {
         // Redirect to admin page
-        echo "pass.";
+        // echo "pass.";
         header("Location: /pizza-database-project/admin/admin.php");
         // exit;
     } else {
         // Redirect to home page
-        // header("Location: home.php");
+        header("Location: home.php");
         // exit;
     }
   } else {

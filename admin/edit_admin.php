@@ -24,7 +24,7 @@ if ($_SESSION['role_id'] != 3) {
 
 
 if(!isset($_GET["id"])) {
-    header("Location: user_management.php");
+    header("Location: admin_management.php");
     exit;
 }
 
@@ -36,7 +36,7 @@ $stmt->execute();
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if(!$user) {
-    header("Location: user_management.php");
+    header("Location: admin_management.php");
     exit;
 }
 if(isset($_POST['submit'])) {
@@ -61,7 +61,7 @@ if(isset($_POST['submit'])) {
         $stmt->bindValue(":id", $id);
         $stmt->execute();
 
-        header("Location: user_management.php");
+        header("Location: admin_management.php");
         exit;
     // }
 }
@@ -119,7 +119,7 @@ if(isset($_POST['submit'])) {
 			<div class="form-group">
 				<!-- <button type="submit" class="btn btn-success">Update Customer</button> -->
                 <input type="submit" name="submit" value="Update Customer" class="btn btn-success">
-				<a href="user_management.php" class="btn btn-primary">Back</a>
+				<a href="admin_management.php" class="btn btn-primary">Back</a>
 			</div>
 		</form>
 	</div>

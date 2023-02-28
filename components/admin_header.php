@@ -6,6 +6,7 @@
       <ul class = "navigation">
             <li><a href="../admin/admin.php">Dashboard</a></li>
             <li><a href="../admin/user_management.php">User management</a></li>
+            <li><a href="../admin/admin_management.php">Admin management</a></li>
             <li><a href="#">Order management</a></li>
             <li><a href="../admin/menu_management.php">Menu management</a></li>
             <li><a href="../pages/logout.php">Logout</a></li>

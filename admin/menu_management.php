@@ -72,10 +72,20 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 <?php require_once '../components/admin_header.php'; ?>
 
   <h1>Menu Management</h1>
+  <form>
+    <label for="category_id">Filter by Category:</label>
+    <select name="category_id">
+      <option value="">All Categories</option>
+      <?php foreach($menu_items as $item): ?>
+        <option value=""><?php echo $item['cat_name']; ?></option>
+      <?php endforeach; ?>
+    </select>
+    <button type="submit">Filter</button>
+  </form>
   <table>
     <thead>
       <tr>
-        <th>Pizza Name</th>
+        <th>Food Name</th>
         <th>Description</th>
         <th>Price</th>
         <th>Category</th>
