@@ -85,6 +85,7 @@ if (isset($_POST['submit'])) {
 
   
   <!-- custom css file link  -->
+  <link rel="stylesheet" href="css/style.css">
   <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
@@ -95,16 +96,16 @@ if (isset($_POST['submit'])) {
   
     <div class="container">
         <div class="row vh-100 align-items-center justify-content-center">
-            <div class="col-sm-8 col-md-6 col-lg-4 bg-white rounded border border-success  p-4 shadow">
+            <div class="p-4 shadow"  style="border:1px solid black; padding: 3rem; border-radius : 1rem ; border-color: green" >
                 <div class="row justify-content-center mb-4">
                     <h1 class="heading text-center">Login</h1>
                 </div>
                 <form method="post" action="">
-                    <div class="mb-4">
+                    <div class="mb-4" style="width: 45em;">
                         <label for="email" class="form-label">Email </label>
                         <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp">
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4" style="width: 45em;">
                         <label for="password" class="form-label">Password</label>
                         <input type="password" name="password" class="form-control" id="password" aria-describedby="emailHelp">
                     </div>

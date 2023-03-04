@@ -1,30 +1,200 @@
-.form-group {
-    margin-bottom: 1rem;
-  }
+*{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+}
+.header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  height: 80px;
+  display: block;
+  background-color: rgb(255, 255, 255);
+}
+.inner_header{
+  width: 90%;
+  height: 100%;
+  display: block;
+  margin: 0 auto;
   
-  label {
-    display: block;
-    margin-bottom: 0.5rem;
-  }
+}
+
+
+.logo_container{
+  height: 100%;
+  display: table;
+  float: left;
+
+}
+.logo_container h1{
+  color : rgb(0, 94, 55);
+  height : 100%;
+  display: table-cell;
+  vertical-align: middle;
+}
+.navigation{
+  float: right;
+  height: 100%;
+
+}
+.navigation li{
+  height: 100%;
+  display: table;
+  float: left;
+  padding: 0px 20px;
+}
+
+.navigation li a{
+  display: table-cell;
+  vertical-align: middle;
+  height: 100%;
+  color: rgb(0, 108, 38);
+
+}
+.img-container img{
+  width : 100%;
+  height:100%
+}
+
+.home-category{
+  display: block;
+}
+.category_container{
+  display: flex;
+  justify-content: center;
+}
+.cate{
+  text-align: end;
+  width: 150px;
+  height: 150px;
+  display: inline-block;
+  border-radius: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin : 10px 15px ; 
+  background-position: center;
+  background-size: cover;
+  transition: transform 0.5s;
+  position: relative;
+  text-align: center;
+}
+.bcate{
   
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  select {
-    display: block;
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 0.25rem;
-    margin-bottom: 1rem;
-  }
+  width: 100px;
+  height: 100px;
+  display: inline-block;
+  border-radius: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  margin : 10px 15px ; 
+  background-position: center;
+  background-size: cover;
+  transition: transform 0.5s;
+  position: relative;
+  text-align: center;
+  color: white;
+  font-size: 10px;
+}
+h6{
+  font-size: 15px;
+}
+
+.cate1{
+  background-image: url(https://cdn.1112.com/1112/public/images/Menu/card_Pizza.png);
+}
+.cate2{
+  background-image: url(https://cdn.1112.com/1112/public/images/Menu/PizzaOfTheMonth.png);
+}
+.cate3{
+  background-image: url(https://cdn.1112.com/1112/public/images/Menu/card_Appetizers.png);
+}
+.cate4{
+  background-image: url(https://cdn.1112.com/1112/public/images/Menu/card_Chicken.png);
+}
+.cate5{
+  background-image: url(https://cdn.1112.com/1112/public/images/Menu/card_Pasta.png);
+}
+.cate6{
+  background-image: url(https://cdn.1112.com/1112/public/images/Menu/card_Salad.png);
+}
+.cate h4{
+  align-items: center;
+  color :rgb(255, 255, 255);
+  font-size: 20px;
   
-  button[type="submit"] {
-    background-color: #333;
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 0.25rem;
-    cursor: pointer;
-  }
+}
+#bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.product{
+  width: 260px;
+  height: 300px;
+  border: 1px solid green;
+  border-radius: 10px;
+  color: green;
+  text-align: center;
   
+} 
+.p_footer{
+  width: 80%; 
+  height: 40px;
+  border-radius: 12px;
+  background-color:rgb(7, 112, 56) ;
+  margin-top: 2rem;
+  margin-left: 1.5rem;
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+
+}
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.product_container{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 20px;
+ 
+}
+
+
+
+/* .slide-frame{
+  overflow: hidden;
+} */
+
+
+/* 
+@-webkit-keyframes slide_animation{
+  0% {left:0px;}
+  10% {left:0px;}
+  20% {left:1200px;}
+  30% {left:1200px;}
+  40% {left:2400px;}
+  50% {left:2400px;}
+  60% {left:1200px;}
+  70% {left:1200px;}
+  80% {left:0px;}
+  90% {left:0px;}
+  100% {left:0px;}
+}
+
+.slide-images{
+  position: relative;
+  -webkit-animation-name: slide_animation;
+  -webkit-animation-duration: 33s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-direction: alternate;
+  -webkit-animation-play-state: running;
+}  */

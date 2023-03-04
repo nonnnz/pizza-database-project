@@ -87,7 +87,7 @@ if(isset($_POST['submit'])){
             <div class="row g-3">
                 <div class="form-icon" style="display: flex; align-items: start; justify-content: space-between;" >
                         <img src="https://1112.com/images/form/name_form.svg" style="padding: .75em; ">
-                        <div style="width: 25em;">
+                        <div style="width: 45em;">
                             <input type="text" name="fname" class="form-control" style="margin-bottom :1rem" placeholder="First name" aria-label="First name" maxlength="50" required >
                             <input type="text" name="lname"class="form-control" style="margin-bottom :1rem" placeholder="Last name" aria-label="Last name" maxlength="50" required >
                         </div>
@@ -99,7 +99,7 @@ if(isset($_POST['submit'])){
                 <div class="mb-3"> <!-- Phone number -->
                 <div class="form-icon" style="display: flex; align-items: center; justify-content: space-between;" >
                     <img src="https://1112.com/images/form/phone_form.svg" style ="padding: .75em; margin:auto;">
-                    <div style="width: 25em;">
+                    <div style="width: 45em;">
                         <input type="text" class="form-control"   name="phone" placeholder="+66" maxlength="10" required >
                     </div>
                 </div>
@@ -108,7 +108,7 @@ if(isset($_POST['submit'])){
             <div class="mb-3"> <!-- Date of birth -->
                 <div class="form-icon" style="display: flex; align-items: center; justify-content: center;" >
                     <img src="https://1112.com/images/form/birthday_form.svg" style ="padding: .5em; " >
-                    <div style="width: 25em;">
+                    <div style="width: 45em;">
                         <input id="startDate" name="birthdate" class="form-control" type="date" required />
                     </div>
                 </div>
@@ -140,7 +140,7 @@ if(isset($_POST['submit'])){
                     <img src="https://1112.com/images/form/mail_form.svg" style = "padding: .75em; margin:auto;">
                 </div>
                 <div class="form-email" >
-                <div style="width: 25em;">
+                <div style="width: 45em;">
                     <input type="email" class="form-control" name="email" aria-describedby="email" placeholder="Email" maxlength="50" required >
                 </div>
                 </div>
@@ -150,7 +150,7 @@ if(isset($_POST['submit'])){
             <div class="mb-3"> 
                 <div class="form-icon" style="display: flex; align-items: start; justify-content: space-between;" >
                     <img src="https://1112.com/images/form/password_form.svg" style="padding: .75em; ">
-                    <div style="width: 25em;">
+                    <div style="width: 45em;">
                         <input type="password" class="form-control" style="margin-bottom :1rem" placeholder="Password" name="password" maxlength="20" required >
                         <input type="password" class="form-control" style="margin-bottom :1rem" placeholder="Confirm password" name="confirm_password" maxlength="20" required >
                     </div>
