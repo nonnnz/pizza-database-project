@@ -195,7 +195,10 @@ if(isset($_SESSION['email'])){
     </div>
 </section> 
 
-
+<div class="form-group" style="text-align:center;" style="display: flex; justify-content: center; ">
+    <!-- <button type="submit" name="submit" class="btn btn-primary">Register</button> -->
+    <input type="submit" class="btn btn-success " style="padding: 10px 50px; margin-bottom :3rem " name="submit" value="submit" >
+</div>
 
 
 
