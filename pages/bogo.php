@@ -5,15 +5,15 @@ session_start();
 require_once "../components/connect.php";
 
 // retrieve data from the database
-$sql = "SELECT pizza_detail.pz_id, pizza_detail.pz_name, food.fd_image, food.fd_price
-        FROM pizza_detail
-        INNER JOIN pizza_food ON pizza_detail.pz_id = pizza_food.pz_id
-        INNER JOIN food ON pizza_food.fd_id = food.fd_id";
-$result = $conn->query($sql);
+$sql = "SELECT pizza.pz_id, pizza.pz_name, food.fd_image, food.fd_price
+        FROM pizza
+        INNER JOIN pizza_detail ON pizza.pz_id = pizza_detail.pz_id
+        INNER JOIN food ON pizza_detail.fd_id = food.fd_id";
+$result = $pdo->query($sql);
 
 // display data in a table
 echo "<table>";
-while ($row = $result->fetch_assoc()) {
+while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
     echo "<tr>";
     echo "<td>" . $row["pz_name"] . "</td>";
     echo "<td><img src='" . $row["fd_image"] . "'></td>";
@@ -21,10 +21,8 @@ while ($row = $result->fetch_assoc()) {
     echo "<td><a href='product.php?food_id=" . $row["fd_id"] . "'>Select</a></td>";
     echo "</tr>";
 }
-echo "</table>";
 
-// close connection
-$conn->close();
+echo "</table>";
 ?>
 
 <!DOCTYPE html>
