@@ -4,25 +4,32 @@ session_start();
 // Include the database connection file
 require_once "../components/connect.php";
 
+// array
+$menu_items = array();
+
 // retrieve data from the database
-$sql = "SELECT pizza.pz_id, pizza.pz_name, food.fd_image, food.fd_price
+$sql = "SELECT pizza.pz_id, pizza.pz_name, food.fd_image, food.fd_price, food.fd_id
         FROM pizza
         INNER JOIN pizza_detail ON pizza.pz_id = pizza_detail.pz_id
         INNER JOIN food ON pizza_detail.fd_id = food.fd_id";
 $result = $pdo->query($sql);
 
-// display data in a table
-echo "<table>";
+$result->execute();
+
+// Fetch the query results and build an array of menu items
 while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-    echo "<tr>";
-    echo "<td>" . $row["pz_name"] . "</td>";
-    echo "<td><img src='" . $row["fd_image"] . "'></td>";
-    echo "<td>$" . $row["fd_price"] . "</td>";
-    echo "<td><a href='product.php?food_id=" . $row["fd_id"] . "'>Select</a></td>";
-    echo "</tr>";
+    $menu_item = array(
+        'fd_id' => $row['fd_id'],
+        'fd_image' => $row['fd_image'],
+        'fd_price' => $row['fd_price'],
+        'pz_name' => $row['pz_name'],
+        'pz_id' => $row['pz_id'],
+    );
+
+    array_push($menu_items, $menu_item);
 }
 
-echo "</table>";
+
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +39,7 @@ echo "</table>";
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bogo</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/style12.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="js/script.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
