@@ -57,7 +57,8 @@ $users = $stmt->fetchAll();
         <!-- <a href="../pages/login.php" class="button">Logout</a> -->
 
         <h2>users</h2>
-        <table>
+        <hr>
+        <table class="table">
             <thead>
                 <tr>
                     <!-- <th>ID</th> -->
@@ -66,6 +67,7 @@ $users = $stmt->fetchAll();
                     <th>Phone</th>
                     <th>Email</th>
                     <th>Actions</th>
+                    <th> </th>
                 </tr>
             </thead>
             <tbody>
@@ -82,15 +84,17 @@ $users = $stmt->fetchAll();
                         <td><?php echo $user['us_phone'] ?></td>
                         <td><?php echo $user['us_email'] ?></td>
                         <td>
+                            <a href="edit_admin.php?id=<?php $user_id_binary = $user['user_id'];
+                            $user_id_hex = bin2hex($user_id_binary);
+                            echo $user_id_hex; ?>" class="btn btn-warning">Edit</a>
+                        </td>
+                        <td>
                             <form method="post" action="">
                                 <input type="hidden" name="delete_user" value="<?php $user_id_binary = $user['user_id'];
                             $user_id_hex = bin2hex($user_id_binary);
                             echo $user_id_hex;?>">
-                                <button type="submit" class="button">Delete</button>
+                                <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
-                            <a href="edit_admin.php?id=<?php $user_id_binary = $user['user_id'];
-                            $user_id_hex = bin2hex($user_id_binary);
-                            echo $user_id_hex; ?>" class="button">Edit</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
