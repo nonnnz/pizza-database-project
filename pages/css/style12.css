@@ -297,5 +297,13 @@
     padding:2em ;
   }
   
+  .Truewallet-container{
+    border: 1px solid green;
+    border-radius: 10px;
+    margin-top: 2em;
+    margin-left: 10em;
+    margin-right: 10em;
+    padding:0.5em ;
+  }
   
   
