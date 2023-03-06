@@ -1,3 +1,32 @@
+<?php
+
+session_start();
+// Include the database connection file
+require_once "../components/connect.php";
+
+// retrieve data from the database
+$sql = "SELECT pizza_detail.pz_id, pizza_detail.pz_name, food.fd_image, food.fd_price
+        FROM pizza_detail
+        INNER JOIN pizza_food ON pizza_detail.pz_id = pizza_food.pz_id
+        INNER JOIN food ON pizza_food.fd_id = food.fd_id";
+$result = $conn->query($sql);
+
+// display data in a table
+echo "<table>";
+while ($row = $result->fetch_assoc()) {
+    echo "<tr>";
+    echo "<td>" . $row["pz_name"] . "</td>";
+    echo "<td><img src='" . $row["fd_image"] . "'></td>";
+    echo "<td>$" . $row["fd_price"] . "</td>";
+    echo "<td><a href='product.php?food_id=" . $row["fd_id"] . "'>Select</a></td>";
+    echo "</tr>";
+}
+echo "</table>";
+
+// close connection
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
