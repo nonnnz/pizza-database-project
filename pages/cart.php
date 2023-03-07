@@ -52,6 +52,24 @@ while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
     array_push($menu_items, $menu_item);
 }
 
+// copy cart to order
+if(isset($_POST['submit'])) {
+    // get user adds
+    $sql = "SELECT `user`.`user_id`, `address_book`.*
+        FROM `user` 
+        LEFT JOIN `address_book` ON `address_book`.`user_id` = `user`.`user_id`
+        WHERE address_book.user_id = UNHEX(?) AND address_book.addb_id = ?;";
+    $adds = $pdo->prepare($sql);
+    $adds->execute([$user_id, 1]);
+    $row_adds = $adds->fetch(PDO::FETCH_ASSOC);
+
+    echo $row_adds['addb_street'];
+
+    // adds to deli
+
+
+}
+
 ?>
 
 
