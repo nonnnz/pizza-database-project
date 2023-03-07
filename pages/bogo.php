@@ -8,10 +8,16 @@ require_once "../components/connect.php";
 $menu_items = array();
 
 // retrieve data from the database
-$sql = "SELECT pizza.pz_id, pizza.pz_name, food.fd_image, food.fd_price, food.fd_id
-        FROM pizza
-        INNER JOIN pizza_detail ON pizza.pz_id = pizza_detail.pz_id
-        INNER JOIN food ON pizza_detail.fd_id = food.fd_id";
+// $sql = "SELECT pizza.pz_id, pizza.pz_name, food.fd_image, MIN(food.fd_price) AS min_price, food.fd_id
+//             FROM pizza
+//             INNER JOIN pizza_detail ON pizza.pz_id = pizza_detail.pz_id
+//             INNER JOIN food ON pizza_detail.fd_id = food.fd_id
+//             GROUP BY pizza.pz_name";
+// show all list in food
+$sql = "SELECT pizza.pz_id, pizza.pz_name, food.fd_image, food.fd_price AS min_price, food.fd_id
+            FROM pizza
+            INNER JOIN pizza_detail ON pizza.pz_id = pizza_detail.pz_id
+            INNER JOIN food ON pizza_detail.fd_id = food.fd_id";
 $result = $pdo->query($sql);
 
 $result->execute();
@@ -21,7 +27,7 @@ while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
     $menu_item = array(
         'fd_id' => $row['fd_id'],
         'fd_image' => $row['fd_image'],
-        'fd_price' => $row['fd_price'],
+        'fd_price' => $row['min_price'],
         'pz_name' => $row['pz_name'],
         'pz_id' => $row['pz_id'],
     );
@@ -91,68 +97,23 @@ while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
     <div class="container">
 
         <div class="product_container" >
-            <div class="product">
-                <div class="product_item">
-                    <img src="https://cdn.1112.com/1112/public//images/products/pizza/Oct2021/102216_MP.png" alt="Cheese" style = "width : 100% ;  height : 217px ;">
-                   
-                </div>
-                <div class="item-footer">
-                    <h5>Double Cheese</h5>
-                    <button type="button" class="btn btn-success d-flex justify-content-between" style ="width: 80%;height: 40px;  margin-left: 0.5rem; padding: 0.5rem;">
-                        <span>439 ฿</span>
-                        <span>
-                            <i class="fa fa-plus right txt" style="margin-right: 5px;"></i>Select
-                        </span>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="product">
-                <div class="product_item">
-                    <img src="https://cdn.1112.com/1112/public//images/products/pizza/Oct2021/102217_MP.png" alt="Cheese" style = "width : 100% ;  height : 217px ;">
+            <?php foreach ($menu_items as $item): ?>
+                <div class="product">
+                    <div class="product_item">
+                        <img src="<?php echo $item['fd_image']; ?>" alt="<?php echo $item['pz_name']; ?>" style = "width : 100% ;  height : 217px ;">
                     
+                    </div>
+                    <div class="item-footer">
+                        <h5><?php echo $item['pz_name']; ?></h5>
+                        <a  href="select_pizza.php?id=<?php echo $item['fd_id']; ?>" class="btn btn-success d-flex justify-content-between" style ="width: 80%;height: 40px;  margin-left: 0.5rem; padding: 0.5rem;">
+                            <span><?php echo $item['fd_price']; ?></span>
+                            <span>
+                                <i class="fa fa-plus right txt" style="margin-right: 5px;"></i>Select
+                            </span>
+                        </a>
+                    </div>
                 </div>
-                <div class="item-footer">
-                    <h5>Double Pepperoni</h5>
-                    <button type="button" class="btn btn-success d-flex justify-content-between" style ="width: 80%;height: 40px;  margin-left: 0.5rem; padding: 0.5rem;">
-                        <span>439 ฿</span>
-                        <span>
-                            <i class="fa fa-plus right txt" style="margin-right: 5px;"></i>Select
-                        </span>
-                    </button>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product_item">
-                    <img src="https://cdn.1112.com/1112/public//images/products/pizza/Oct2021/102208_MP.png" alt="Cheese" style = "width : 100% ; height : 217px ;">
-                    
-                </div>
-                <div class="item-footer">
-                    <h5>Seafood Cocktail</h5>
-                    <button type="button" class="btn btn-success d-flex justify-content-between" style ="width: 80%;height: 40px;  margin-left: 0.5rem; padding: 0.5rem;">
-                        <span>439 ฿</span>
-                        <span>
-                            <i class="fa fa-plus right txt" style="margin-right: 5px;"></i>Select
-                        </span>
-                    </button>
-                </div>
-            </div>
-            <div class="product">
-                <div class="product_item">
-                    <img src="https://cdn.1112.com/1112/public//images/products/pizza/Dec2021/102734.png" alt="Cheese" style = "width : 100% ; height : 217px  ;">
-                </div>
-                <div class="item-footer">
-                    <h5>Spicy Super Seafood</h5>
-                    <button type="button" class="btn btn-success d-flex justify-content-between" style ="width: 80%;height: 40px;  margin-left: 0.5rem; padding: 0.5rem;">
-                        <span>439 ฿</span>
-                        <span>
-                            <i class="fa fa-plus right txt" style="margin-right: 5px;"></i>Select
-                        </span>
-                    </button>
-                </div>
-            </div>
-            
-            
+            <?php endforeach; ?>
             
         </div>
     </div>
