@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 07, 2023 at 04:47 PM
+-- Generation Time: Mar 09, 2023 at 04:56 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -140,10 +140,17 @@ CREATE TABLE `crust` (
 --
 
 INSERT INTO `crust` (`crust_id`, `crust_name`, `crust_img`, `created_at`, `updated_at`) VALUES
-(1, 'Pan Medium', NULL, '2023-03-06 08:15:30', '2023-03-06 22:15:30'),
-(2, 'Pan Large', NULL, '2023-03-06 08:15:30', '2023-03-06 22:15:30'),
-(3, 'Extreme Giant Crab Stick Medium', NULL, '2023-03-06 08:15:30', '2023-03-06 22:15:30'),
-(4, 'Extreme Giant Crab Stick Large', NULL, '2023-03-06 08:15:30', '2023-03-06 22:15:30');
+(1, 'Pan Medium', '../images/product/crust/pan.jpg', '2023-03-06 08:15:30', '2023-03-09 00:17:16'),
+(2, 'Pan Large', '../images/product/crust/pan.jpg', '2023-03-06 08:15:30', '2023-03-09 00:17:16'),
+(3, 'Extreme Giant Crab Stick Medium', '../images/product/crust/extremegiantcrabstick.jpg', '2023-03-06 08:15:30', '2023-03-09 00:17:16'),
+(4, 'Extreme Giant Crab Stick Large', '../images/product/crust/extremegiantcrabstick.jpg', '2023-03-06 08:15:30', '2023-03-09 00:17:16'),
+(5, 'Crispy Thin Medium', '../images/product/crust/thin.jpg', '2023-03-08 15:39:45', '2023-03-08 22:39:45'),
+(6, 'Crispy Thin Large', '../images/product/crust/thin.jpg', '2023-03-08 15:39:45', '2023-03-08 22:39:45'),
+(7, 'Extreme Cheese Medium', '../images/product/crust/extremecheese.jpg', '2023-03-08 15:39:45', '2023-03-08 22:39:45'),
+(8, 'Extreme Cheese Large', '../images/product/crust/extremecheese.jpg', '2023-03-08 15:39:45', '2023-03-08 22:39:45'),
+(9, 'Extreme Sausage & Cheese Medium', '../images/product/crust/extremesausagecheese.jpg', '2023-03-08 15:39:45', '2023-03-08 22:39:45'),
+(10, 'Extreme Sausage & Cheese Large', '../images/product/crust/extremesausagecheese.jpg', '2023-03-08 15:39:45', '2023-03-08 22:39:45'),
+(11, 'New York Pizza Thin & Soft Large', '../images/product/crust/newyorkpizzathin&soft.jpg', '2023-03-08 15:39:45', '2023-03-08 22:39:45');
 
 -- --------------------------------------------------------
 
@@ -1165,18 +1172,6 @@ CREATE TABLE `geographies` (
   `name` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='InnoDB free: 8192 kB';
 
---
--- Dumping data for table `geographies`
---
-
-INSERT INTO `geographies` (`id`, `name`) VALUES
-(1, 'ภาคเหนือ'),
-(2, 'ภาคกลาง'),
-(3, 'ภาคตะวันออกเฉียงเหนือ'),
-(4, 'ภาคตะวันตก'),
-(5, 'ภาคตะวันออก'),
-(6, 'ภาคใต้');
-
 -- --------------------------------------------------------
 
 --
@@ -1197,9 +1192,27 @@ CREATE TABLE `ingredient` (
 --
 
 INSERT INTO `ingredient` (`ing_id`, `ing_name`, `ing_img`, `ing_price`, `created_at`, `updated_at`) VALUES
-(1, 'Anchovies', NULL, '79.00', '2023-03-06 15:37:03', '2023-03-06 22:37:03'),
-(2, 'Bacon Dice', NULL, '59.00', '2023-03-06 15:37:03', '2023-03-06 22:37:03'),
-(3, 'BBQ Chicken', NULL, '59.00', '2023-03-06 15:37:03', '2023-03-06 22:37:03');
+(1, 'Anchovies', '../images/product/ingredients/Bacon-Bits.jpg', '79.00', '2023-03-06 15:37:03', '2023-03-09 00:17:16'),
+(2, 'Bacon Dice', '../images/product/ingredients/Bacon-Bits.jpg', '59.00', '2023-03-06 15:37:03', '2023-03-09 00:17:16'),
+(3, 'BBQ Chicken', '../images/product/ingredients/BBQChicken.jpg', '59.00', '2023-03-06 15:37:03', '2023-03-09 00:17:16'),
+(4, 'Capsicum', '../images/product/ingredients/Capsicum.jpg', '49.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(5, 'Crab-Stick', '../images/product/ingredients/Crab-Stick.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(6, 'GarlicButterChicken', '../images/product/ingredients/GarlicButterChicken.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(7, 'Italian-Sausage', '../images/product/ingredients/Italian-Sausage.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(8, 'Mozzarella-Cheese', '../images/product/ingredients/Mozzarella-Cheese.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(9, 'Mushrooms', '../images/product/ingredients/Mushrooms.jpg', '49.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(10, 'Onions', '../images/product/ingredients/Onions.jpg', '49.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(11, 'Pepperoni', '../images/product/ingredients/Pepperoni.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(12, 'Pineapple', '../images/product/ingredients/Pineapple.jpg', '49.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(13, 'Prawn', '../images/product/ingredients/Prawn.jpg', '79.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(14, 'Red-&-Green-Chilli', '../images/product/ingredients/Red-&-Green-Chilli.jpg', '49.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(15, 'RoastedChicken', '../images/product/ingredients/RoastedChicken.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(16, 'Seafood', '../images/product/ingredients/Seafood.jpg', '79.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(17, 'Sliced-Bacon', '../images/product/ingredients/Sliced-Bacon.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(18, 'Sliced-Ham', '../images/product/ingredients/Sliced-Ham.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(19, 'Smoked-Pork-Sausage', '../images/product/ingredients/Smoked-Pork-Sausage.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(20, 'Squid', '../images/product/ingredients/Squid.jpg', '79.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(21, 'Tomato', '../images/product/ingredients/Tomato.jpg', '49.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03');
 
 -- --------------------------------------------------------
 
@@ -1344,6 +1357,78 @@ CREATE TABLE `pizza_ingredient` (
   `ing_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Dumping data for table `pizza_ingredient`
+--
+
+INSERT INTO `pizza_ingredient` (`pz_id`, `ing_id`) VALUES
+(1, 8),
+(2, 8),
+(2, 11),
+(3, 9),
+(3, 13),
+(3, 17),
+(4, 12),
+(4, 17),
+(4, 18),
+(5, 5),
+(5, 8),
+(5, 12),
+(5, 13),
+(5, 18),
+(6, 4),
+(6, 8),
+(6, 10),
+(6, 14),
+(7, 4),
+(7, 5),
+(7, 8),
+(7, 10),
+(7, 13),
+(8, 8),
+(8, 9),
+(8, 12),
+(8, 13),
+(8, 21),
+(10, 12),
+(10, 17),
+(10, 18),
+(11, 7),
+(11, 11),
+(11, 17),
+(11, 18),
+(11, 19),
+(12, 4),
+(12, 7),
+(12, 9),
+(12, 10),
+(12, 11),
+(12, 12),
+(12, 17),
+(12, 18),
+(12, 19),
+(13, 3),
+(13, 6),
+(13, 9),
+(13, 14),
+(13, 15),
+(15, 9),
+(15, 10),
+(15, 14),
+(15, 21),
+(16, 4),
+(16, 12),
+(16, 14),
+(16, 15),
+(17, 5),
+(17, 12),
+(17, 18),
+(18, 9),
+(18, 11),
+(18, 12),
+(18, 18),
+(18, 19);
+
 -- --------------------------------------------------------
 
 --
@@ -1354,6 +1439,60 @@ CREATE TABLE `pizza_sauce` (
   `pz_id` int(11) NOT NULL,
   `sauce_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `pizza_sauce`
+--
+
+INSERT INTO `pizza_sauce` (`pz_id`, `sauce_id`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(2, 1),
+(2, 2),
+(2, 3),
+(3, 1),
+(3, 2),
+(3, 3),
+(4, 1),
+(4, 2),
+(4, 3),
+(5, 1),
+(5, 2),
+(5, 3),
+(6, 1),
+(6, 2),
+(6, 3),
+(7, 1),
+(7, 2),
+(7, 3),
+(8, 1),
+(8, 2),
+(8, 3),
+(11, 1),
+(11, 2),
+(11, 3),
+(12, 1),
+(12, 2),
+(12, 3),
+(13, 1),
+(13, 2),
+(13, 3),
+(15, 1),
+(15, 2),
+(15, 3),
+(16, 1),
+(16, 2),
+(16, 3),
+(17, 1),
+(17, 2),
+(17, 3),
+(18, 1),
+(18, 2),
+(18, 3),
+(19, 1),
+(19, 2),
+(19, 3);
 
 -- --------------------------------------------------------
 
@@ -1484,6 +1623,15 @@ CREATE TABLE `sauce` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `sauce`
+--
+
+INSERT INTO `sauce` (`sauce_id`, `sauce_name`, `created_at`, `updated_at`) VALUES
+(1, 'Thousand Island Sauce', '2023-03-08 16:06:45', '2023-03-08 23:06:45'),
+(2, 'Marinara Sauce', '2023-03-08 16:06:45', '2023-03-08 23:06:45'),
+(3, 'Pizza Sauce', '2023-03-08 16:06:45', '2023-03-08 23:06:45');
 
 -- --------------------------------------------------------
 
@@ -9682,7 +9830,7 @@ ALTER TABLE `credit_card`
 -- AUTO_INCREMENT for table `crust`
 --
 ALTER TABLE `crust`
-  MODIFY `crust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `crust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `delivery`
@@ -9712,7 +9860,7 @@ ALTER TABLE `geographies`
 -- AUTO_INCREMENT for table `ingredient`
 --
 ALTER TABLE `ingredient`
-  MODIFY `ing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ing_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `order`
@@ -9748,7 +9896,7 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `sauce`
 --
 ALTER TABLE `sauce`
-  MODIFY `sauce_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sauce_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `shopping_cart`
