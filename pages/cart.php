@@ -24,7 +24,10 @@ $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = U
 $select_cart->execute([$user_id]);
 $cart_row = $select_cart->fetch(PDO::FETCH_ASSOC);
 
-$cart_total = $cart_row['cart_total'];
+// check cart total
+if($cart_row) $cart_total = $cart_row['cart_total'];
+else $cart_total = 0;
+
 
 $sql = "SELECT `shopping_cart`.`cart_id`, `cart_item`.`fd_id`, `food`.`fd_price`, `pizza_detail`.`pz_id`, `pizza`.`pz_name`, `crust`.`crust_name`, `cart_item`.`quantity`
 FROM `shopping_cart` 
