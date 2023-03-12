@@ -361,5 +361,15 @@ input[type="checkbox"]:checked {
   justify-content: center; 
   align-items: center; 
   text-align: center; 
+}
 
+.card-title{
+  color : green;
+}
+
+.card-body button{ 
+  border-radius: 12px;
+}
+.card-body1 button{ 
+  border-radius: 12px;
 }
