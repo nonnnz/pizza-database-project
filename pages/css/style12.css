@@ -347,3 +347,13 @@ input[type="checkbox"]:checked {
   padding-right: 1em;
   width: 60px;
 }
+.card-title{
+  color : green;
+}
+
+.card-body button{ 
+  border-radius: 12px;
+}
+.card-body1 button{ 
+  border-radius: 12px;
+}
