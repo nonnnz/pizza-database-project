@@ -77,7 +77,7 @@
                 
                 </div>
             </div>
-        <div class="product_container" >
+       
             <div class="card d-flex justify-content-between p-1" style="width: 18rem; border-radius: 12px !important ; border: 1px solid green;">
                 <img class="card-img-top" src="https://cdn.1112.com/1112/public//images/products/pasta/115654_2.png" alt="Card image cap">
                 <div class="card-body1 text-center d-flex align-items-center flex-column" style="padding-bottom: 1em;">
@@ -103,12 +103,12 @@
                 
                 </div>
             </div>
-            
+        </div> 
             
            
             
             
-        </div>
+        
     </div>
     
 </body>
