@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 09, 2023 at 04:56 PM
+-- Generation Time: Mar 12, 2023 at 10:17 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -1155,7 +1155,6 @@ CREATE TABLE `food` (
 
 INSERT INTO `food` (`fd_id`, `cat_id`, `fd_image`, `fd_name`, `fd_price`, `created_at`, `updated_at`) VALUES
 (1, 1, '../images/product/pizza/102216_MP.png', 'Double Cheese - Pan Medium', '299.00', '2023-03-06 15:44:38', '2023-03-06 22:54:25'),
-(2, 1, '../images/product/pizza/102316_LP.png', 'Double Cheese - Pan Large', '399.00', '2023-03-06 15:47:55', '2023-03-06 22:54:35'),
 (3, 1, '../images/product/pizza/216215_EGM.png', 'Double Cheese - Extreme Giant Crab Stick Medium', '419.00', '2023-03-06 15:47:55', '2023-03-06 22:54:52'),
 (4, 1, '../images/product/pizza/216315_EGL.png', 'Double Cheese - Extreme Giant Crab Stick Large', '569.00', '2023-03-06 15:47:55', '2023-03-06 22:55:07'),
 (5, 1, '../images/product/pizza/102217_MP.png', 'Double Pepperoni - Pan Medium', '299.00', '2023-03-06 15:49:41', '2023-03-06 22:55:21'),
@@ -1211,7 +1210,7 @@ INSERT INTO `ingredient` (`ing_id`, `ing_name`, `ing_img`, `ing_price`, `created
 (17, 'Sliced-Bacon', '../images/product/ingredients/Sliced-Bacon.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
 (18, 'Sliced-Ham', '../images/product/ingredients/Sliced-Ham.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
 (19, 'Smoked-Pork-Sausage', '../images/product/ingredients/Smoked-Pork-Sausage.jpg', '59.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
-(20, 'Squid', '../images/product/ingredients/Squid.jpg', '79.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03'),
+(20, 'Squid', '../images/product/ingredients/Squid.png', '79.00', '2023-03-08 11:59:03', '2023-03-13 04:09:13'),
 (21, 'Tomato', '../images/product/ingredients/Tomato.jpg', '49.00', '2023-03-08 11:59:03', '2023-03-08 18:59:03');
 
 -- --------------------------------------------------------
@@ -1340,11 +1339,9 @@ CREATE TABLE `pizza_detail` (
 
 INSERT INTO `pizza_detail` (`pz_id`, `size_id`, `crust_id`, `dip_id`, `fd_id`) VALUES
 (1, 1, 1, NULL, 1),
-(1, 2, 2, NULL, 2),
 (2, 1, 1, NULL, 5),
 (2, 2, 2, NULL, 6),
-(1, 1, 3, 1, 3),
-(1, 2, 4, 1, 4);
+(1, 1, 3, 1, 3);
 
 -- --------------------------------------------------------
 
