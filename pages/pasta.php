@@ -49,7 +49,7 @@
             
         </div>
     </div>
-    <h3 style = "text-align: center; padding-top : 1em;">PASTA</h3>
+    <h3 style = "text-align: center; padding-top : 1em; margin: 1em;">PASTA</h3>
     <div class="container">
         <div class="product_container" >
             <div class="card d-flex justify-content-between p-1" style="width: 18rem; border-radius: 12px !important ; border: 1px solid green;">
