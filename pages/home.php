@@ -4,15 +4,6 @@ session_start();
 // Include the database connection file
 require_once "../components/connect.php";
 
-// check if the user is logged in
-// $name = "Guest";
-// if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-//     if($_SESSION["email"] == "admin@gmail.com") {
-//         $name = "Admin";
-//     } else {
-//         $name = $_SESSION["fname"];
-//     }
-// }
 
 // check if the user is logged in
 $name = "Guest";

@@ -14,16 +14,16 @@ if(isset($_SESSION['user_id'])){
 $menu_items = array();
 
 // retrieve data from the database
-// $sql = "SELECT pizza.pz_id, pizza.pz_name, food.fd_image, MIN(food.fd_price) AS min_price, food.fd_id
-//             FROM pizza
-//             INNER JOIN pizza_detail ON pizza.pz_id = pizza_detail.pz_id
-//             INNER JOIN food ON pizza_detail.fd_id = food.fd_id
-//             GROUP BY pizza.pz_name";
-// show all list in food
-$sql = "SELECT pizza.pz_id, pizza.pz_name, food.fd_image, food.fd_price AS min_price, food.fd_id
+$sql = "SELECT pizza.pz_id, pizza.pz_name, food.fd_image, MIN(food.fd_price) AS min_price, food.fd_id
             FROM pizza
             INNER JOIN pizza_detail ON pizza.pz_id = pizza_detail.pz_id
-            INNER JOIN food ON pizza_detail.fd_id = food.fd_id";
+            INNER JOIN food ON pizza_detail.fd_id = food.fd_id
+            GROUP BY pizza.pz_name";
+// show all list in food
+// $sql = "SELECT pizza.pz_id, pizza.pz_name, food.fd_image, food.fd_price AS min_price, food.fd_id
+//             FROM pizza
+//             INNER JOIN pizza_detail ON pizza.pz_id = pizza_detail.pz_id
+//             INNER JOIN food ON pizza_detail.fd_id = food.fd_id";
 $result = $pdo->query($sql);
 
 $result->execute();

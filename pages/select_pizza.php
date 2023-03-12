@@ -16,6 +16,7 @@ if(!isset($_GET["id"])) {
 
 $id = $_GET["id"];
 
+// retrieve pizza info from the database
 $stmt = $pdo->prepare("SELECT pizza.pz_name, food.fd_image, food.fd_price, pizza.pz_id, size.size_id, size.size_name, crust.crust_id, crust.crust_name
                             FROM pizza
                             INNER JOIN pizza_detail ON pizza.pz_id = pizza_detail.pz_id
@@ -35,35 +36,67 @@ $size_name = $result["size_name"];
 $crust_id = $result["crust_id"];
 $crust_name = $result["crust_name"];
 
-// retrieve all pizza names from the database
+// retrieve all pizza names from the food table
+$stmt = $pdo->prepare("SELECT `pizza_detail`.`pz_id`, `pizza`.`pz_name`
+    FROM `pizza_detail` 
+    LEFT JOIN `pizza` ON `pizza_detail`.`pz_id` = `pizza`.`pz_id`
+    GROUP BY `pizza_detail`.`pz_id`;");
+$stmt->execute();
+$pizza_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// retrieve all size names from the current pz_id
+$stmt = $pdo->prepare("SELECT `pizza_detail`.`size_id`
+FROM `pizza_detail`
+WHERE `pizza_detail`.`pz_id` = :pz_id
+GROUP BY `pizza_detail`.`size_id`;");
+$stmt->bindParam(":pz_id", $pz_id);
+$stmt->execute();
+$size_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// retrieve all crust names from the current pz_id, size_id
+$stmt = $pdo->prepare("SELECT `pizza_detail`.*, `crust`.`crust_name`
+FROM `pizza_detail` 
+LEFT JOIN `crust` ON `pizza_detail`.`crust_id` = `crust`.`crust_id`
+WHERE `pizza_detail`.`pz_id` = :pz_id AND `pizza_detail`.`size_id` = :size_id;");
+$stmt->bindParam(":pz_id", $pz_id);
+$stmt->bindParam(":size_id", $size_id);
+$stmt->execute();
+$crust_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// retrieve all Sauce names from the current pz_id
+$stmt = $pdo->prepare("SELECT `pizza_detail`.`pz_id`, `pizza_sauce`.`sauce_id`, `sauce`.`sauce_name`
+FROM `pizza_detail`
+	, `pizza_sauce` 
+	LEFT JOIN `sauce` ON `pizza_sauce`.`sauce_id` = `sauce`.`sauce_id`
+    WHERE `pizza_detail`.`pz_id` = :pz_id
+    GROUP BY `pizza_sauce`.`sauce_id`;");
+$stmt->bindParam(":pz_id", $pz_id);
+$stmt->execute();
+$sauce_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 try {
-    $stmt = $pdo->prepare("SELECT pz_id, pz_name
-                            FROM pizza");
+    // retrieve all Ingredients names from the current pz_id
+    $stmt = $pdo->prepare("SELECT `pizza_ingredient`.`pz_id`, `ingredient`.*
+    FROM `pizza_ingredient`
+    LEFT JOIN `ingredient` ON `pizza_ingredient`.`ing_id` = `ingredient`.`ing_id`
+    WHERE `pizza_ingredient`.`pz_id` = :pz_id;");
+    $stmt->bindParam(":pz_id", $pz_id);
     $stmt->execute();
-    $pizza_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $ingpz_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {
-    echo "Error: " . $e->getMessage();
+    $ingpz_results = array();
 }
 
-// retrieve all crust names from the database
-try {
-    $stmt = $pdo->prepare("SELECT crust_id, crust_name
-                            FROM crust");
+    // retrieve all Ingredients names but not in ingpz
+    $stmt = $pdo->prepare("SELECT `ingredient`.*
+    FROM `ingredient`
+    WHERE `ingredient`.`ing_id` NOT IN (SELECT `pizza_ingredient`.`ing_id`
+        FROM `pizza_ingredient`
+        WHERE `pizza_ingredient`.`pz_id` = :pz_id);");
+    $stmt->bindParam(":pz_id", $pz_id);
     $stmt->execute();
-    $crust_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
-
-// retrieve all size names from the database
-try {
-    $stmt = $pdo->prepare("SELECT size_id, size_name
-                            FROM size");
-    $stmt->execute();
-    $size_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    echo "Error: " . $e->getMessage();
-}
+    $ing_results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 
@@ -184,6 +217,8 @@ if(isset($_POST['submit'])) {
     // }
 }
 
+// echo $size_results[0]['size_id'];
+
 ?>
 
 <!DOCTYPE html>
@@ -249,8 +284,8 @@ if(isset($_POST['submit'])) {
     </div>
     <h4 style = "text-align: center; padding-top : 1em;">SELECT PIZZA</h4>
     <div class="pizza-item-container" >
-        <div class="row">
-            <div class="col text-center">
+        <div class="row" ">
+            <div class="col text-center" style="padding-left : 6em; padding-right : 6em;" >
                 <img src="<?php echo $fd_image; ?>" alt="<?php echo $pz_name; ?>" style="height: 315px; width: 400px;">
             </div>
             <div class="col">
@@ -268,13 +303,13 @@ if(isset($_POST['submit'])) {
                     </div>
                     <div class="col-8 d-flex flex-row">
                         <div class="row">
-                            <div class="col bottom-0">
+                            <div class="col bottom-0" >
                                 <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" <?php if (1 == $size_id) { echo "checked"; } ?>>
-                                <label class="btn btn-outline-success " for="success-outlined" style="border-radius: 100%; ">M</label>
+                                <label class="btn btn-outline-success " for="success-outlined" style="border-radius: 100%; display:<?php foreach ($size_results as $size): if ($size['size_id'] == 1) { echo "Block"; break;} else {echo "None";} endforeach;?>;">M</label>
                             </div>
-                            <div class="col">
+                            <div class="col" >
                                 <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off" <?php if (2 == $size_id) { echo "checked"; } ?>>
-                                <label class="btn btn-outline-success" for="danger-outlined" style="border-radius: 100% ; display : flex ; justify-content: center; width: 50px; height: 50px; text-align: center; align-items: center;">L</label>
+                                <label class="btn btn-outline-success" for="danger-outlined" style="border-radius: 100% ; display : flex ; justify-content: center; width: 50px; height: 50px; text-align: center; align-items: center; display:<?php foreach ($size_results as $size): if ($size['size_id'] == 2) { echo "Block"; break;} else {echo "None";} endforeach;?>;">L</label>
                             </div>
                         </div>
                     </div>
@@ -304,35 +339,71 @@ if(isset($_POST['submit'])) {
             </form>
         </div>
         <div style="text-align: center; margin-top: 2em;">
-            <button id="toggle-button-ingredients" onclick="IngredientsButton()"><img src="https://1112.com/images/cutlery_pizza_custom.svg" alt="knife"> 
+            <button id="toggle-button-ingredients" onclick="IngredientsButton()" style=" <?php if(!$ingpz_results) {echo "display:None";}?> "><img src="https://1112.com/images/cutlery_pizza_custom.svg" alt="knife"> 
                 Customize Pizza <br> * Up to 7 extra ingredients</button>
         </div>
 
         <div id="Ingredients-container" style="display: none;">
             <p>Select Sauce</p>
             <select class="form-select bg- text-success" aria-label="Default select example" style="background-color: #f2f9f6 ;font-weight: bold; width: 30%;">
-                <option disabled selected>Pizza Sauce</option>
-                <option value="2">Extreme Giant Crab Stick Medium</option>
-                <option value="3">Pan Medium</option>
-                <option value="4">Extreme Cheese Medium</option>
+                <!-- <option disabled selected>Pizza Sauce</option> -->
+                <?php foreach ($sauce_results as $sauce): ?>
+                <option <?php if ($sauce['sauce_name'] == end($sauce_results)['sauce_name']) {echo "selected";}?> value="<?php echo $sauce['sauce_id']?>"><?php echo $sauce['sauce_name']?></option>
+                <!-- <option value="3">Pan Medium</option>
+                <option value="4">Extreme Cheese Medium</option> -->
+                <?php endforeach; ?>
             </select>
             <p style="color : green ; margin : 1em ;">Ingredients in this pizza</p>
-            <div class="card border border-success"  style="width: 13rem; display: flex; justify-content: center; align-items: center; text-align: center; border-radius: 15px;" >
-                <div class="card-img" style="margin-top: 1em; border-radius: 50%; width: 7rem; height: 7rem; background-image:url(https://cdn.1112.com/1112/public/images/products/ingredients/website/Mozzarella-Cheese.jpg) ;background-size: cover; ">
-                    
-                </div>
-                <div class="card-body">
-                  <h6 class="card-title text-success">Mozzarella Cheese</h6>
-                  <p class="card-text text-success">+ 59 Baht/Each.</p>
-                  <div>
-                    <input id="my-input" type="number" min="0" max="7" value="0">
-                    <button class="plus-btn">+</button>
-                    <button class="minus-btn">-</button>
-                  </div>
-                  
-                  
-                </div>
-            </div>
+            <div class="grid-container-ing">
+                <?php foreach ($ingpz_results as $ingpz): ?>
+                    <div class="card border border-success ing-item"  >
+                        <div class="card-img" style="background-position: center; margin-top: 1em; border-radius: 50%; width: 7rem; height: 7rem; background-image:url(<?php echo $ingpz['ing_img']?>) ;background-size: cover; ">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title text-success"><?php echo $ingpz['ing_name']?></h6>
+                            <p class="card-text text-success">+ <?php echo $ingpz['ing_price']?> Baht/Each.</p>
+                            <div>
+                                <input id="my-input" type="number" min="0" max="7" value="0">
+                                <button class="plus-btn">+</button>
+                                <button class="minus-btn">-</button>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+
+
+                <!-- <div class="card border border-success ing-item"  >
+                    <div class="card-img" style="margin-top: 1em; border-radius: 50%; width: 7rem; height: 7rem; background-image:url(https://cdn.1112.com/1112/public/images/products/ingredients/website/Mozzarella-Cheese.jpg) ;background-size: cover; ">
+                    </div>
+                    <div class="card-body">
+                        <h6 class="card-title text-success">Mozzarella Cheese</h6>
+                        <p class="card-text text-success">+ 59 Baht/Each.</p>
+                        <div>
+                            <input id="my-input" type="number" min="0" max="7" value="0">
+                            <button class="plus-btn">+</button>
+                            <button class="minus-btn">-</button>
+                        </div>
+                    </div>
+                </div>   -->
+            </div>    
+            <p style="color : black ; margin : 1em ;">Add more ingredients</p>     
+            <div class="grid-container-ing">
+                <?php foreach ($ing_results as $ing): ?>
+                    <div class="card border border-success ing-item"  >
+                        <div class="card-img" style="background-position: center; margin-top: 1em; border-radius: 50%; width: 7rem; height: 7rem; background-image:url(<?php echo $ing['ing_img']?>) ;background-size: cover; ">
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title text-success"><?php echo $ing['ing_name']?></h6>
+                            <p class="card-text text-success">+ <?php echo $ing['ing_price']?> Baht/Each.</p>
+                            <div>
+                                <input id="my-input" type="number" min="0" max="7" value="0">
+                                <button class="plus-btn">+</button>
+                                <button class="minus-btn">-</button>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>               
         </div>
 
     </div>

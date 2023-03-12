@@ -221,8 +221,8 @@ h6{
   border: 1px solid green;
   border-radius: 10px;
   margin-top: 2em;
-  margin-left: 25em;
-  margin-right: 25em;
+  margin-left: 12em;
+  margin-right: 12em;
   padding:2em ;
 
 }
@@ -346,4 +346,20 @@ input[type="checkbox"]:checked {
 .p-2 img{
   padding-right: 1em;
   width: 60px;
+}
+
+.grid-container-ing {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* Create 5 columns */
+  grid-auto-rows: minmax(100px, auto); /* Set the row height to a minimum of 100px and adjust automatically */
+  grid-gap: 10px; /* Add a 10px gap between cells */
+}
+
+.ing-item {
+  width: 13rem; 
+
+  justify-content: center; 
+  align-items: center; 
+  text-align: center; 
+
 }
