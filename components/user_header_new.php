@@ -56,14 +56,118 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
       <p>TA card</p>
     </div>
   </a>
-  <div class="cart">
-    <a href="#" class="position-relative">
+  <div class="cart position-relative">
+    <a href="#" class="position-relative" id="cartDropdown">
       <i><img src="https://1112.com/images/icon_PizzaBoxII.svg" alt="cart">
       </i>
+      
       <span class="position-absolute top-100 start-100 translate-middle badge rounded-pill bg-danger">
         1
       </span>
     </a>
+    <div id="cartContent" class="position-absolute p-4 shadow p-3 mb-5 bg-white" style="display:none; width: 360px; height: 518px; border-radius: 12px; background-color: rgb(255, 255, 255); transform: translate(-50%, 50px);">
+        <div class="cart-head">
+          <h4>MY BASKET (2)</h4>
+        </div>
+        <div class="cart-body" style="overflow: scroll; height: 320px;">
+          <div class="row d-flex justify-content-around">
+            <div class="" style="padding: 0!important ; width: 80px;">
+              <img src="https://cdn.1112.com/1112/public/images/products/pizza/Nov2022/199446.png" style="width: 70px; height: 53px;" alt="">
+            </div>
+            <div class="" style="padding: 0!important ; width: 160px;">
+              <p style="font-size: 11px;">
+                1 × GRILLED HAWAIIAN (+509) <br>
+                NEW YORK PIZZA THIN & SOFT <br>
+                LARGE
+              </p> <br>
+            </div>
+            <div class=""  style="padding: 0!important ; width: 30px;">
+              <p style="font-size: 11px;">
+                ฿ 509
+              </p>
+            </div>
+          </div>
+          <div class="basket-item">
+            <div class="row d-flex justify-content-around">
+              <div class="" style="padding: 0!important ; width: 80px;">
+                <img src="https://cdn.1112.com/1112/public/images/products/pizza/Oct2021/162216_MCT.png" style="width: 70px; height: 53px;" alt="">
+              </div>
+              <div class="" style="padding: 0!important ; width: 160px;">
+                <p style="font-size: 11px;">
+                  1 × DOUBLE CHEESE (+279) <br>
+                  CRISPY THIN MEDIUM
+                  
+                </p> <br>
+              </div>
+              <div class=""  style="padding: 0!important ; width: 30px;">
+                <p style="font-size: 11px;">
+                  Free
+                </p>
+              </div>
+            </div>
+            <div class="remove-button d-flex justify-content-end border-bottom pb-2" >
+              <button type="button" class="btn btn-outline-danger " style="border-radius: 25px; font-weight: bold; height: 25px; padding: 0px; padding-left: 10px; padding-right: 10px;"><img src="https://1112.com/images/remove_icons.svg" class="pb-1" style="width: 14px;" alt=""> Remove</button>
+            </div>
+          </div>
+          <div class="basket-item pt-2">
+            <div class="row d-flex justify-content-around">
+              <div class="" style="padding: 0!important ; width: 80px;">
+                <img src="https://cdn.1112.com/1112/public/images/products/chicken/116758.png" style="width: 70px; height: 53px;" alt="">
+              </div>
+              <div class="" style="padding: 0!important ; width: 160px;">
+                <p style="font-size: 11px;">
+                  1 × HONEY CHICKEN WINGS 6 PCS. 
+                  
+                  
+                </p> <br>
+              </div>
+              <div class=""  style="padding: 0!important ; width: 30px;">
+                <p style="font-size: 11px;">
+                  ฿ 149
+                </p>
+              </div>
+            </div>
+            <div class="remove-button d-flex justify-content-end border-bottom pb-2" >
+              <button type="button" class="btn btn-outline-danger " style="border-radius: 25px; font-weight: bold; height: 25px; padding: 0px; padding-left: 10px; padding-right: 10px;"><img src="https://1112.com/images/remove_icons.svg" class="pb-1" style="width: 14px;" alt=""> Remove</button>
+            </div>
+          </div>
+          <div class="basket-item pt-2">
+            <div class="row d-flex justify-content-around">
+              <div class="" style="padding: 0!important ; width: 80px;">
+                <img src="https://cdn.1112.com/1112/public/images/products/chicken/116758.png" style="width: 70px; height: 53px;" alt="">
+              </div>
+              <div class="" style="padding: 0!important ; width: 160px;">
+                <p style="font-size: 11px;">
+                  1 × HONEY CHICKEN WINGS 6 PCS. 
+                  
+                  
+                </p> <br>
+              </div>
+              <div class=""  style="padding: 0!important ; width: 30px;">
+                <p style="font-size: 11px;">
+                  ฿ 149
+                </p>
+              </div>
+            </div>
+            <div class="remove-button d-flex justify-content-end border-bottom pb-2" >
+              <button type="button" class="btn btn-outline-danger " style="border-radius: 25px; font-weight: bold; height: 25px; padding: 0px; padding-left: 10px; padding-right: 10px;"><img src="https://1112.com/images/remove_icons.svg" class="pb-1" style="width: 14px;" alt=""> Remove</button>
+            </div>
+          </div>
+        </div>
+        <div class="cart-footer mt-2">
+          <div class="row">
+            <div class="col">
+              <h5>Total Price</h5>
+              
+            </div>
+            <div class="col d-flex justify-content-end">
+              <h5>฿ 1,145</h5>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-success " style="width: 100%; border-radius: 12px; font-weight: bold;">Checkout</button>
+        </div>
+      </div>
   </div>
   <h5 style="color: green; margin-left:1em ; ">ENG</h5>
   <?php if(isset($_SESSION['user_id'])): ?>
@@ -77,3 +181,11 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
     </a>
   <?php endif; ?>
 </ul>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script lang="js">
+    $(document).ready(() => {
+      $('#cartDropdown').click((e) => {
+        $('#cartContent').toggle();
+      })
+    });
+  </script>
