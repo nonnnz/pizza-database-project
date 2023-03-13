@@ -260,6 +260,12 @@ h6{
 .minus-btn {
   float: left;
 }
+.pluspz-btn {
+  float: right;
+}
+.minuspz-btn {
+  float: left;
+}
 
 .order-container{
   border: 1px solid green;

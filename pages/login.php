@@ -2,12 +2,9 @@
 session_start();
 // Include the database connection file
 
-if (isset($_SESSION['email'])) {
-  // Unset all session variables
-  $_SESSION = array();
-
-  // Destroy the session
-  session_destroy();
+if(isset($_SESSION['user_id'])){
+    header('Location: home.php');
+    // $name = $_SESSION["us_fname"];
 }
 
 require_once "../components/connect.php";
