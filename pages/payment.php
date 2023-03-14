@@ -170,8 +170,15 @@ if(isset($_POST['submit'])) {
 
 
 
-        // insert orderitem_ingredient
+        //  disable cart
+        $udcart = $pdo->prepare("UPDATE shopping_cart SET cart_active = 0 WHERE cart_id  = :id");
+        $udcart->bindValue(":id", $cart_id);
+        $udcart->execute();
 
+        $order_id = $order_row['order_id'];
+
+        header("Location: tracking.php?orid=$order_id");
+        exit();
     }
 }
 
