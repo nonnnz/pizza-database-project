@@ -385,3 +385,18 @@ input[type="checkbox"]:checked {
 .card-body1 button{ 
   border-radius: 12px;
 }
+.container{
+  width: 1200px;
+  height: auto;
+  border: 1px solid green;
+  border-radius: 12px;
+}
+.p .row .col .rounded-circle{
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 70%;
+}
+.p .row .col{
+  text-align: center;
+  
+}
