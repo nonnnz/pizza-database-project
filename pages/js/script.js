@@ -19,8 +19,10 @@ function toggleButton() {
 function IngredientsButton(){
   var textContainer = document.getElementById("Ingredients-container");
   var button = document.getElementById("toggle-button-ingredients");
+  var ingbutton = document.getElementById("submiting");
   if (textContainer.style.display === "none") {
     textContainer.style.display = "block";
+    
      
       
   } else {

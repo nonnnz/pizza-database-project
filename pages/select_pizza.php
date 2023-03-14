@@ -156,7 +156,7 @@ if(isset($_POST['refresh'])) {
 }
 
 
-if(isset($_POST['subzmit'])) {
+if(isset($_POST['submit'])) {
     // echo "test";
     if(!isset($_SESSION['user_id'])) {
         header("Location: login.php");
@@ -165,88 +165,125 @@ if(isset($_POST['subzmit'])) {
     $user_id = $_SESSION['user_id'];
 
     // check if no shopping cart
-    $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = UNHEX(?)");
+    $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = UNHEX(?) AND `cart_active` = 1");
     $select_cart->execute([$user_id]);
     $row = $select_cart->fetch(PDO::FETCH_ASSOC);
-
-    $cart_id = $row['cart_id'];
 
     // intial a cart
     // echo $select_cart->rowCount();
     if($select_cart->rowCount() == 0){
         $insert_cart = $pdo->prepare("INSERT INTO `shopping_cart` (user_id, cart_total) VALUES (UNHEX(?), ?)");
         $insert_cart->execute([$user_id, 0]);
-    }else{
-
     }
-        // echo $row['cart_total'];
-        // check if have a item
-        $select_itemcart = $pdo->prepare("SELECT * FROM `cart_item` WHERE `cart_id` = ? AND `fd_id` = ?");
-        $select_itemcart->execute([$cart_id, $id]);
-        $itemcart_row = $select_itemcart->fetch(PDO::FETCH_ASSOC);
-        
-        if($select_itemcart->rowCount() == 0){
-            // add item to cart_item
-            $insert_itemcart = $pdo->prepare("INSERT INTO cart_item (cart_id, fd_id, quantity) VALUES (?, ?, ?)");
-            $insert_itemcart->execute([$cart_id , $id, 1]);
 
-            $cart_total = $row['cart_total']+$fd_price;
+    // check again
+    $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = UNHEX(?) AND `cart_active` = 1");
+    $select_cart->execute([$user_id]);
+    $row = $select_cart->fetch(PDO::FETCH_ASSOC);
 
-            $udcart = $pdo->prepare("UPDATE shopping_cart SET cart_total= :cart_total WHERE cart_id  = :id");
-            $udcart->bindValue(":cart_total", $cart_total);
-            $udcart->bindValue(":id", $row['cart_id']);
-            $udcart->execute();
-        }else{
-            $item_quantity = $itemcart_row['quantity'];
-            $item_quantity += 1;
-            // echo  $item_quantity;
-            $stmt = $pdo->prepare("UPDATE cart_item SET quantity= :quantity WHERE fd_id  = :id");
-            $stmt->bindValue(":quantity", $item_quantity);
-            $stmt->bindValue(":id", $id);
-            $stmt->execute();
+    $cart_id = $row['cart_id'];
+    // echo $row['cart_total'];
+    // // check if have a item
+    // $select_itemcart = $pdo->prepare("SELECT * FROM `cart_item` WHERE `cart_id` = ?");
+    // $select_itemcart->execute([$cart_id, $id]);
+    // $itemcart_row = $select_itemcart->fetch(PDO::FETCH_ASSOC);
+    
+    // sum a ingredeint
+    // add item to cart_item to get cart item id
+    $insert_itemcart = $pdo->prepare("INSERT INTO cart_item (cart_id, fd_id, quantity, cartit_total) VALUES (?, ?, ?, ?)");
+    $insert_itemcart->execute([$cart_id , $id, 1, 0]);
 
-            // update total
+    // get a item id
+    $select_item_cart = $pdo->prepare("SELECT `cart_item`.*
+    FROM `cart_item`
+    WHERE `cart_id` = ?
+    ORDER BY `cart_itemid` DESC;");
+    $select_item_cart->execute([$cart_id]);
+    $row_it = $select_item_cart->fetch(PDO::FETCH_ASSOC);
 
-            // array
-            $items = array();
+    $cart_itemid = $row_it['cart_itemid'];   
 
-            // echo $cart_id;
+    // echo $cart_itemid;
 
-            // $sql = "SELECT cart_item.cart_id, cart_item.quantity, food.fd_id, food.fd_price
-            //             FROM cart_item
-            //             LEFT JOIN food ON cart_item.fd_id = food.fd_id
-            //             WHERE cart_item.cart_id = ?";
-            $selectall_itemcart = $pdo->prepare("SELECT cart_item.cart_id, cart_item.quantity, food.fd_id, food.fd_price
-            FROM cart_item
-            LEFT JOIN food ON cart_item.fd_id = food.fd_id
-            WHERE cart_item.cart_id = ?");
-            $selectall_itemcart->execute([$cart_id]);
-            // $selectall_itemcart->bindValue(":id", $row['cart_id']);
-            // $selectall_itemcart->execute();
+    
+    $ing_json = $_POST['selectedIngredients'];
+    // echo $ing_json;
+    // have ingredient
+    $ing_total = 0;
+    if($ing_json) {
+        // Extract the substring without the prefix and last character
+        $jsonData = substr($ing_json, strlen('{"selectedIngredients":'), -1);
+        // $jsonf = '[{"ing_name":"Mozzarella-Cheese","ing_price":59,"quantity":-1},{"ing_name":"Anchovies","ing_price":79,"quantity":1},{"ing_name":"Bacon Dice","ing_price":59,"quantity":1},{"ing_name":"BBQ Chicken","ing_price":59,"quantity":1},{"ing_name":"GarlicButterChicken","ing_price":59,"quantity":1}]';
 
+        $selectedIngredients = json_decode($jsonData, true);
 
-            while ($allitemcart_row = $selectall_itemcart->fetch(PDO::FETCH_ASSOC)) {
-                $item = array(
-                    'fd_id' => $allitemcart_row['fd_id'],
-                    'fd_price' => $allitemcart_row['fd_price'],
-                    'quantity' => $allitemcart_row['quantity'],
-                );
-            
-                array_push($items, $item);
-            }
+        // Loop through the selectedIngredients array
+        foreach ($selectedIngredients as $ingredient) {
+        $ing_name = $ingredient["ing_name"];
+        $ing_price = $ingredient["ing_price"];
+        $ing_id = $ingredient["ing_id"];
+        $ing_qty = $ingredient["quantity"];
+        // echo $ing_id.' ';
+        // add to table
+        if($ing_qty > 0) $ing_total += $ing_price;
 
-            $cart_total = 0;
-
-            foreach ($items as $item):
-                echo $cart_total;
-                $cart_total += $item['quantity']*$item['fd_price'];
-
-                $udcart = $pdo->prepare("UPDATE shopping_cart SET cart_total= :cart_total WHERE cart_id  = :id");
-                $udcart->bindValue(":cart_total", $cart_total);
-                $udcart->bindValue(":id", $cart_id);
-                $udcart->execute();
-            endforeach;
+        $insert_itemcart = $pdo->prepare("INSERT INTO cartitem_ingredient (cart_itemid, ing_id, ing_quantity	
+        ) VALUES (?, ?, ?)");
+        $insert_itemcart->execute([$cart_itemid , $ing_id, $ing_qty]);
         }
+    }
+
+
+    $cartit_total = $ing_total+$fd_price;
+    echo $cartit_total;
+    echo "<br>\n";
+
+    $uditemcart = $pdo->prepare("UPDATE cart_item SET cartit_total = :cartit_total WHERE cart_itemid = :id");
+    $uditemcart->bindValue(":cartit_total", $cartit_total);
+    $uditemcart->bindValue(":id", $cart_itemid);
+    $uditemcart->execute();
+
+    // update total by loop all again
+
+    // array
+    $items = array();
+
+    // echo $cart_id;
+
+    // $sql = "SELECT cart_item.cart_id, cart_item.quantity, food.fd_id, food.fd_price
+    //             FROM cart_item
+    //             LEFT JOIN food ON cart_item.fd_id = food.fd_id
+    //             WHERE cart_item.cart_id = ?";
+    $selectall_itemcart = $pdo->prepare("SELECT cart_item.cart_itemid, cart_item.cart_id, cart_item.quantity, food.fd_id, cart_item.cartit_total
+    FROM cart_item
+    LEFT JOIN food ON cart_item.fd_id = food.fd_id
+    WHERE cart_item.cart_id = ?");
+    $selectall_itemcart->execute([$cart_id]);
+    // $selectall_itemcart->bindValue(":id", $row['cart_id']);
+    // $selectall_itemcart->execute();
+
+
+    while ($allitemcart_row = $selectall_itemcart->fetch(PDO::FETCH_ASSOC)) {
+        $item = array(
+            'fd_id' => $allitemcart_row['fd_id'],
+            'cartit_total' => $allitemcart_row['cartit_total'],
+        );
+    
+        array_push($items, $item);
+    }
+
+    $cart_total = 0;
+
+    foreach ($items as $item):
+        echo $cart_total;
+        $cart_total += $item['cartit_total'];
+
+        $udcart = $pdo->prepare("UPDATE shopping_cart SET cart_total= :cart_total WHERE cart_id  = :id");
+        $udcart->bindValue(":cart_total", $cart_total);
+        $udcart->bindValue(":id", $cart_id);
+        $udcart->execute();
+    endforeach;
+        
         // $insert_cart = $pdo->prepare("UPDATE `shopping_cart` SET `cart_total`='[value-3]' WHERE user_id = UNHEX(:id)");
         // $insert_cart->execute([$user_id, 0]);
         // $fname = $_POST["us_fname"];
@@ -274,23 +311,32 @@ if(isset($_POST['subzmit'])) {
 }
 
 // test submit
-if(isset($_POST['submit'])) {
+if(isset($_POST['submzit'])) {
     echo "passed";
 
-    $jsonf = '[{"ing_name":"Mozzarella-Cheese","ing_price":59,"quantity":-1},{"ing_name":"Anchovies","ing_price":79,"quantity":1},{"ing_name":"Bacon Dice","ing_price":59,"quantity":1},{"ing_name":"BBQ Chicken","ing_price":59,"quantity":1},{"ing_name":"GarlicButterChicken","ing_price":59,"quantity":1}]';
+    $var = $_POST['selectedIngredients'];
+    echo $var;
+    // have ingredient
+    if($var) {
+        // Extract the substring without the prefix and last character
+        $jsonData = substr($var, strlen('{"selectedIngredients":'), -1);
+        // $jsonf = '[{"ing_name":"Mozzarella-Cheese","ing_price":59,"quantity":-1},{"ing_name":"Anchovies","ing_price":79,"quantity":1},{"ing_name":"Bacon Dice","ing_price":59,"quantity":1},{"ing_name":"BBQ Chicken","ing_price":59,"quantity":1},{"ing_name":"GarlicButterChicken","ing_price":59,"quantity":1}]';
 
-    // Access the selectedIngredients array
-    $selectedIngredients = json_decode($jsonf, true);
+        $selectedIngredients = json_decode($jsonData, true);
 
-    // echo count($selectedIngredients);
+        // Loop through the selectedIngredients array
+        foreach ($selectedIngredients as $ingredient) {
+        $ing_name = $ingredient["ing_name"];
+        $ing_price = $ingredient["ing_price"];
+        $ing_id = $ingredient["ing_id"];
 
-    // Loop through the selectedIngredients array
-    foreach ($selectedIngredients as $ingredient) {
-    $ing_name = $ingredient["ing_name"];
-    $ing_price = $ingredient["ing_price"];
+        // echo $ing_id.' ';
 
-    echo $ing_name;
+        // add to table
+        }
     }
+    
+    
 }
 // echo $size_results[0]['size_id'];
 
@@ -423,7 +469,7 @@ if(isset($_POST['submit'])) {
             <!-- <button id="toggle-button" class="button1" onclick="toggleButton()">Add to Basket</button> -->
         
                 <!-- hidden input field to store the JSON data -->
-                <input type="hidden" name="selectedIngredients" id="selectedIngredients" value="">
+                <input type="hidden" name="selectedIngredients" id="selectedIngredients" >
 
                 <input type="submit" name="submit" value="Add to Basket" class="button1" id="submit">
             <!-- </form> -->
@@ -457,6 +503,7 @@ if(isset($_POST['submit'])) {
                         <div class="card-body">
                             <h6 class="card-title text-success"><?php echo $ingpz['ing_name']?></h6>
                             <p class="card-text text-success">+ <?php echo $ingpz['ing_price']?> Baht/Each.</p>
+                            <p style="display:none;" class="card-id"><?php echo $ingpz['ing_id']?></p>
                             <div class="ingpz_qty">
                                 <input id="my-input" type="number" min="-1" max="7" value="0" readonly>
                                 <button class="pluspz-btn">+</button>
@@ -490,6 +537,7 @@ if(isset($_POST['submit'])) {
                         <div class="card-body">
                             <h6 id="ing-name" class="card-title text-success"><?php echo $ing['ing_name']?></h6>
                             <p id="ing-price"class="card-text text-success">+ <?php echo $ing['ing_price']?> Baht/Each.</p>
+                            <p style="display:none;" class="card-id"><?php echo $ing['ing_id']?></p>
                             <div class="ing_qty">
                                 <input  id="my-input" type="number" min="0" max="7" value="0" readonly>
                                 <button class="plus-btn">+</button>
@@ -598,9 +646,10 @@ if(isset($_POST['submit'])) {
             // console.log(input.parentNode.parentNode.querySelector('.card-title').textContent);
             const ingName = input.parentNode.parentNode.querySelector('.card-title').textContent;
             const ingPrice = input.parentNode.parentNode.querySelector('.card-text').textContent.replace(/\D/g, ''); // Remove non-numeric characters
+            const ingId = input.parentNode.parentNode.querySelector('.card-id').textContent;
             const qty = parseInt(input.value);
             // Push an object with the ingredient name and price to the selectedIngredients array
-            selectedIngredients.push({ ing_name: ingName, ing_price: parseFloat(ingPrice/100) , quantity: qty});
+            selectedIngredients.push({ ing_name: ingName, ing_price: parseFloat(ingPrice/100), ing_id: parseInt(ingId), quantity: qty});
             }
         });
 
