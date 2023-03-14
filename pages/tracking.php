@@ -1,3 +1,32 @@
+<?php
+session_start();
+
+// Include the database connection file
+require_once "../components/connect.php";
+
+if(!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// check if the user is logged in
+$name = "Guest";
+if(isset($_SESSION['user_id'])){
+    $name = $_SESSION["us_fname"];
+}
+
+$user_id = $_SESSION['user_id'];
+
+$select_order = $pdo->prepare("SELECT * FROM `order` WHERE `order_id`  = ?;");
+$select_order->execute([$_GET['orid']]);
+$order_results = $select_order->fetch(PDO::FETCH_ASSOC);
+
+// echo $order_results['deli_id'];
+// get items
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +48,7 @@
                 <div class="d-flex flex-column text-center">
                     
                     <div class="p">
-                        <h3>เลขที่สั่งซื้อ 2012033</h3>
+                        <h3>เลขที่สั่งซื้อ <?php echo $_GET['orid'] ?></h3>
                     </div>
                     <div class="p">
                         <p>กรุณาเก็บหมายเลขนี้ไว้จนกว่าสินค้าจะจัดส่งถึงมือท่าน</p>
