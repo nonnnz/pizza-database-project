@@ -235,8 +235,8 @@ if(isset($_POST['submit'])) {
 
 
     $cartit_total = $ing_total+$fd_price;
-    echo $cartit_total;
-    echo "<br>\n";
+    // echo $cartit_total;
+    // echo "<br>\n";
 
     $uditemcart = $pdo->prepare("UPDATE cart_item SET cartit_total = :cartit_total WHERE cart_itemid = :id");
     $uditemcart->bindValue(":cartit_total", $cartit_total);
