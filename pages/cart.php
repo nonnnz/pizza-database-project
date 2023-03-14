@@ -187,7 +187,17 @@ if (isset($_POST['delete_item'])) {
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+  <script>
+    function toggleParagraph() {
+      var paragraph = document.getElementById("myParagraph");
+      var selectBar = document.getElementById("mySelect");
+      if (selectBar.value === "show") {
+        paragraph.style.display = "flex";
+      } else {
+        paragraph.style.display = "none";
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -234,38 +244,7 @@ if (isset($_POST['delete_item'])) {
                     </div>
                 </div>
             <?php endforeach; ?>
-            <!-- <div class="row" style="margin-top: 1em;">
-                <div class="col">
-                    <h6>Crispy Thin Large</h6>
-                    <p>Seafood Deluxe (519 ฿)</p>
-                </div> 
-                <div class="col" style="text-align: center;">
-                    <p> x 1</p>
-                </div>
-                <div class="col" style="text-align: end;">
-                    279 B
-                </div> 
-                <div class="col-1">
-                    <a href="#">
-                        <i class="fa fa-close" style="color: red;"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    <h6>Crispy Thin Large</h6>
-                    <p>Double Pepperoni (399 ฿)</p>
-                </div> 
-                <div class="col" style="text-align: center;">
-                    <p> x 1</p>
-                </div>
-                <div class="col" style="text-align: end;">
-                    Free            
-                </div> 
-                <div class="col-1">
-                   
-                </div>
-            </div> -->
+          
             
         </div>
         <div class="row" style="margin-top: 1em;">
