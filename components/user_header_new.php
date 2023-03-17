@@ -10,7 +10,7 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
   
 <ul class="nav justify-content-center align-items-center shadow-sm  mb-5 w-100">
   <li class="nav-item">
-    <a class="nav-link active" href="#"><img src="https://cdn.1112.com/1112/public/images/web/logo.svg"
+    <a class="nav-link active" href="home.php"><img src="https://cdn.1112.com/1112/public/images/web/logo.svg"
         alt="Pizza_logo"></a>
   </li>
   <ul class="nav nav-pills nav-fill border border-green p-1  gap-2 p-1.5 small bg-white rounded-5 shadow-sm"
@@ -170,16 +170,108 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
       </div>
   </div>
   <h5 style="color: green; margin-left:1em ; ">ENG</h5>
-  <?php if(isset($_SESSION['user_id'])): ?>
-    <div class="Username p-3" style="margin-left: 1em; color: green; background-color: #E8E8E8; text-align: center;">
-      <p>Hello,<br></p>
-      <p style="font-weight: bold;"><?php echo $name; ?></p>
-    </div>
-  <?php else: ?>
-    <a  href="login.php" class="Username p-3" style="margin-left: 1em; color: green; background-color: #E8E8E8; text-align: center;">
-      <p>Login</p>
-    </a>
-  <?php endif; ?>
+  <div class="profile position-relative">
+            <a href="#" id="profile-dropdown">
+              <?php if(isset($_SESSION['user_id'])): ?>
+                <div class="Username p-3" style="margin-left: 1em; color: green; background-color: #E8E8E8; text-align: center;">
+                  <p>Hello,<br></p>
+                  <p style="font-weight: bold;"><?php echo $name; ?></p>
+                </div>
+              <?php else: ?>
+                <a  href="login.php" class="Username p-3" style="margin-left: 1em; color: green; background-color: #E8E8E8; text-align: center;">
+                  <p>Login</p>
+                </a>
+              <?php endif; ?>
+            </a>
+            <div id="profileContent" class="position-absolute p-2 shadow p-3 mb-5 bg-white" style="display : none;width: 270px; height: 325px; border-radius: 12px; background-color: rgb(248, 246, 246)!important; transform: translate(-170px, 10px);">
+                <div class="d-flex flex-column">
+                    <div class="p-1 ">
+                      <a href="profile.php">
+                        <button type="button" class="btn btn-success w-100 fill">
+                          <div class="row">
+                            <div class="col-1">
+                              <img src="https://1112.com/images/my-profile.svg" alt=""> 
+                            </div>
+                            <div class="col">
+                              My Profile
+                            </div>
+                          </div>
+                        </button>
+                      </a>    
+                      </div>
+                    <div class="p-1 ">
+                      <a href="tax_information.php">
+                        <button type="button" class="btn btn-success w-100">
+                          <div class="row">
+                            <div class="col-1">
+                              <img src="https://1112.com/images/tax-information.svg" alt=""> 
+                            </div>
+                            <div class="col">
+                              Tax Information
+                            </div>
+                          </div>
+                        </button>
+                      </a>
+                    </div>
+                    <div class="p-1 ">
+                      <a href="address_book.php">
+                        <button type="button" class="btn btn-success w-100">
+                          <div class="row">
+                            <div class="col-1">
+                              <img src="https://1112.com/images/address-book.svg" alt=""> 
+                            </div>
+                            <div class="col">
+                              Address Book
+                            </div>
+                          </div>
+                        </button>
+                      </a>
+                    </div>
+                    <div class="p-1 ">
+                      <a href="credit-card.php">
+                        <button type="button" class="btn btn-success w-100">
+                          <div class="row">
+                            <div class="col-1">
+                              <img src="https://1112.com/images/credit-card.svg" alt=""> 
+                            </div>
+                            <div class="col">
+                              Credit Card
+                            </div>
+                          </div>
+                        </button>
+                      </a>
+                    </div>
+                    <div class="p-1 ">
+                      <a href="tracker.php">
+                        <button type="button" class="btn btn-success w-100">
+                          <div class="row">
+                            <div class="col-1">
+                              <img src="https://1112.com/images/Tracker.svg" alt=""> 
+                            </div>
+                            <div class="col">
+                              Pizza Tracker
+                            </div>
+                          </div>
+                        </button>
+                      </a>
+                    </div>
+                    <div class="p-1 ">
+                        <button type="button" class="btn btn-success w-100">
+                          <div class="row">
+                            <div class="col-1">
+                              <img src="https://1112.com/images/logout.svg" alt=""> 
+                            </div>
+                            <div class="col">
+                              LOGOUT
+                            </div>
+                          </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+  </div>
+
 </ul>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script lang="js">
@@ -189,3 +281,25 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
       })
     });
   </script>
+  <script lang="js">
+        $(document).ready(() => {
+            $('#profile-dropdown').click((e) => {
+                $('#profileContent').toggle();
+            })
+        });
+    </script>
+
+    <style>   
+    #profileContent button {
+        background-color: white;
+        color: green;
+        font-weight: bold;
+        display: flex;
+        text-align: center;
+        align-items: center;
+    }
+    #profileContent img {
+        width: 40px;
+        height: 26px;
+    }
+    </style>
