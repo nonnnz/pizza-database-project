@@ -14,13 +14,14 @@ if(isset($_SESSION['user_id'])){
 
 ?>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tax Information</title>
+    <title>Add New Card</title>
 
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -40,6 +41,8 @@ if(isset($_SESSION['user_id'])){
 
 <?php require_once '../components/user_header_new.php'; ?>
 
+
+        
         <!-- My Profile -->
     <div class="row" style="--bs-gutter-x: 0rem;" >
         <div class="col">
@@ -88,42 +91,77 @@ if(isset($_SESSION['user_id'])){
 
 
 
-
         
     <div style="display: flex; justify-content: center; align-items:center; min-height:15vh; ">
-        <h2 class="text-center">TAX INFORMATION</h2>
+        <h2 class="text-center">ADD NEW CARD</h2>
     </div>
 
 
-<!--TAX INFORMATION --> 
+<!--Add Card --> 
 <section class="form-container ">
-    <div style="display: flex; justify-content: center; align-items: center; min-height: 10vh; padding-bottom: 2rem  ">
-        <form method="post" action="" style="border:1px solid black; padding: 5rem; border-radius : 1rem ; border-color: green ;min-width:40rem ;" class="shadow">
-            <fieldset name="TAX INFORMATION">
+    <div style="display: flex; justify-content: center; align-items:flex-start; padding-top:1rem;padding-bottom:3rem ">
+        <form method="post" action="" style="border:1px solid black; padding: 3rem; border-radius : 1rem ; border-color: green;height:27rem;" class="p-4 shadow">
+            
 
-            <div class="mb-3" "> 
-                    <div style="width: 100%;">
-                        <input type="text" class="form-control" placeholder="Name/Company"style="margin-bottom :1rem" maxlength="20" required>
-                        <input type="text" class="form-control" placeholder="Tax ID" style="margin-bottom :1rem" maxlength="20" required>               
-                        <input type="text" class="form-control" placeholder="Branch ID"style="margin-bottom :1rem" maxlength="20" required >
-                        <input type="text" class="form-control" placeholder="Address" style="margin-bottom :4rem" maxlength="20" required >   
-                    </div>
+            <!-- Card info -->
+            <div class="form-icon" style="display: flex; align-items: start; justify-content: space-between;padding-top: 1rem;" >
+                <img src="https://1112.com/images/credit-card_menu.svg" style="padding: .75em;width:3em; ">
+                <div style="width: 25em;">
+                    <input type="text" name="card_num" class="form-control" style="margin-bottom :1rem" placeholder="Card Number" minlength="12" maxlength="12" required >
+                    
                 </div>
                 
+            </div>
+            
+            <div style="width: 100%;">
+                <input type="text" name="card_name"class="form-control" style="margin-bottom :1rem" placeholder="Card Name"  maxlength="20" required >
+                <p>Expiration Date</p>
+                <select name="xmonth"style="height:2.5rem;width:100%;margin-bottom :1rem;color:#939393;" required>
+                    <option value="" selected disabled>Month</option>
+                    <option value="1">01<br>
+                    <option value="2">02<br>
+                    <option value="3">03<br>
+                    <option value="4">04<br>
+                    <option value="5">05<br>
+                    <option value="6">06<br>
+                    <option value="7">07<br>
+                    <option value="8">08<br>
+                    <option value="9">09<br>
+                    <option value="10">10<br>
+                    <option value="11">11<br>
+                    <option value="12">12<br>
+                </select>
 
-                <div class="form-group" style="text-align:center;" style="display: flex; justify-content: center; ">
-                    <!-- <button type="submit" name="Save_Changes" class="btn btn-primary">Save Changes</button> -->
-                    <input type="submit" class="btn btn-success " style="padding: 10px 50px; " name="Save_Changes" value="Save Changes" >
-                </div>
+                <select name="xyear"style="height:2.5rem;width:100%;margin-bottom :1rem;;color:#939393" required>
+                    <option value="" selected disabled>Year</option>
+                    <option value="1">2023<br>
+                    <option value="2">2024<br>
+                    <option value="3">2025<br>
+                    <option value="4">2026<br>
+                    <option value="5">2027<br>
+                    <option value="6">2028<br>
+                    <option value="7">2029<br>
+                    <option value="8">2030<br>
+                    <option value="9">2031<br>
+                    <option value="10">2032<br>
+                    <option value="11">2033<br>
+                </select>
                 
+                <input type="text" class="form-control"   name="cvc_cvv" placeholder="CVC/CVV" style="margin-bottom :1rem" minlength="3" maxlength="3" required >
+            </div>    
+                    
+            <div class="form-group" style="text-align:center;" style="display: flex; justify-content: center;">
+                <!-- <button type="submit" name="AddCard" class="btn btn-primary">Register</button> -->
+                <input type="submit" class="btn btn-success " style="padding: 10px 50px;" name="AddCard" value="Add New Card" >
+            </div>
+            
             </fieldset>
         </form>
     </div>
-</section> 
+</section>
 
 
 
-        
 
 
 
