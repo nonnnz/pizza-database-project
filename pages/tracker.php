@@ -50,12 +50,12 @@ if(isset($_SESSION['user_id'])){
                     </a>
                 
                     <!-- Tax Information -->
-                    <a class="item-name" href="tax_information.php"style="text-decoration: none;">
+                    <!-- <a class="item-name" href="tax_information.php"style="text-decoration: none;">
                          <div class="item-icon hw"style=" min-height:20vh;padding-right: 3.5rem; ">
                             <button style="border-radius: 50%; width: 80px; height: 80px;"class="btn btn-1" > <img src="https://www.1112.com/images/tax-information_menu.svg" width= "70%" height="70%"  ></button>
                             <div class="item-name"><font color ="#009966">Tax Information</font></div>
                         </div>
-                    </a>
+                    </a> -->
 
                     <!-- >Address Book -->
                     <a class="item-name" href="address-book.php"style="text-decoration: none;">
