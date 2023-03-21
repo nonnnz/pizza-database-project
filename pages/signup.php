@@ -139,16 +139,16 @@ if(isset($_POST['submit'])){
                 </div>
 
                 <div class="form-check form-check-inline">
-                    <input class="" type="radio" name="gender" id="inlineRadio1" value="male" required>
+                    <input class="" type="radio" name="gender" id="inlineRadio1" value="Male" required>
                     <label class="form-check-label" for="inlineRadio1">Male</label>
                     
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="" type="radio" name="gender" id="inlineRadio2" value="female" required>
+                    <input class="" type="radio" name="gender" id="inlineRadio2" value="Female" required>
                     <label class="form-check-label" for="inlineRadio1">Female</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="" type="radio" name="gender" id="inlineRadio3" value="none" required checked>
+                    <input class="" type="radio" name="gender" id="inlineRadio3" value="None" required checked>
                     <label class="form-check-label" for="inlineRadio1">None</label>
                 </div>
             </div>

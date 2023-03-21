@@ -262,7 +262,7 @@ if(isset($_POST['edit'])) {
 									</div>
 									<div class="form-group">
 										<label for="us_birthdate">Birthdate</label>
-										<input type="date" value="<?= $user['us_birthdate']; ?>" name="us_birthdate" class="form-control" required>
+										<input type="date" value="<?= $user['us_birthdate']; ?>" name="us_birthdate" class="form-control" min="1923-01-01" max="<?php echo date("Y-m-d",time()) ?>" required>
 									</div>
 									<div class="form-group">
 										<label for="us_gender">Gender</label>

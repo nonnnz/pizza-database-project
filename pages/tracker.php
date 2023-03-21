@@ -6,9 +6,12 @@ require_once "../components/connect.php";
 
 
 // check if the user is logged in
-$name = "Guest";
+
 if(isset($_SESSION['user_id'])){
     $name = $_SESSION["us_fname"];
+} else {
+    header('Location: login.php');
+    exit;
 }
 
 ?>

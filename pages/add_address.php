@@ -1,3 +1,22 @@
+<?php
+session_start();
+
+// Include the database connection file
+require_once "../components/connect.php";
+
+
+// check if the user is logged in
+
+if(isset($_SESSION['user_id'])){
+    $name = $_SESSION["us_fname"];
+} else {
+    header('Location: login.php');
+    exit;
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +26,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>add_address_book</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style12.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="script.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -15,6 +34,9 @@
 </head>
 
 <body>
+
+<?php require_once '../components/user_header_new.php'; ?>
+
 
     <div class="profile-menu d-flex justify-content-center ">
         <div class="d-flex flex-row justify-content-between" style="width: 800px; ">
