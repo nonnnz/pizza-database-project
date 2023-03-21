@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2023 at 05:23 AM
+-- Generation Time: Mar 21, 2023 at 03:41 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `address_book` (
   `addb_id` int(11) NOT NULL,
-  `user_id` binary(16) DEFAULT NULL,
+  `user_id` bigint(20) NOT NULL,
   `addb_buildingNo` varchar(255) NOT NULL,
   `addb_buildingName` varchar(255) DEFAULT NULL,
   `addb_street` varchar(255) NOT NULL,
@@ -42,14 +42,6 @@ CREATE TABLE `address_book` (
   `addb_name` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
---
--- Dumping data for table `address_book`
---
-
-INSERT INTO `address_book` (`addb_id`, `user_id`, `addb_buildingNo`, `addb_buildingName`, `addb_street`, `addb_prov`, `addb_dist`, `addb_subdist`, `addb_zipcode`, `addb_directionguide`, `addb_phone`, `addb_name`) VALUES
-(1, 0x9ea0fe93b6c711ed9a5ee00af6b10226, '1518', NULL, 'ประชาราษฎร์', 'Bangkok', 'Bang Sue', 'Wong Sawang', '10800', NULL, '0255520000', 'Building 78'),
-(2, 0x9ea0fe93b6c711ed9a5ee00af6b10226, '123/321', NULL, 'ประชาราษฎร์', 'Bangkok', 'Bang Sue', 'Wong Sawang', '10800', NULL, '0879876543', 'Home');
-
 -- --------------------------------------------------------
 
 --
@@ -61,24 +53,6 @@ CREATE TABLE `cartitem_ingredient` (
   `ing_id` int(11) NOT NULL,
   `ing_quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `cartitem_ingredient`
---
-
-INSERT INTO `cartitem_ingredient` (`cart_itemid`, `ing_id`, `ing_quantity`) VALUES
-(9, 1, 1),
-(9, 4, 1),
-(9, 8, -1),
-(9, 10, 1),
-(9, 13, 1),
-(9, 14, 1),
-(9, 16, 1),
-(9, 20, 1),
-(11, 1, 3),
-(11, 6, 1),
-(11, 8, -1),
-(11, 10, 3);
 
 -- --------------------------------------------------------
 
@@ -94,14 +68,6 @@ CREATE TABLE `cart_item` (
   `order_sauce` varchar(255) DEFAULT NULL,
   `cartit_total` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `cart_item`
---
-
-INSERT INTO `cart_item` (`cart_itemid`, `cart_id`, `fd_id`, `quantity`, `order_sauce`, `cartit_total`) VALUES
-(9, 6, 1, 1, NULL, '762.00'),
-(11, 6, 1, 1, NULL, '486.00');
 
 -- --------------------------------------------------------
 
@@ -127,7 +93,8 @@ INSERT INTO `category` (`cat_id`, `cat_name`, `created_at`, `updated_at`) VALUES
 (4, 'pasta', '2023-03-06 07:55:24', '2023-03-06 21:55:24'),
 (5, 'salad', '2023-03-06 07:55:24', '2023-03-06 21:55:24'),
 (6, 'steak', '2023-03-06 07:55:24', '2023-03-06 21:55:24'),
-(7, 'drinks-and-desserts', '2023-03-06 07:55:24', '2023-03-06 21:55:24');
+(7, 'drinks-and-desserts', '2023-03-06 07:55:24', '2023-03-06 21:55:24'),
+(8, 'FINAL', '2023-03-14 06:46:47', '2023-03-14 13:46:47');
 
 -- --------------------------------------------------------
 
@@ -137,20 +104,12 @@ INSERT INTO `category` (`cat_id`, `cat_name`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `credit_card` (
   `c_id` int(11) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
   `c_num` varchar(16) NOT NULL,
   `c_name` varchar(50) NOT NULL,
   `c_expdate` varchar(10) NOT NULL,
-  `c_cvc` varchar(3) NOT NULL,
-  `user_id` binary(16) DEFAULT NULL
+  `c_cvc` varchar(3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `credit_card`
---
-
-INSERT INTO `credit_card` (`c_id`, `c_num`, `c_name`, `c_expdate`, `c_cvc`, `user_id`) VALUES
-(1, '1234567812345678', 'Supachai Naknun', '12/24', '123', 0x9ea0fe93b6c711ed9a5ee00af6b10226),
-(2, '1111222233334444', 'Supachai Naknun', '06/26', '456', 0x9ea0fe93b6c711ed9a5ee00af6b10226);
 
 -- --------------------------------------------------------
 
@@ -193,36 +152,10 @@ CREATE TABLE `delivery` (
   `deli_id` int(11) NOT NULL,
   `deli_address` varchar(255) NOT NULL,
   `deli_charge` decimal(10,2) NOT NULL DEFAULT 50.00,
+  `store_id` int(11) DEFAULT NULL,
   `deli_estimated_date` datetime NOT NULL,
   `deli_status_date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `delivery`
---
-
-INSERT INTO `delivery` (`deli_id`, `deli_address`, `deli_charge`, `deli_estimated_date`, `deli_status_date`) VALUES
-(1, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '50.00', '0000-00-00 00:00:00', NULL),
-(2, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '50.00', '0000-00-00 00:00:00', NULL),
-(3, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(4, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(5, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(6, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(7, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(8, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(9, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(10, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(11, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(12, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(13, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(14, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(15, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(16, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(17, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(18, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(19, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(20, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL),
-(21, '1518  ประชาราษฎร์ Bangkok Bang Sue Wong Sawang 10800 0255520000', '0.00', '0000-00-00 00:00:00', NULL);
 
 -- --------------------------------------------------------
 
@@ -1217,7 +1150,8 @@ INSERT INTO `food` (`fd_id`, `cat_id`, `fd_image`, `fd_name`, `fd_price`, `creat
 (3, 1, '../images/product/pizza/216215_EGM.png', 'Double Cheese - Extreme Giant Crab Stick Medium', '419.00', '2023-03-06 15:47:55', '2023-03-06 22:54:52'),
 (4, 1, '../images/product/pizza/216315_EGL.png', 'Double Cheese - Extreme Giant Crab Stick Large', '569.00', '2023-03-06 15:47:55', '2023-03-06 22:55:07'),
 (5, 1, '../images/product/pizza/102217_MP.png', 'Double Pepperoni - Pan Medium', '299.00', '2023-03-06 15:49:41', '2023-03-06 22:55:21'),
-(6, 1, '../images/product/pizza/102317_LP.png', 'Double Pepperoni - Pan Large', '399.00', '2023-03-06 15:49:41', '2023-03-06 22:55:31');
+(6, 1, '../images/product/pizza/102317_LP.png', 'Double Pepperoni - Pan Large', '399.00', '2023-03-06 15:49:41', '2023-03-06 22:55:31'),
+(7, 1, '216296_EGM_1.png', 'FINAL', '2000.75', '2023-03-14 06:47:35', '2023-03-14 13:49:01');
 
 -- --------------------------------------------------------
 
@@ -1229,6 +1163,18 @@ CREATE TABLE `geographies` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='InnoDB free: 8192 kB';
+
+--
+-- Dumping data for table `geographies`
+--
+
+INSERT INTO `geographies` (`id`, `name`) VALUES
+(1, 'ภาคเหนือ'),
+(2, 'ภาคกลาง'),
+(3, 'ภาคตะวันออกเฉียงเหนือ'),
+(4, 'ภาคตะวันตก'),
+(5, 'ภาคตะวันออก'),
+(6, 'ภาคใต้');
 
 -- --------------------------------------------------------
 
@@ -1280,7 +1226,7 @@ INSERT INTO `ingredient` (`ing_id`, `ing_name`, `ing_img`, `ing_price`, `created
 
 CREATE TABLE `order` (
   `order_id` int(11) NOT NULL,
-  `user_id` binary(16) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
   `deli_id` int(11) NOT NULL,
   `pay_id` int(11) NOT NULL,
   `ords_id` int(11) NOT NULL,
@@ -1289,18 +1235,6 @@ CREATE TABLE `order` (
   `order_total` decimal(10,2) NOT NULL,
   `order_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `order`
---
-
-INSERT INTO `order` (`order_id`, `user_id`, `deli_id`, `pay_id`, `ords_id`, `sauce`, `cutlery`, `order_total`, `order_date`) VALUES
-(1, 0x9ea0fe93b6c711ed9a5ee00af6b10226, 16, 16, 1, 0, 0, '1248.00', '2023-03-14 03:39:16'),
-(2, 0x9ea0fe93b6c711ed9a5ee00af6b10226, 17, 17, 1, 0, 0, '1248.00', '2023-03-14 03:51:41'),
-(3, 0x9ea0fe93b6c711ed9a5ee00af6b10226, 18, 18, 1, 0, 0, '1248.00', '2023-03-14 04:09:01'),
-(4, 0x9ea0fe93b6c711ed9a5ee00af6b10226, 19, 19, 1, 0, 0, '1248.00', '2023-03-14 04:13:12'),
-(5, 0x9ea0fe93b6c711ed9a5ee00af6b10226, 20, 20, 1, 0, 0, '1248.00', '2023-03-14 04:18:09'),
-(6, 0x9ea0fe93b6c711ed9a5ee00af6b10226, 21, 21, 1, 0, 0, '1248.00', '2023-03-14 04:22:04');
 
 -- --------------------------------------------------------
 
@@ -1313,24 +1247,6 @@ CREATE TABLE `orderitem_ingredient` (
   `ing_id` int(11) NOT NULL,
   `ing_quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `orderitem_ingredient`
---
-
-INSERT INTO `orderitem_ingredient` (`order_itemid`, `ing_id`, `ing_quantity`) VALUES
-(6, 1, 1),
-(6, 4, 1),
-(6, 8, -1),
-(6, 10, 1),
-(6, 13, 1),
-(6, 14, 1),
-(6, 16, 1),
-(6, 20, 1),
-(7, 1, 3),
-(7, 6, 1),
-(7, 8, -1),
-(7, 10, 3);
 
 -- --------------------------------------------------------
 
@@ -1346,19 +1262,6 @@ CREATE TABLE `order_item` (
   `order_sauce` varchar(255) DEFAULT NULL,
   `orderit_total` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `order_item`
---
-
-INSERT INTO `order_item` (`order_itemid`, `order_id`, `fd_id`, `quantity`, `order_sauce`, `orderit_total`) VALUES
-(1, 2, 1, 1, NULL, '762.00'),
-(2, 2, 1, 1, NULL, '486.00'),
-(3, 3, 1, 1, NULL, '762.00'),
-(4, 4, 1, 1, NULL, '762.00'),
-(5, 5, 1, 1, NULL, '762.00'),
-(6, 6, 1, 1, NULL, '762.00'),
-(7, 6, 1, 1, NULL, '486.00');
 
 -- --------------------------------------------------------
 
@@ -1396,33 +1299,6 @@ CREATE TABLE `payment` (
   `pay_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `pay_amt` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `payment`
---
-
-INSERT INTO `payment` (`pay_id`, `pay_method`, `c_id`, `tw_phone`, `pay_date`, `pay_amt`) VALUES
-(1, 'cash', NULL, NULL, '2023-03-14 03:18:53', '1248.00'),
-(2, 'cash', NULL, NULL, '2023-03-14 03:20:55', '1248.00'),
-(3, 'cash', NULL, NULL, '2023-03-14 03:22:23', '1248.00'),
-(4, 'cash', NULL, NULL, '2023-03-14 03:22:30', '1248.00'),
-(5, 'cash', NULL, NULL, '2023-03-14 03:31:33', '1248.00'),
-(6, 'cash', NULL, NULL, '2023-03-14 03:32:56', '1248.00'),
-(7, 'cash', NULL, NULL, '2023-03-14 03:33:17', '1248.00'),
-(8, 'cash', NULL, NULL, '2023-03-14 03:33:29', '1248.00'),
-(9, 'cash', NULL, NULL, '2023-03-14 03:33:36', '1248.00'),
-(10, 'cash', NULL, NULL, '2023-03-14 03:34:09', '1248.00'),
-(11, 'cash', NULL, NULL, '2023-03-14 03:34:40', '1248.00'),
-(12, 'cash', NULL, NULL, '2023-03-14 03:34:57', '1248.00'),
-(13, 'cash', NULL, NULL, '2023-03-14 03:36:44', '1248.00'),
-(14, 'cash', NULL, NULL, '2023-03-14 03:36:54', '1248.00'),
-(15, 'cash', NULL, NULL, '2023-03-14 03:38:59', '1248.00'),
-(16, 'cash', NULL, NULL, '2023-03-14 03:39:16', '1248.00'),
-(17, 'cash', NULL, NULL, '2023-03-14 03:51:41', '1248.00'),
-(18, 'cash', NULL, NULL, '2023-03-14 04:09:01', '1248.00'),
-(19, 'cash', NULL, NULL, '2023-03-14 04:13:12', '1248.00'),
-(20, 'cash', NULL, NULL, '2023-03-14 04:18:09', '1248.00'),
-(21, 'cash', NULL, NULL, '2023-03-14 04:22:04', '1248.00');
 
 -- --------------------------------------------------------
 
@@ -1783,20 +1659,11 @@ INSERT INTO `sauce` (`sauce_id`, `sauce_name`, `created_at`, `updated_at`) VALUE
 
 CREATE TABLE `shopping_cart` (
   `cart_id` int(11) NOT NULL,
-  `user_id` binary(16) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
   `cart_total` decimal(10,2) NOT NULL,
   `cart_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `cart_active` int(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `shopping_cart`
---
-
-INSERT INTO `shopping_cart` (`cart_id`, `user_id`, `cart_total`, `cart_date`, `cart_active`) VALUES
-(5, 0x9ea0fe93b6c711ed9a5ee00af6b10226, '1296.00', '2023-03-13 21:44:28', 0),
-(6, 0x9ea0fe93b6c711ed9a5ee00af6b10226, '1248.00', '2023-03-14 00:51:48', 1),
-(7, 0x9ea33116b6c711ed9a5ee00af6b10226, '0.00', '2023-03-14 02:25:20', 1);
 
 -- --------------------------------------------------------
 
@@ -9738,7 +9605,7 @@ INSERT INTO `subdistrict` (`code`, `zip_code`, `name_th`, `name_en`, `district_c
 --
 
 CREATE TABLE `user` (
-  `user_id` binary(16) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
   `us_fname` varchar(50) NOT NULL,
   `us_lname` varchar(50) NOT NULL,
   `us_phone` varchar(10) NOT NULL,
@@ -9747,21 +9614,19 @@ CREATE TABLE `user` (
   `us_email` varchar(50) NOT NULL,
   `us_password` varchar(50) NOT NULL,
   `role_id` int(11) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `us_fname`, `us_lname`, `us_phone`, `us_birthdate`, `us_gender`, `us_email`, `us_password`, `role_id`, `created_at`) VALUES
-(0x9ea0fe93b6c711ed9a5ee00af6b10226, 'Supachai', 'Naknun', '0879876543', '1995-06-02', 'Male', 'supachai.naknun@gmail.com', 'password1', 3, '2023-02-27 18:22:25'),
-(0x9ea1f434b6c711ed9a5ee00af6b10226, 'Jonathan', 'Joestar', '0912414413', '1896-08-02', 'Male', 'Jonathan.Joestar@admin.com', '111', 1, '2023-02-27 18:22:25'),
-(0x9ea33116b6c711ed9a5ee00af6b10226, 'Joseph', 'Joestar', '0912432413', '1996-08-02', 'Male', 'Joseph.Joestar@admin.com', '111', 2, '2023-02-27 18:22:25'),
-(0xbfd9fd2cb6fe11ed9a5ee00af6b10226, 'Jane', 'Doe', '987654321', '1992-05-15', 'female', 'jane.doe@gmail.com', 'password', 3, '2023-02-28 00:27:57'),
-(0xbfd9fdbdb6fe11ed9a5ee00af6b10226, 'Jo', 'Smit', '0222222222', '2023-02-28', 'Female', 'Jo.Smit@gmail.com', 'qgBGbusFuvF582S', 3, '2023-02-28 00:27:57'),
-(0xbfd9fdeeb6fe11ed9a5ee00af6b10226, 'Alice', 'Johnson', '1115557777', '1998-07-22', 'female', 'alice.johnson@gmail.com', 'password', 3, '2023-02-28 00:27:57'),
-(0xbfd9fe19b6fe11ed9a5ee00af6b10226, 'Mike', 'Wilson', '5559876543', '1978-03-10', 'male', 'mike.wilson@gmail.com', 'password', 3, '2023-02-28 00:27:57');
+INSERT INTO `user` (`user_id`, `us_fname`, `us_lname`, `us_phone`, `us_birthdate`, `us_gender`, `us_email`, `us_password`, `role_id`, `created_at`, `updated_at`) VALUES
+(100232199764180994, 'Jonathan', 'Joestar', '0912414413', '1896-08-02', 'Male', 'Jonathan.Joestar@admin.com', '111', 1, '2023-03-20 21:29:28', '2023-03-21 04:29:28'),
+(100232199764180995, 'Supachai', 'Naknun', '0879876543', '1995-06-02', 'Male', 'supachai.naknun@gmail.com', 'password1', 3, '2023-03-20 21:29:28', '2023-03-21 04:29:28'),
+(100232199764180996, 'Alice', 'Johnson', '1115557777', '1998-07-22', 'female', 'alice.johnson@gmail.com', 'password', 3, '2023-03-20 21:35:56', '2023-03-21 04:35:56'),
+(100232199764180997, 'Mike', 'Wilson', '5559876543', '1978-03-10', 'male', 'mike.wilson@gmail.com', 'password', 3, '2023-03-20 21:35:56', '2023-03-21 04:35:56');
 
 --
 -- Indexes for dumped tables
@@ -9772,7 +9637,7 @@ INSERT INTO `user` (`user_id`, `us_fname`, `us_lname`, `us_phone`, `us_birthdate
 --
 ALTER TABLE `address_book`
   ADD PRIMARY KEY (`addb_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `address_book_ibfk_1` (`user_id`);
 
 --
 -- Indexes for table `cartitem_ingredient`
@@ -9800,7 +9665,7 @@ ALTER TABLE `category`
 --
 ALTER TABLE `credit_card`
   ADD PRIMARY KEY (`c_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `credit_card_ibfk_1` (`user_id`);
 
 --
 -- Indexes for table `crust`
@@ -9812,7 +9677,8 @@ ALTER TABLE `crust`
 -- Indexes for table `delivery`
 --
 ALTER TABLE `delivery`
-  ADD PRIMARY KEY (`deli_id`);
+  ADD PRIMARY KEY (`deli_id`),
+  ADD KEY `store_id` (`store_id`);
 
 --
 -- Indexes for table `dipping_sauce`
@@ -9850,10 +9716,10 @@ ALTER TABLE `ingredient`
 --
 ALTER TABLE `order`
   ADD PRIMARY KEY (`order_id`),
-  ADD KEY `user_id` (`user_id`),
   ADD KEY `deli_id` (`deli_id`),
   ADD KEY `pay_id` (`pay_id`),
-  ADD KEY `ords_id` (`ords_id`);
+  ADD KEY `ords_id` (`ords_id`),
+  ADD KEY `order_ibfk_1` (`user_id`);
 
 --
 -- Indexes for table `orderitem_ingredient`
@@ -9936,7 +9802,7 @@ ALTER TABLE `sauce`
 --
 ALTER TABLE `shopping_cart`
   ADD PRIMARY KEY (`cart_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `shopping_cart_ibfk_1` (`user_id`);
 
 --
 -- Indexes for table `size`
@@ -9979,13 +9845,13 @@ ALTER TABLE `address_book`
 -- AUTO_INCREMENT for table `cart_item`
 --
 ALTER TABLE `cart_item`
-  MODIFY `cart_itemid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `cart_itemid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `credit_card`
@@ -10003,7 +9869,7 @@ ALTER TABLE `crust`
 -- AUTO_INCREMENT for table `delivery`
 --
 ALTER TABLE `delivery`
-  MODIFY `deli_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `deli_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `dipping_sauce`
@@ -10015,7 +9881,7 @@ ALTER TABLE `dipping_sauce`
 -- AUTO_INCREMENT for table `food`
 --
 ALTER TABLE `food`
-  MODIFY `fd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `fd_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `geographies`
@@ -10033,13 +9899,13 @@ ALTER TABLE `ingredient`
 -- AUTO_INCREMENT for table `order`
 --
 ALTER TABLE `order`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `order_itemid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `order_itemid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `order_status`
@@ -10051,7 +9917,7 @@ ALTER TABLE `order_status`
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pizza`
@@ -10075,7 +9941,7 @@ ALTER TABLE `sauce`
 -- AUTO_INCREMENT for table `shopping_cart`
 --
 ALTER TABLE `shopping_cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `size`
@@ -10097,7 +9963,7 @@ ALTER TABLE `store`
 -- Constraints for table `address_book`
 --
 ALTER TABLE `address_book`
-  ADD CONSTRAINT `address_book_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `address_book_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
 
 --
 -- Constraints for table `cartitem_ingredient`
@@ -10117,7 +9983,13 @@ ALTER TABLE `cart_item`
 -- Constraints for table `credit_card`
 --
 ALTER TABLE `credit_card`
-  ADD CONSTRAINT `credit_card_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `credit_card_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`);
+
+--
+-- Constraints for table `delivery`
+--
+ALTER TABLE `delivery`
+  ADD CONSTRAINT `delivery_ibfk_1` FOREIGN KEY (`store_id`) REFERENCES `store` (`store_id`);
 
 --
 -- Constraints for table `food`
