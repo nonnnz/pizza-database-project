@@ -1,14 +1,14 @@
 <?php
+
 session_start();
 
 require_once "../components/connect.php";
 
-// Check if user is not logged in
-if (!isset($_SESSION['user_id'])) {
-    // Redirect to login page
-    header("Location: ../pages/login.php");
-    exit();
-}
+// Fetch all categories from database
+$stmt = $pdo->prepare('SELECT * FROM category');
+$stmt->execute();
+$categories = $stmt->fetchAll();
+
 
 // Check if user is logged in and is an admin
 if ($_SESSION['role_id'] != 3) {
@@ -22,27 +22,19 @@ if ($_SESSION['role_id'] != 3) {
 }
 
 
-// Handle deleting a user
-if (isset($_POST['delete_user'])) {
-    $user_id = $_POST['delete_user'];
-    // echo $_POST['delete_user'];
-    $stmt = $pdo->prepare('DELETE FROM user WHERE user_id = UNHEX(?)');
-    $stmt->execute([$user_id]);
-}
-
 // Fetch all users from database
-$stmt = $pdo->prepare('SELECT * FROM user WHERE role_id = 3');
+$stmt = $pdo->prepare('SELECT * FROM user WHERE role_id !=3');
 $stmt->execute();
 $users = $stmt->fetchAll();
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
+    <title>Add Category</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Custom fonts for template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -50,6 +42,14 @@ $users = $stmt->fetchAll();
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- Custom styles for template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <style>
+    #previewImg{
+        display: block;
+        margin: auto;
+    }
+    </style>
+
 </head>
 <body>
     <!-- Page Wrapper -->
@@ -195,59 +195,43 @@ $users = $stmt->fetchAll();
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    <div class="container">
                         <!-- Page Heading -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Customers</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Category Management</h1>
                         </div>
 
                         <!-- Content Row -->
                         <div class="row">
                             <div class="col-lg-12">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <!-- <th>ID</th> -->
-                                            <th>First Name</th>
-                                            <th>Last Name</th>
-                                            <th>Phone</th>
-                                            <th>Email</th>
-                                            <th>Actions</th>
-                                            <th> </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($users as $user): ?>
-                                            <tr>
-                                                <!-- <td><?php
-                                                    // binary to hex
-                                                    $user_id_binary = $user['user_id'];
-                                                    $user_id_hex = bin2hex($user_id_binary);
-                                                    echo $user_id_hex;
-                                                ?></td> -->
-                                                <td><?php echo $user['us_fname'] ?></td>
-                                                <td><?php echo $user['us_lname'] ?></td>
-                                                <td><?php echo $user['us_phone'] ?></td>
-                                                <td><?php echo $user['us_email'] ?></td>
-                                                <td>
-                                                    
-                                                    <a href="edit_user.php?id=<?php $user_id_binary = $user['user_id'];
-                                                    $user_id_hex = bin2hex($user_id_binary);
-                                                    echo $user_id_hex; ?>" class="btn btn-warning">Edit</a>
-                                                </td>
-                                                <td>
-                                                    <form method="post" action="">
-                                                        <input type="hidden" name="delete_user" value="<?php $user_id_binary = $user['user_id'];
-                                                    $user_id_hex = bin2hex($user_id_binary);
-                                                    echo $user_id_hex;?>">
-                                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Category Name</th>
+                                    <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($categories as $cat): ?>
+                                    <tr>
+                                        <td><?php echo $cat['cat_id']; ?></td>
+                                        <td><?php echo $cat['cat_name']; ?></td>
+                                        <td>
+                                        <form method="post" action="">
+                                            <input type="hidden" name="delete_food" value="<?php echo $cat['cat_id']; ?>" />
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
+                                            <!-- <a href="?delete=<?php echo $cat['cat_id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</a> -->
+                                        </form>
+                                        </td>          
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
                                 </table>
                             </div>
+
                         </div>
+                    </div>
                 </div>
 
             </div>
@@ -277,6 +261,8 @@ $users = $stmt->fetchAll();
         </div>
     </div>
 
+
+    
     <!-- bootstrap.bundle.js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
@@ -289,6 +275,5 @@ $users = $stmt->fetchAll();
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-
 </body>
 </html>
