@@ -23,7 +23,7 @@ if ($_SESSION['role_id'] != 3) {
 
 if(isset($_GET['id'])){
     $id = $_GET['id'];
-    $stmt = $pdo->prepare("SELECT * FROM user WHERE user_id = UNHEX(:id)");
+    $stmt = $pdo->prepare("SELECT * FROM user WHERE user_id = :id");
     $stmt->bindValue(":id", $id);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -50,7 +50,7 @@ if(isset($_POST['edit'])) {
         $email = $_POST["us_email"];
         $password = $_POST["us_password"];
 
-        $stmt = $pdo->prepare("UPDATE user SET us_fname = :fname, us_lname = :lname, us_phone = :phone, us_birthdate = :birthdate, us_gender = :gender, us_email = :email, us_password = :password WHERE user_id = UNHEX(:id)");
+        $stmt = $pdo->prepare("UPDATE user SET us_fname = :fname, us_lname = :lname, us_phone = :phone, us_birthdate = :birthdate, us_gender = :gender, us_email = :email, us_password = :password WHERE user_id = :id");
         $stmt->bindValue(":fname", $fname);
         $stmt->bindValue(":lname", $lname);
         $stmt->bindValue(":phone", $phone);

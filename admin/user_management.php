@@ -26,7 +26,7 @@ if ($_SESSION['role_id'] != 3) {
 if (isset($_POST['delete_user'])) {
     $user_id = $_POST['delete_user'];
     // echo $_POST['delete_user'];
-    $stmt = $pdo->prepare('DELETE FROM user WHERE user_id = UNHEX(?)');
+    $stmt = $pdo->prepare('DELETE FROM user WHERE user_id = ?');
     $stmt->execute([$user_id]);
 }
 
@@ -221,8 +221,8 @@ $users = $stmt->fetchAll();
                                                 <!-- <td><?php
                                                     // binary to hex
                                                     $user_id_binary = $user['user_id'];
-                                                    $user_id_hex = bin2hex($user_id_binary);
-                                                    echo $user_id_hex;
+                                                  //  $user_id_hex = bin2hex($user_id_binary);
+                                                    echo $user_id_binary ;
                                                 ?></td> -->
                                                 <td><?php echo $user['us_fname'] ?></td>
                                                 <td><?php echo $user['us_lname'] ?></td>
@@ -231,14 +231,14 @@ $users = $stmt->fetchAll();
                                                 <td>
                                                     
                                                     <a href="edit_user.php?id=<?php $user_id_binary = $user['user_id'];
-                                                    $user_id_hex = bin2hex($user_id_binary);
-                                                    echo $user_id_hex; ?>" class="btn btn-warning">Edit</a>
+                                                  //  $user_id_hex = bin2hex($user_id_binary);
+                                                    echo $user_id_binary ; ?>" class="btn btn-warning">Edit</a>
                                                 </td>
                                                 <td>
                                                     <form method="post" action="">
                                                         <input type="hidden" name="delete_user" value="<?php $user_id_binary = $user['user_id'];
-                                                    $user_id_hex = bin2hex($user_id_binary);
-                                                    echo $user_id_hex;?>">
+                                                  //  $user_id_hex = bin2hex($user_id_binary);
+                                                    echo $user_id_binary ;?>">
                                                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
                                                     </form>
                                                 </td>

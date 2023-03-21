@@ -42,18 +42,18 @@ if($_GET["opt"] == 1) {
 $menu_items = array();
 
 // if cart null
-$select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = UNHEX(?) AND `cart_active` = 1");
+$select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = ? AND `cart_active` = 1");
 $select_cart->execute([$user_id]);
 $cart_row = $select_cart->fetch(PDO::FETCH_ASSOC);
 
 // init cart
 if($select_cart->rowCount() == 0){
-    $insert_cart = $pdo->prepare("INSERT INTO `shopping_cart` (user_id, cart_total) VALUES (UNHEX(?), ?)");
+    $insert_cart = $pdo->prepare("INSERT INTO `shopping_cart` (user_id, cart_total) VALUES (?, ?)");
     $insert_cart->execute([$user_id, 0]);
 }
 
 // check cart again
-$select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = UNHEX(?) AND `cart_active` = 1");
+$select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = ? AND `cart_active` = 1");
 $select_cart->execute([$user_id]);
 $cart_row = $select_cart->fetch(PDO::FETCH_ASSOC);
 
@@ -121,7 +121,7 @@ if(isset($_POST['submit'])) {
         $pt_row = $select_pt->fetch(PDO::FETCH_ASSOC);
 
         // insert order
-        $insert_order = $pdo->prepare("INSERT INTO `order` (user_id, deli_id, pay_id, ords_id, order_total) VALUES (UNHEX(?), ?, ?, ?, ?)");
+        $insert_order = $pdo->prepare("INSERT INTO `order` (user_id, deli_id, pay_id, ords_id, order_total) VALUES (?, ?, ?, ?, ?)");
         $insert_order->execute([$user_id, $deli_row['deli_id'], $pt_row['pay_id'], 1, $cart_total]);
 
         // get order id

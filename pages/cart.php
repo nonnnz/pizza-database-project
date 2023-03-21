@@ -17,7 +17,7 @@ if(isset($_SESSION['user_id'])){
 $user_id = $_SESSION['user_id'];
 
 // retrieve all user address
-$select_adds = $pdo->prepare("SELECT `address_book`.`addb_id`, `address_book`.`addb_name` FROM `address_book` WHERE `user_id`  = UNHEX(?)");
+$select_adds = $pdo->prepare("SELECT `address_book`.`addb_id`, `address_book`.`addb_name` FROM `address_book` WHERE `user_id`  = ?");
 $select_adds->execute([$user_id]);
 $adds_results = $select_adds->fetchAll(PDO::FETCH_ASSOC);
 
@@ -25,18 +25,18 @@ $adds_results = $select_adds->fetchAll(PDO::FETCH_ASSOC);
 $menu_items = array();
 
 // if cart null
-$select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = UNHEX(?) AND `cart_active` = 1");
+$select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = ? AND `cart_active` = 1");
 $select_cart->execute([$user_id]);
 $cart_row = $select_cart->fetch(PDO::FETCH_ASSOC);
 
 // init cart
 if($select_cart->rowCount() == 0){
-    $insert_cart = $pdo->prepare("INSERT INTO `shopping_cart` (user_id, cart_total) VALUES (UNHEX(?), ?)");
+    $insert_cart = $pdo->prepare("INSERT INTO `shopping_cart` (user_id, cart_total) VALUES (?, ?)");
     $insert_cart->execute([$user_id, 0]);
 }
 
 // check cart again
-$select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = UNHEX(?) AND `cart_active` = 1");
+$select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = ? AND `cart_active` = 1");
 $select_cart->execute([$user_id]);
 $cart_row = $select_cart->fetch(PDO::FETCH_ASSOC);
 

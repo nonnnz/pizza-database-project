@@ -31,12 +31,13 @@ if (isset($_POST['submit'])) {
   if($user) {
 
     // binary to hex
-    $user_id_binary = $user['user_id'];
-    $user_id_hex = bin2hex($user_id_binary);
+    $user_id = $user['user_id'];
+    // $user_id_hex = bin2hex($user_id_binary);
+
     
     
     // Set user ID in session
-    $_SESSION['user_id'] = $user_id_hex;
+    $_SESSION['user_id'] = $user_id;
     $_SESSION['us_fname'] = $user['us_fname'];
     $_SESSION['role_id'] = $user['role_id'];
 

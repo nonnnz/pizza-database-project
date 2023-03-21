@@ -25,7 +25,7 @@ if ($_SESSION['role_id'] != 3) {
 if (isset($_POST['delete_user'])) {
     $user_id = $_POST['delete_user'];
     // echo $_POST['delete_user'];
-    $stmt = $pdo->prepare('DELETE FROM user WHERE user_id = UNHEX(?)');
+    $stmt = $pdo->prepare('DELETE FROM user WHERE user_id = ?');
     $stmt->execute([$user_id]);
 }
 

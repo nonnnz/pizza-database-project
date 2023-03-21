@@ -165,19 +165,19 @@ if(isset($_POST['submit'])) {
     $user_id = $_SESSION['user_id'];
 
     // check if no shopping cart
-    $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = UNHEX(?) AND `cart_active` = 1");
+    $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = ? AND `cart_active` = 1");
     $select_cart->execute([$user_id]);
     $row = $select_cart->fetch(PDO::FETCH_ASSOC);
 
     // intial a cart
     // echo $select_cart->rowCount();
     if($select_cart->rowCount() == 0){
-        $insert_cart = $pdo->prepare("INSERT INTO `shopping_cart` (user_id, cart_total) VALUES (UNHEX(?), ?)");
+        $insert_cart = $pdo->prepare("INSERT INTO `shopping_cart` (user_id, cart_total) VALUES (?, ?)");
         $insert_cart->execute([$user_id, 0]);
     }
 
     // check again
-    $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = UNHEX(?) AND `cart_active` = 1");
+    $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = ? AND `cart_active` = 1");
     $select_cart->execute([$user_id]);
     $row = $select_cart->fetch(PDO::FETCH_ASSOC);
 
