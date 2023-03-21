@@ -4,6 +4,10 @@ session_start();
 
 require_once "../components/connect.php";
 
+function phpAlert($msg) {
+    echo '<script type="text/javascript">alert("' . $msg . '")</script>';
+}
+
 // check if the user is logged in
 // sent to home
 if(isset($_SESSION['user_id'])){
@@ -16,6 +20,7 @@ if(isset($_SESSION['user_id'])){
 }else{
     $user_id = '';
 };
+
 
 
 if(isset($_POST['submit'])){
@@ -36,18 +41,23 @@ if(isset($_POST['submit'])){
     $confirm_password = ($_POST['confirm_password']);
     $confirm_password = filter_var($confirm_password);
 
+    $user_id = time() . mt_rand(1000000000, 9999999999);
+    echo $user_id;
+
     $select_user = $pdo->prepare("SELECT * FROM `user` WHERE us_email = ? OR us_phone = ?");
     $select_user->execute([$email, $phone]);
     $row = $select_user->fetch(PDO::FETCH_ASSOC);
 
     if($select_user->rowCount() > 0){
-        $message[] = 'email or number already exists!';
+        $message = 'email or number already exists!';
+        phpAlert($message);
     }else{
         if($password != $confirm_password){
-            $message[] = 'confirm password not matched!';
+            $message = 'confirm password not matched!';
+            phpAlert($message);
         }else{
-            $insert_user = $pdo->prepare("INSERT INTO `user` (user_id, us_fname, us_lname, us_phone, us_birthdate, us_gender, us_email, us_password, role_id) VALUES (UNHEX(REPLACE(UUID(),'-','')), ?, ?, ?, ?, ?, ?, ?, ?)");
-            $insert_user->execute([$fname, $lname, $phone, $birthdate, $gender, $email, $password, 3]);
+            $insert_user = $pdo->prepare("INSERT INTO `user` (user_id, us_fname, us_lname, us_phone, us_birthdate, us_gender, us_email, us_password, role_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $insert_user->execute([$user_id ,$fname, $lname, $phone, $birthdate, $gender, $email, $password, 3]);
             // $select_user = $pdo->prepare("SELECT * FROM `customer` WHERE cus_email = ? AND cus_password = ?");
             // $select_user->execute([$email, $password]);
             // $row = $select_user->fetch(PDO::FETCH_ASSOC);
@@ -108,16 +118,16 @@ if(isset($_POST['submit'])){
                 <div class="form-icon" style="display: flex; align-items: center; justify-content: space-between;" >
                     <img src="https://1112.com/images/form/phone_form.svg" style ="padding: .75em; margin:auto;">
                     <div style="width: 45em;">
-                        <input type="text" class="form-control"   name="phone" placeholder="+66" maxlength="10" required >
+                        <input type="tel" class="form-control"  pattern="\d+" name="phone" placeholder="+66" maxlength="10" required >
                     </div>
                 </div>
             </div>
             
-            <div class="mb-3"> <!-- Date of birth -->
+            <div class="mb-3"> <!-- Date of birth limit 100 y-->
                 <div class="form-icon" style="display: flex; align-items: center; justify-content: center;" >
                     <img src="https://1112.com/images/form/birthday_form.svg" style ="padding: .5em; " >
                     <div style="width: 45em;">
-                        <input id="startDate" name="birthdate" class="form-control" type="date" required />
+                        <input id="startDate" name="birthdate" class="form-control" type="date" min="1923-01-01" max="<?php echo date("Y-m-d",time()) ?>" required />
                     </div>
                 </div>
             </div>

@@ -127,7 +127,7 @@ if(isset($_SESSION['user_id'])){
 
                     <img src="https://1112.com/images/form/birthday_form.svg" style ="padding-left: 2.7rem; margin:auto;" >
                         <div class="col ">
-                            <input id="startDate" name="birthdate" class="form-control" type="date" style = " margin:auto; width:95%;" />
+                            <input id="startDate" name="birthdate" class="form-control" type="date" min="1923-01-01" max="<?php echo date("Y-m-d",time()) ?>" style = " margin:auto; width:95%;" />
                         </div>
                 </div>
             </div>

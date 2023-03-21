@@ -171,16 +171,19 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
   </div>
   <h5 style="color: green; margin-left:1em ; ">ENG</h5>
   <div class="profile position-relative">
-            <a href="#" id="profile-dropdown">
+            
               <?php if(isset($_SESSION['user_id'])): ?>
+                <a href="#" id="profile-dropdown">
                 <div class="Username p-3" style="margin-left: 1em; color: green; background-color: #E8E8E8; text-align: center;">
                   <p>Hello,<br></p>
                   <p style="font-weight: bold;"><?php echo $name; ?></p>
                 </div>
               <?php else: ?>
-                <a  href="login.php" class="Username p-3" style="margin-left: 1em; color: green; background-color: #E8E8E8; text-align: center;">
-                  <p>Login</p>
-                </a>
+                <div style="background-color:#E8E8E8;padding-left: 10px;padding-right: 10px;margin-left: 10px;margin-right: 0px;display: block;padding-bottom: 10px;padding-top: 10px;">
+                  <a  href="login.php" class="Username" style=" color: green; background-color: #E8E8E8; text-align: center;">
+                    <p>Login</p>
+                  </a>
+                </div>
               <?php endif; ?>
             </a>
             <div id="profileContent" class="position-absolute p-2 shadow p-3 mb-5 bg-white" style="display : none;width: 270px; height: 280px; border-radius: 12px; background-color: rgb(248, 246, 246)!important; transform: translate(-170px, 10px);">
@@ -256,6 +259,7 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
                       </a>
                     </div>
                     <div class="p-1 ">
+                      <a href="logout.php">
                         <button type="button" class="btn btn-success w-100">
                           <div class="row">
                             <div class="col-1">
@@ -266,6 +270,7 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                           </div>
                         </button>
+                      </a>
                     </div>
                 </div>
             </div>
