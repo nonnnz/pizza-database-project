@@ -11,7 +11,8 @@ if(isset($_POST['add'])){
     $pzsize = $_POST['pzsize'];
     $pzsauce = $_POST['pzsauce'];
     $crust = $_POST['pzcrust'];
-    $dip = $_POST['pzdip'];
+    if(isset($_POST['pzdip'])) $dip = $_POST['pzdip'];
+    else $dip = NULL;
     $ing1 = $_POST['ing1'];
 
     if (isset($_POST['ing2'])) {
@@ -28,18 +29,18 @@ if(isset($_POST['add'])){
     $pzprice = $_POST['price'];
 
     $img = $_FILES['img'];
-
+    // echo $img['name'];
     $allow = array('jpg', 'jpeg', 'png');
     // separate name and file extension
     $extension = explode(".", $img['name']);
     // convert file extension to small
     $fileActExt = strtolower(end($extension));
     // upload to folder images
-    $filePath = "../admin/" . $fileActExt;
+    $filePath = "../images/product/" . $fileActExt;
 
     if (in_array($fileActExt, $allow)) {
         $fileNew = $img['name'];
-        $filePath = "../admin/" . $fileNew;
+        $filePath = "../images/product/" . $fileNew;
         // check size
         if ($img['size'] > 0 && $img['error'] == 0){
             //upload
@@ -81,21 +82,21 @@ if(isset($_POST['add'])){
                 $stmting1->bindParam(':ing1', $ing1);
                 $stmting1->execute();
 
-                if ($ing2 != 0) {
-                    $insting2 = "INSERT INTO pizza_ingredient (pz_id, ing_id) VALUES (:pzid, :ing2)";
-                    $stmting2 = $pdo->prepare($insting2);
-                    $stmting2->bindParam(':pzid', $pzid);
-                    $stmting2->bindParam(':ing2', $ing2);
-                    $stmting2->execute();
-                }
+                // if ($ing2 != 0) {
+                //     $insting2 = "INSERT INTO pizza_ingredient (pz_id, ing_id) VALUES (:pzid, :ing2)";
+                //     $stmting2 = $pdo->prepare($insting2);
+                //     $stmting2->bindParam(':pzid', $pzid);
+                //     $stmting2->bindParam(':ing2', $ing2);
+                //     $stmting2->execute();
+                // }
 
-                if ($ing3 != 0) {
-                    $insting3 = "INSERT INTO pizza_ingredient (pz_id, ing_id) VALUES (:pzid, :ing3)";
-                    $stmting3 = $pdo->prepare($insting3);
-                    $stmting3->bindParam(':pzid', $pzid);
-                    $stmting3->bindParam(':ing3', $ing3);
-                    $stmting3->execute();
-                }
+                // if ($ing3 != 0) {
+                //     $insting3 = "INSERT INTO pizza_ingredient (pz_id, ing_id) VALUES (:pzid, :ing3)";
+                //     $stmting3 = $pdo->prepare($insting3);
+                //     $stmting3->bindParam(':pzid', $pzid);
+                //     $stmting3->bindParam(':ing3', $ing3);
+                //     $stmting3->execute();
+                // }
 
                 // Insert to pizza_detail
                 $instpzdetail = "INSERT INTO pizza_detail (pz_id, size_id, crust_id, dip_id, fd_id) VALUES (:pzid, :pzsize, :crust, :dip, :fdid)";
@@ -110,8 +111,8 @@ if(isset($_POST['add'])){
         }
     }
 
-    header("Location: menu_management.php");
-    exit();
+    // header("Location: menu_management.php");
+    // exit();
 }
 
 // Fetch Size
@@ -366,7 +367,7 @@ $users = $userstmt->fetchAll();
                                 </div>
 
                                 <div class="mb-3">
-                                    <select class="form-select" aria-label=".form-select-lg example" name="pzdip" required>
+                                    <select class="form-select" aria-label=".form-select-lg example" name="pzdip" >
                                     <option value="" selected disabled>Dipping</option>
                                     <?php foreach ($dip as $d):
                                         echo '<option value="' . $d['dip_id'] . '">' . $d['dip_name'] . '</option>';
