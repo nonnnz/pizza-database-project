@@ -186,7 +186,7 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
                 </div>
               <?php endif; ?>
             </a>
-            <div id="profileContent" class="position-absolute p-2 shadow p-3 mb-5 bg-white" style="display : none;width: 270px; height: 280px; border-radius: 12px; background-color: rgb(248, 246, 246)!important; transform: translate(-170px, 10px);">
+            <div id="profileContent" class="position-absolute p-2 shadow p-3 mb-5 bg-white" style="display : none;width: 270px; height: 280px; border-radius: 12px; background-color: rgb(248, 246, 246)!important; transform: translate(-170px, 10px);  z-index: 1;">
                 <div class="d-flex flex-column">
                     <div class="p-1 ">
                       <a href="profile.php">
