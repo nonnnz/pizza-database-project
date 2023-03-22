@@ -121,33 +121,22 @@ if(isset($_SESSION['user_id'])){
                 <p>Expiration Date</p>
                 <select name="xmonth"style="height:2.5rem;width:100%;margin-bottom :1rem;color:#939393;" required>
                     <option value="" selected disabled>Month</option>
-                    <option value="1">01<br>
-                    <option value="2">02<br>
-                    <option value="3">03<br>
-                    <option value="4">04<br>
-                    <option value="5">05<br>
-                    <option value="6">06<br>
-                    <option value="7">07<br>
-                    <option value="8">08<br>
-                    <option value="9">09<br>
-                    <option value="10">10<br>
-                    <option value="11">11<br>
-                    <option value="12">12<br>
+                    <?php
+                        for ($i = 1; $i <= 12; $i++) {
+                            echo '<option value="' . $i . '">' . $i . '</option>';
+                        }
+                    ?>
                 </select>
 
                 <select name="xyear"style="height:2.5rem;width:100%;margin-bottom :1rem;;color:#939393" required>
                     <option value="" selected disabled>Year</option>
-                    <option value="1">2023<br>
-                    <option value="2">2024<br>
-                    <option value="3">2025<br>
-                    <option value="4">2026<br>
-                    <option value="5">2027<br>
-                    <option value="6">2028<br>
-                    <option value="7">2029<br>
-                    <option value="8">2030<br>
-                    <option value="9">2031<br>
-                    <option value="10">2032<br>
-                    <option value="11">2033<br>
+                    <?php
+                        $min_year = date("Y");
+                        $max_year = $min_year + 10;
+                        for ($year = $min_year; $year <= $max_year; $year++) {
+                            echo '<option value="' . $year . '">' . $year . '</option>';
+                        }
+                    ?>
                 </select>
                 
                 <input type="text" class="form-control"   name="cvc_cvv" placeholder="CVC/CVV" style="margin-bottom :1rem" minlength="3" maxlength="3" required >
