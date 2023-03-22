@@ -13,6 +13,14 @@ if(isset($_SESSION['user_id'])){
     exit;
 }
 
+$user_id = $_SESSION['user_id'];
+
+// get all address
+$query = $pdo->prepare("SELECT `address_book`.*
+FROM `address_book` WHERE `address_book`.`user_id` = :id");
+$query->bindParam(':id', $user_id);
+$query->execute();
+$adds = $query->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -97,7 +105,10 @@ if(isset($_SESSION['user_id'])){
                 </div>
                 <div class="col-xs-6 text-right">
                     <div class="button-add text-center">
-                        <button type="button" class="btn btn-success" style="border-radius: 12px; font-weight: bold;"><i class="fa fa-plus size-12"></i> Add Address </button>
+                        <a href="add_address.php">
+                            <button type="button" class="btn btn-success" style="border-radius: 12px; font-weight: bold;"><i class="fa fa-plus size-12"></i> Add Address </button>
+                        </a>
+                        
                     </div>
                 </div>
                 <!-- <div style="display: flex; justify-content: left; align-items:center; padding-left:80px;">
@@ -112,7 +123,14 @@ if(isset($_SESSION['user_id'])){
                 <div style="display: flex; justify-content: center; align-items: center; min-height: 30vh; margin: auto;">
                     <form method="post" action="" style="border:1px solid black; padding: 3rem; border-radius : 1rem ; border-color: green ;min-width:65rem" class="shadow">
                         <fieldset name="Order Status">
-                            <h3 class="text-center" style="padding-bottom:1rem">You don't have any Address Book!</h3>
+                            <?php if($query->rowCount() == 0) {
+                                echo "<h3 class='text-center' style='padding-bottom:1rem'>You don't have any Address Book!</h3>";
+                            } else {
+                                foreach ($adds as $add):
+                                    echo "<h3 class='text-center' style='padding-bottom:1rem'>". $add['addb_name'] ."</h3>";
+                                endforeach;
+                            }
+                            ?>
                         </fieldset>
                     </form>    
                 </div>    
