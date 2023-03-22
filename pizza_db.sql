@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2023 at 03:41 PM
+-- Generation Time: Mar 22, 2023 at 01:06 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `address_book` (
   `addb_id` int(11) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `addb_buildingNo` varchar(255) NOT NULL,
   `addb_buildingName` varchar(255) DEFAULT NULL,
   `addb_street` varchar(255) NOT NULL,
@@ -104,7 +104,7 @@ INSERT INTO `category` (`cat_id`, `cat_name`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `credit_card` (
   `c_id` int(11) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `c_num` varchar(16) NOT NULL,
   `c_name` varchar(50) NOT NULL,
   `c_expdate` varchar(10) NOT NULL,
@@ -1226,7 +1226,7 @@ INSERT INTO `ingredient` (`ing_id`, `ing_name`, `ing_img`, `ing_price`, `created
 
 CREATE TABLE `order` (
   `order_id` int(11) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `deli_id` int(11) NOT NULL,
   `pay_id` int(11) NOT NULL,
   `ords_id` int(11) NOT NULL,
@@ -1659,7 +1659,7 @@ INSERT INTO `sauce` (`sauce_id`, `sauce_name`, `created_at`, `updated_at`) VALUE
 
 CREATE TABLE `shopping_cart` (
   `cart_id` int(11) NOT NULL,
-  `user_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `cart_total` decimal(10,2) NOT NULL,
   `cart_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `cart_active` int(1) NOT NULL DEFAULT 1
@@ -9605,7 +9605,7 @@ INSERT INTO `subdistrict` (`code`, `zip_code`, `name_th`, `name_en`, `district_c
 --
 
 CREATE TABLE `user` (
-  `user_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
   `us_fname` varchar(50) NOT NULL,
   `us_lname` varchar(50) NOT NULL,
   `us_phone` varchar(10) NOT NULL,
@@ -9624,7 +9624,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`user_id`, `us_fname`, `us_lname`, `us_phone`, `us_birthdate`, `us_gender`, `us_email`, `us_password`, `role_id`, `created_at`, `updated_at`) VALUES
 (100232199764180994, 'Jonathan', 'Joestar', '0912414413', '1896-08-02', 'Male', 'Jonathan.Joestar@admin.com', '111', 1, '2023-03-20 21:29:28', '2023-03-21 04:29:28'),
-(100232199764180995, 'Supachai', 'Naknun', '0879876543', '1995-06-02', 'Male', 'supachai.naknun@gmail.com', 'password1', 3, '2023-03-20 21:29:28', '2023-03-21 04:29:28'),
+(100232199764180995, 'SupachaiXD', 'Naknun', '0879876543', '1995-06-02', 'Male', 'supachai.naknun@gmail.com', 'password1', 3, '2023-03-20 21:29:28', '2023-03-22 06:40:44'),
 (100232199764180996, 'Alice', 'Johnson', '1115557777', '1998-07-22', 'female', 'alice.johnson@gmail.com', 'password', 3, '2023-03-20 21:35:56', '2023-03-21 04:35:56'),
 (100232199764180997, 'Mike', 'Wilson', '5559876543', '1978-03-10', 'male', 'mike.wilson@gmail.com', 'password', 3, '2023-03-20 21:35:56', '2023-03-21 04:35:56');
 
@@ -9690,7 +9690,8 @@ ALTER TABLE `dipping_sauce`
 -- Indexes for table `district`
 --
 ALTER TABLE `district`
-  ADD PRIMARY KEY (`code`);
+  ADD PRIMARY KEY (`code`),
+  ADD KEY `district_ibfk_1` (`province_code`);
 
 --
 -- Indexes for table `food`
@@ -9783,7 +9784,8 @@ ALTER TABLE `pizza_sauce`
 -- Indexes for table `provinces`
 --
 ALTER TABLE `provinces`
-  ADD PRIMARY KEY (`code`);
+  ADD PRIMARY KEY (`code`),
+  ADD KEY `provinces_ibfk_1` (`geography_id`);
 
 --
 -- Indexes for table `roles`
@@ -9820,7 +9822,8 @@ ALTER TABLE `store`
 -- Indexes for table `subdistrict`
 --
 ALTER TABLE `subdistrict`
-  ADD PRIMARY KEY (`code`);
+  ADD PRIMARY KEY (`code`),
+  ADD KEY `subdistrict_ibfk_1` (`district_code`);
 
 --
 -- Indexes for table `user`
