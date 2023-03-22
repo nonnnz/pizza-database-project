@@ -65,38 +65,37 @@ while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 <body>
 
 <?php require_once '../components/user_header_new.php'; ?>
-
-    <div class="home-category" style = "margin-top: 80px ">
+    <div class="home-category" style = "margin-bottom: 80px ">
 
         <h4 style = "margin-left : 6em;"> <img src="https://cdn.1112.com/1112/public/images/web/menu.svg" alt="Cheese"> </img>
             Menu</h4>
         <div class="category_container" >
-            <a href="#">
+            <a href="bogo.php">
                 <div class="box bbox1">
                     <h6>Pizza</h6>
                 </div>
             </a>
-            <a href="#">
+            <a href="apptizer.php">
                 <div class="box2 bbox2">
                     <h6 id="bottom">Appetizer</h6>
                 </div>
             </a>
-            <a href="#">
+            <a href="chicken.php">
                 <div class="box2 bbox3">
                     <h6 id="bottom">Chicken</h6>
                 </div>
             </a>
-            <a href="#">
+            <a href="pasta.php">
                 <div class="box2 bbox4">
                     <h6 id="bottom">Pasta</h6>
                 </div>
             </a>
-            <a href="#">
+            <a href="salad.php">
                 <div class="box2 bbox5">
                     <h6 id="bottom">Salad & Steak</h6>
                 </div>
             </a>
-            <a href="#">
+            <a href="drink.php">
                 <div class="box2 bbox6">
                     <h6 id="bottom">Drink & <br>Desserts</h6>
                 </div>
@@ -104,8 +103,7 @@ while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             
         </div>
     </div>
-    
-    <h3 style = "text-align: center; padding-top : 1em;">SPECIAL DEAL BUY 1 GET 1 FREE</h3>
+    <h3 style = "text-align: center; padding-top : 1em;">PIZZA</h3>
     <div class="container">
 
         <div class="product_container" >
@@ -118,7 +116,7 @@ while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                     <div class="item-footer">
                         <h5><?php echo $item['pz_name']; ?></h5>
                         <a  href="select_pizza.php?id=<?php echo $item['fd_id']; ?>" class="btn btn-success d-flex justify-content-between" style ="width: 80%;height: 40px;  margin-left: 0.5rem; padding: 0.5rem;">
-                            <span><?php echo $item['fd_price']; ?></span>
+                            <span><?php echo number_format($item['fd_price'], 2); ?></span>
                             <span>
                                 <i class="fa fa-plus right txt" style="margin-right: 5px;"></i>Select
                             </span>

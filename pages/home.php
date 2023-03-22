@@ -9,12 +9,36 @@ require_once "../components/connect.php";
 $name = "Guest";
 if(isset($_SESSION['user_id'])){
     $name = $_SESSION["us_fname"];
+    $user_id = $_SESSION['user_id'];
+
+    // if cart null
+    $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = ? AND `cart_active` = 1");
+    $select_cart->execute([$user_id]);
+    $cart_row = $select_cart->fetch(PDO::FETCH_ASSOC);
+
+    // init cart
+    if($select_cart->rowCount() == 0){
+        $insert_cart = $pdo->prepare("INSERT INTO `shopping_cart` (user_id, cart_total) VALUES (?, ?)");
+        $insert_cart->execute([$user_id, 0]);
+    }
+
+    // check cart again
+    $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = ? AND `cart_active` = 1");
+    $select_cart->execute([$user_id]);
+    $cart_row = $select_cart->fetch(PDO::FETCH_ASSOC);
+
+    // get items
+
+
+    // cart info
+    $cart_total = $cart_row['cart_total'];
+    $cart_id = $cart_row['cart_id'];
+} else {
+    // cart info
+    $cart_total = 0;
+    $cart_id = 0;
 }
 
-// if (isset($_SESSION['email'])) {
-//     // Redirect to login page
-//     $name = $_SESSION["fname"];
-// }
 
 ?>
 
@@ -45,12 +69,6 @@ if(isset($_SESSION['user_id'])){
             <div class="img-container">
                 <img src="https://cdn.1112.com/1112/public/images/banners/Feb2023/BOGO_1440_EN_1.jpg">
             </div>
-            <!-- <div class="img-container">
-                <img src="https://cdn.1112.com/1112/public/images/banners/Feb2023/Ecomm-1440_TH.jpg">
-            </div>
-            <div class="img-container">
-                <img src="https://cdn.1112.com/1112/public/images/banners/Feb2023/Coke2_X_Sewensent_1440_TH.jpg">
-            </div> -->
         </div>
     </div>
     <div class="festive-bg" >
@@ -70,27 +88,27 @@ if(isset($_SESSION['user_id'])){
                     <h6>Pizza</h6>
                 </div>
             </a>
-            <a href="#">
+            <a href="apptizer.php">
                 <div class="box2 bbox2">
                     <h6 id="bottom">Appetizer</h6>
                 </div>
             </a>
-            <a href="#">
+            <a href="chicken.php">
                 <div class="box2 bbox3">
                     <h6 id="bottom">Chicken</h6>
                 </div>
             </a>
-            <a href="#">
+            <a href="pasta.php">
                 <div class="box2 bbox4">
                     <h6 id="bottom">Pasta</h6>
                 </div>
             </a>
-            <a href="#">
+            <a href="salad.php">
                 <div class="box2 bbox5">
                     <h6 id="bottom">Salad & Steak</h6>
                 </div>
             </a>
-            <a href="#">
+            <a href="drink.php">
                 <div class="box2 bbox6">
                     <h6 id="bottom">Drink & <br>Desserts</h6>
                 </div>

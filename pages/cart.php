@@ -79,6 +79,11 @@ while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
 if(isset($_POST['submit'])) {
     // Set session
+    // if cart null
+    // $select_cart = $pdo->prepare("SELECT * FROM `shopping_cart` WHERE `user_id`  = ? AND `cart_active` = 1");
+    // $select_cart->execute([$user_id]);
+    // $cart_row = $select_cart->fetch(PDO::FETCH_ASSOC);
+    
     
     if($_POST['options-outlined'] == '1'){
         try {
@@ -149,6 +154,7 @@ if (isset($_POST['delete_item'])) {
         $item = array(
             'fd_id' => $allitemcart_row['fd_id'],
             'cartit_total' => $allitemcart_row['cartit_total'],
+            'quantity' => $allitemcart_row['quantity'],
         );
     
         array_push($items, $item);
@@ -157,8 +163,9 @@ if (isset($_POST['delete_item'])) {
     $cart_total = 0;
 
     foreach ($items as $item):
-        echo $cart_total;
-        $cart_total += $item['cartit_total'];
+        // echo $cart_total;
+        $sumitem = $item['cartit_total'] *  $item['quantity'];
+        $cart_total += $sumitem;
 
         $udcart = $pdo->prepare("UPDATE shopping_cart SET cart_total= :cart_total WHERE cart_id  = :id");
         $udcart->bindValue(":cart_total", $cart_total);
@@ -198,6 +205,8 @@ if (isset($_POST['delete_item'])) {
       }
     }
   </script>
+  <!-- select2  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous">
 </head>
 
 <body>
@@ -210,39 +219,59 @@ if (isset($_POST['delete_item'])) {
         </div>
         <div class="order-item" style="border-bottom: 1px solid #008556; border-top: 1px solid #008556;">
             <?php foreach ($menu_items as $menu_item): ?>
-                <div class="row" style="margin-top: 1em;">
-                    <div class="col">
-                        <h6><?php echo $menu_item['crust_name']; ?></h6>
-                        <p style="margin-bottom:0;"><?php echo $menu_item['pz_name']; ?> (<?php echo number_format($menu_item['fd_price'],0); ?> ฿)</p>
-                        <?php 
-                            $sql = "SELECT `cartitem_ingredient`.*, `ingredient`.`ing_name`, `ingredient`.`ing_price`
-                            FROM `cartitem_ingredient` 
-                                LEFT JOIN `ingredient` ON `cartitem_ingredient`.`ing_id` = `ingredient`.`ing_id`
-                                WHERE `cartitem_ingredient`.`cart_itemid` = ?;";
-                            $result_ing = $pdo->prepare($sql);
-                            $result_ing->execute([$menu_item['cart_itemid']]);
-                            $row_ing = $result_ing->fetchAll(PDO::FETCH_ASSOC);
-                            if($result_ing->rowCount() != 0) {
-                                foreach ($row_ing as $ing):
-                                    if($ing['ing_quantity'] < 0) echo '<p style="margin-bottom:0;">'.'<small>'.'<i style="margin-right:10px;margin-left:10px" class="fa fa-minus"></i>'.$ing['ing_name'].'</small>'."</p>";
-                                    else echo '<p style="margin-bottom:0;">'.'<small>'.'<i style="margin-right:10px;margin-left:10px" class="fa fa-plus"></i>'.$ing['ing_name'].' ('.$ing['ing_price'].' ฿)'.' x '.$ing['ing_quantity'].'</small>'."</p>";
-                                endforeach;
-                            }
-                        ?>
-                    </div> 
-                    <div class="col" style="text-align: center;">
-                        <p> x <?php echo $menu_item['quantity']; ?></p>
+                <?php if($menu_item['cat_id'] == 1) {?>
+                    <div class="row" style="margin-top: 1em;">
+                        <div class="col">
+                            <h6><?php echo $menu_item['crust_name']; ?></h6>
+                            <p style="margin-bottom:0;"><?php echo $menu_item['pz_name']; ?> (<?php echo number_format($menu_item['fd_price'],0); ?> ฿)</p>
+                            <?php 
+                                $sql = "SELECT `cartitem_ingredient`.*, `ingredient`.`ing_name`, `ingredient`.`ing_price`
+                                FROM `cartitem_ingredient` 
+                                    LEFT JOIN `ingredient` ON `cartitem_ingredient`.`ing_id` = `ingredient`.`ing_id`
+                                    WHERE `cartitem_ingredient`.`cart_itemid` = ?;";
+                                $result_ing = $pdo->prepare($sql);
+                                $result_ing->execute([$menu_item['cart_itemid']]);
+                                $row_ing = $result_ing->fetchAll(PDO::FETCH_ASSOC);
+                                if($result_ing->rowCount() != 0) {
+                                    foreach ($row_ing as $ing):
+                                        if($ing['ing_quantity'] < 0) echo '<p style="margin-bottom:0;">'.'<small>'.'<i style="margin-right:10px;margin-left:10px" class="fa fa-minus"></i>'.$ing['ing_name'].'</small>'."</p>";
+                                        else echo '<p style="margin-bottom:0;">'.'<small>'.'<i style="margin-right:10px;margin-left:10px" class="fa fa-plus"></i>'.$ing['ing_name'].' ('.$ing['ing_price'].' ฿)'.' x '.$ing['ing_quantity'].'</small>'."</p>";
+                                    endforeach;
+                                }
+                            ?>
+                        </div> 
+                        <div class="col" style="text-align: center;">
+                            <p> x <?php echo $menu_item['quantity']; ?></p>
+                        </div>
+                        <div class="col" style="text-align: end;">
+                        <?php echo number_format($menu_item['quantity']*$menu_item['cartit_total'], 2) ?> ฿
+                        </div> 
+                        <div class="col-1">
+                            <form method="post" action="">
+                                <input type="hidden" name="delete_item" value="<?php echo $menu_item['cart_itemid'];?>">
+                                <button type="submit" style="background: none;border: none;padding: 0;cursor: pointer;" ><i class="fa fa-close" style="color: red;"></i></button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="col" style="text-align: end;">
-                    <?php echo $menu_item['quantity']*$menu_item['cartit_total']; ?> ฿
-                    </div> 
-                    <div class="col-1">
-                        <form method="post" action="">
-                            <input type="hidden" name="delete_item" value="<?php echo $menu_item['cart_itemid'];?>">
-                            <button type="submit" style="background: none;border: none;padding: 0;cursor: pointer;" ><i class="fa fa-close" style="color: red;"></i></button>
-                        </form>
+                <?php } else { ?>
+                    <div class="row" style="margin-top: 1em;">
+                        <div class="col">
+                            <h6><?php echo $menu_item['fd_name']; ?></h6>
+                        </div> 
+                        <div class="col" style="text-align: center;">
+                            <p> x <?php echo $menu_item['quantity']; ?></p>
+                        </div>
+                        <div class="col" style="text-align: end;">
+                        <?php echo number_format($menu_item['quantity']*$menu_item['cartit_total'], 2); ?> ฿
+                        </div> 
+                        <div class="col-1">
+                            <form method="post" action="">
+                                <input type="hidden" name="delete_item" value="<?php echo $menu_item['cart_itemid'];?>">
+                                <button type="submit" style="background: none;border: none;padding: 0;cursor: pointer;" ><i class="fa fa-close" style="color: red;"></i></button>
+                            </form>
+                        </div>
                     </div>
-                </div>
+                <?php }?>
             <?php endforeach; ?>
           
             
@@ -252,7 +281,7 @@ if (isset($_POST['delete_item'])) {
                 sub - Total
             </div>
             <div class="col" style="text-align: end;">
-            <?php echo number_format($cart_total,0); ?> ฿
+            <?php echo number_format($cart_total,2); ?> ฿
             </div>
             <div class="col-1">
                    
@@ -306,7 +335,9 @@ if (isset($_POST['delete_item'])) {
                             </div>
                         </div>
                         <div class="col">
-                                <button type="button" class="btn btn-success" style="width: 50%; font-weight: bold;">Add New Address</button>
+                            <a href="add_address.php">
+                                <button type="button" class="btn btn-success" style="width: 50%; font-weight: bold;margin-top: 10px;margin-left: 50px;">Add New Address</button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -336,7 +367,7 @@ if (isset($_POST['delete_item'])) {
                         <h4>Sub - Total <br> Delivery Charge</h4>
                     </div>
                     <div class="col" style="text-align: end; ">
-                    <?php echo number_format($cart_total,0); ?> ฿ <br> 0 ฿
+                    <?php echo number_format($cart_total,2); ?> ฿ <br> 0 ฿
                     </div>
                     <div class="col-1">
                     </div>
@@ -362,7 +393,7 @@ if (isset($_POST['delete_item'])) {
                                 <img src="https://1112.com/images/selectstore_review.svg" alt="store">
                             </div>
                             <div class="col">
-                                <select name="store-select" class="form-select"  style="width: 80%;">
+                                <select id="store-select" name="store-select" class="form-select"  style="width: 80%;">
                                     <!-- <option selected disabled>Open this select menu</option> -->
                                     <?php foreach ($store_rows as $store_row): ?>
                                         <option value="<?php echo $store_row['store_id'] ?>"><?php echo $store_row['st_name_en'] ?></option>
@@ -402,7 +433,7 @@ if (isset($_POST['delete_item'])) {
                         <h4>Sub - Total</h4>
                     </div>
                     <div class="col" style="text-align: end; ">
-                    <?php echo number_format($cart_total,0); ?> ฿
+                    <?php echo number_format($cart_total,2); ?> ฿
                     </div>
                     <div class="col-1">
                     </div>
@@ -414,7 +445,7 @@ if (isset($_POST['delete_item'])) {
                     <h4>Total</h4>
                 </div>
                 <div class="col" style="text-align: end; ">
-                <?php echo number_format($cart_total,0); ?> ฿ 
+                <?php echo number_format($cart_total,2); ?> ฿ 
                 </div>
                 <div class="col-1">
             </div>
@@ -432,7 +463,12 @@ if (isset($_POST['delete_item'])) {
         </div>
     </form>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        $(document).ready(function(){
+            $('#store-select').select2();
+        });
         // Get the radio buttons and divs for address and store selection
         const deliveryRadio = document.getElementById('success-outlined');
         const pickUpRadio = document.getElementById('danger-outlined');

@@ -139,8 +139,8 @@ if(isset($_POST['delete_add'])) {
                             } else {
                                 foreach ($adds as $add): ?>
                                 <form method="post" action="" >
-                                    <div style="border:1px solid black; padding: 3rem; border-radius : 1rem ; border-color: green ;min-width:65rem; margin-bottom:45px;" class="shadow">
-                                        <div class="address-box" >
+                                    <div >
+                                        <div class="address-box shadow" style="padding: 3rem;  min-width:65rem; margin-bottom:45px;">
                                             <div class="address-detail" style="border-bottom: 0.7px solid black;">
                                                 <div class="head-detail">
                                                     <h4><?= $add['addb_name'] ?></h4>

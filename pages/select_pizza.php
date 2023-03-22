@@ -267,6 +267,7 @@ if(isset($_POST['submit'])) {
         $item = array(
             'fd_id' => $allitemcart_row['fd_id'],
             'cartit_total' => $allitemcart_row['cartit_total'],
+            'quantity' => $allitemcart_row['quantity'],
         );
     
         array_push($items, $item);
@@ -275,8 +276,9 @@ if(isset($_POST['submit'])) {
     $cart_total = 0;
 
     foreach ($items as $item):
-        echo $cart_total;
-        $cart_total += $item['cartit_total'];
+        // echo $cart_total;
+        $sumitem = $item['cartit_total'] *  $item['quantity'];
+        $cart_total += $sumitem;
 
         $udcart = $pdo->prepare("UPDATE shopping_cart SET cart_total= :cart_total WHERE cart_id  = :id");
         $udcart->bindValue(":cart_total", $cart_total);

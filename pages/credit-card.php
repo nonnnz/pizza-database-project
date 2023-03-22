@@ -90,7 +90,7 @@ if(isset($_SESSION['user_id'])){
         </div>
     </div>
 
-    <div class="profile-container">
+    <div class="profile-container" style="display:none;">
         <div class="profile-row">
             <div class="profile-row-head">
                 <div class="col-xs-6">
@@ -121,13 +121,14 @@ if(isset($_SESSION['user_id'])){
         </div>
     </div>
 
-    <div class="credit_container " style = "display : none">
+    <div class="credit_container " >
         <div class="adress-head d-flex justify-content-between ">
             <h2>CREDIT CARD</h2>
-            <button type="button " class="btn btn-success " style="height: 40px; margin-left: 0.5rem; padding: 0.5rem; ">
-                <i class="fa fa-plus right txt " style="margin-right: 5px; "></i>Add New Card
-
-            </button>
+            <a href="add_credit-card.php">
+                <button type="button " class="btn btn-success " style="height: 40px; margin-left: 0.5rem; padding: 0.5rem; ">
+                    <i class="fa fa-plus right txt " style="margin-right: 5px; "></i>Add New Card
+                </button>
+            </a>
         </div>
 
         <div class="credit-box ">

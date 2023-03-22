@@ -5,6 +5,39 @@ $select_store = $pdo->query("SELECT * FROM `store`");
 $select_store->execute();
 $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
 
+$sql = "SELECT `shopping_cart`.`cart_id`, `shopping_cart`.`cart_total`, `cart_item`.`cart_itemid`, `cart_item`.`quantity`, `cart_item`.`cartit_total`, `food`.`fd_name`, `category`.`cat_id`, `pizza`.`pz_name`, `crust`.`crust_name`, `food`.`fd_price`, `food`.`fd_image`
+FROM `shopping_cart` 
+	LEFT JOIN `cart_item` ON `cart_item`.`cart_id` = `shopping_cart`.`cart_id` 
+	LEFT JOIN `food` ON `cart_item`.`fd_id` = `food`.`fd_id` 
+	LEFT JOIN `category` ON `food`.`cat_id` = `category`.`cat_id`
+	LEFT JOIN `pizza_detail` ON `pizza_detail`.`fd_id` = `food`.`fd_id` 
+	LEFT JOIN `pizza` ON `pizza_detail`.`pz_id` = `pizza`.`pz_id` 
+	LEFT JOIN `crust` ON `pizza_detail`.`crust_id` = `crust`.`crust_id`
+    WHERE `shopping_cart`.`cart_id` = ?;";
+$result = $pdo->prepare($sql);
+$result->execute([$cart_id]);
+
+// echo $result->rowCount();
+// Fetch the query results and build an array of menu items
+while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+    $menu_item = array(
+        // 'fd_id' => $row['fd_id'],
+        'fd_name' => $row['fd_name'],
+        'fd_price' => $row['fd_price'],
+        'fd_image' => $row['fd_image'],
+        'cat_id' => $row['cat_id'],
+        // 'pz_id' => $row['pz_id'],
+        'pz_name' => $row['pz_name'],
+        'cart_itemid' => $row['cart_itemid'],
+        'quantity' => $row['quantity'],
+        'crust_name' => $row['crust_name'],
+        'cartit_total' => $row['cartit_total'],
+    );
+
+    array_push($menu_items, $menu_item);
+}
+
+
 ?>
   
 <ul class="nav justify-content-center align-items-center shadow-sm  mb-5 w-100">
@@ -64,11 +97,58 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
         1
       </span>
     </a>
-    <div id="cartContent" class="position-absolute p-4 shadow p-3 mb-5 bg-white" style="display:none; width: 360px; height: 166px; border-radius: 12px; background-color: rgb(255, 255, 255); transform: translate(-50%, 50px); z-index: 1;">
+    <div id="cartContent" class="position-absolute p-4 shadow p-3 mb-5 bg-white" style="display:none; width: 360px; height: 518px; border-radius: 12px; background-color: rgb(255, 255, 255); transform: translate(-50%, 50px); z-index: 1;">
         <div class="cart-head">
-          <h4>MY BASKET</h4>
+          <h4>MY BASKET (2)</h4>
         </div>
-        
+        <div class="cart-body" style="overflow: scroll; height: 320px;">
+        <?php foreach ($menu_items as $menu_item): ?>
+          <?php   if($menu_item['cat_id'] == 1) {?>
+            <div class="row d-flex justify-content-around">
+              <div class="" style="padding: 0!important ; width: 80px;">
+                <img src="<?php echo $menu_item['fd_image']; ?>" style="width: 70px; height: 53px;" alt="">
+              </div>
+              <div class="" style="padding: 0!important ; width: 160px;">
+                <p style="font-size: 11px;">
+                <?php echo $menu_item['quantity']; ?> × <?php echo $menu_item['pz_name']; ?> (+<?php echo $menu_item['fd_price']; ?>) <br>
+                  <?php echo $menu_item['crust_name']; ?>
+                </p> <br>
+              </div>
+              <div class=""  style="padding: 0!important ; width: 30px;">
+                <p style="font-size: 11px;">
+                  ฿ <?php echo $menu_item['fd_price']; ?>
+                </p>
+              </div>
+              <div class="remove-button d-flex justify-content-end border-bottom pb-2" >
+                <button type="button" class="btn btn-outline-danger " style="border-radius: 25px; font-weight: bold; height: 25px; padding: 0px; padding-left: 10px; padding-right: 10px;"><img src="https://1112.com/images/remove_icons.svg" class="pb-1" style="width: 14px;" alt=""> Remove</button>
+              </div>
+            </div>  
+          <?php } else { ?>
+            <div class="basket-item pt-2">
+              <div class="row d-flex justify-content-around">
+                <div class="" style="padding: 0!important ; width: 80px;">
+                  <img src="<?php echo $menu_item['fd_image']; ?>" style="width: 70px; height: 53px;" alt="">
+                </div>
+                <div class="" style="padding: 0!important ; width: 160px;">
+                  <p style="font-size: 11px;">
+                  <?php echo $menu_item['quantity']; ?> × <?php echo $menu_item['fd_name']; ?>. 
+                    
+                    
+                  </p> <br>
+                </div>
+                <div class=""  style="padding: 0!important ; width: 30px;">
+                  <p style="font-size: 11px;">
+                    ฿ <?php echo $menu_item['cartit_total']; ?>
+                  </p>
+                </div>
+              </div>
+              <div class="remove-button d-flex justify-content-end border-bottom pb-2" >
+                <button type="button" class="btn btn-outline-danger " style="border-radius: 25px; font-weight: bold; height: 25px; padding: 0px; padding-left: 10px; padding-right: 10px;"><img src="https://1112.com/images/remove_icons.svg" class="pb-1" style="width: 14px;" alt=""> Remove</button>
+              </div>
+            </div>
+          <?php }?>
+        <?php endforeach; ?>
+        </div>
         <div class="cart-footer mt-2">
           <div class="row">
             <div class="col">
@@ -80,10 +160,8 @@ $store_rows = $select_store->fetchAll(PDO::FETCH_ASSOC);
             </div>
           </div>
         </div>
-        <a href="cart.php">
-          <button type="button" class="btn btn-success " style="width: 100%; border-radius: 12px; font-weight: bold;">Checkout</button>
-        </a>  
-      </div>
+        <button type="button" class="btn btn-success " style="width: 100%; border-radius: 12px; font-weight: bold;">Checkout</button>
+        </div>
       </div>
   </div>
   <h5 style="color: green; margin-left:1em ; ">ENG</h5>
