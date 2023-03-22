@@ -22,16 +22,23 @@ $stmt->execute();
 
 // Delete Data from Database food_id
 if (isset($_POST['delete_food'])){
-  $delete_id = $_POST['delete_food'];
-  $deletestmt = $pdo->prepare("DELETE FROM food WHERE fd_id = ?");
-  $deletestmt->execute(['delete_id']);
-  // alert message
-  if ($deletestmt){
-    echo "<script>alert('Data has been deleted successfully!')</script>";
-    $_SESSION['success'] = "Data has been deleted successfully!";
-    header("refresh:2; url=menu_management.php");
-  }
+  $fd_id = $_POST['delete_food'];
+  
+  // delete pizza_detail first before delete food
+  $stmt = $pdo->prepare('DELETE FROM pizza_detail WHERE fd_id = :fd_id');
+  $stmt->bindParam(':fd_id', $fd_id);
+  $stmt->execute();
+
+  // delete food
+  $stmt = $pdo->prepare('DELETE FROM food WHERE fd_id = :fd_id');
+  $stmt->bindParam(':fd_id', $fd_id);
+  $stmt->execute();
+  // Redirect to menu_management.php
+  header("Location: menu_management.php");
+  exit();
+  
 }
+
 
 // Fetch the menu items
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -262,7 +269,7 @@ $users = $userstmt->fetchAll();
                               <form method="post" action="">
                                 <input type="hidden" name="delete_food" value="<?php echo $item['fd_id']; ?>" />
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
-                                <!-- <a href="?delete=<?php echo $item['fd_id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</a> -->
+                                
                               </form>
                             </td>          
                           </tr>
