@@ -1,12 +1,32 @@
-<?php
+<?php 
 
 session_start();
 require_once "../components/connect.php";
 
-if(isset($_POST['submit'])){
-    $fd_name = $_POST['menuname'];
-    $price = $_POST['price'];
-    $cat = $_POST['category'];
+// first create pz_id and fd_id and insert to food, pizza_ingredient and pizza_sauece
+// then redirect to nextadd_pizza.php
+if(isset($_POST['add'])){
+    $cat = 1; // Fixed category id for pizza
+    $pzname = $_POST['pizzaname'];
+    $pzsize = $_POST['pzsize'];
+    $pzsauce = $_POST['pzsauce'];
+    $crust = $_POST['pzcrust'];
+    $dip = $_POST['pzdip'];
+    $ing1 = $_POST['ing1'];
+
+    if (isset($_POST['ing2'])) {
+        $ing2 = $_POST['ing2'];
+    } else {
+        $ing2 = 0;
+    }
+    if (isset($_POST['ing3'])) {
+        $ing3 = $_POST['ing3'];
+    } else {
+        $ing3 = 0;
+    }
+
+    $pzprice = $_POST['price'];
+
     $img = $_FILES['img'];
 
     $allow = array('jpg', 'jpeg', 'png');
@@ -15,34 +35,111 @@ if(isset($_POST['submit'])){
     // convert file extension to small
     $fileActExt = strtolower(end($extension));
     // upload to folder images
-    $filePath = "../images/product/pizza/" . $fileActExt;
+    $filePath = "../admin/" . $fileActExt;
 
-    // check file extension 
-    if (in_array($fileActExt, $allow)){
+    if (in_array($fileActExt, $allow)) {
         $fileNew = $img['name'];
-        $filePath = "../images/product/pizza/" . $fileNew;
+        $filePath = "../admin/" . $fileNew;
         // check size
         if ($img['size'] > 0 && $img['error'] == 0){
-            // upload
+            //upload
             if (move_uploaded_file($img['tmp_name'], $filePath)){
-                $sql = $pdo->prepare("INSERT INTO food (fd_name, fd_price, cat_id, fd_image) VALUES (:fd_name, :price, :cat, :img) ");
-                $sql->bindParam(":fd_name", $fd_name);
-                $sql->bindParam(":price", $price);
-                $sql->bindParam(":cat", $cat);
-                $sql->bindParam(":img", $filePath);
-                $sql->execute();
+                // insert table food (fd_id)
+                $fdsql = $pdo->prepare("INSERT INTO food (fd_name, cat_id, fd_price, fd_image) VALUES (:fd_name, :cat_id, :fd_price, :fd_img)");
+                $fdsql->bindParam(':fd_name', $pzname);
+                $fdsql->bindParam(':cat_id', $cat);
+                $fdsql->bindParam(':fd_price', $pzprice);
+                $fdsql->bindParam(':fd_img', $fileNew);
+                $fdsql->execute();
+                // use the ID of the last inserted row
+                $fdid = $pdo->lastInsertId();
+                
+                // Create pz_id
+                $instpz = "INSERT INTO pizza (pz_name) VALUES (:pzname)";
+                $stmtpz = $pdo->prepare($instpz);
+                $stmtpz->bindParam(':pzname', $pzname);
+                $stmtpz->execute();
+                // use the ID of the last inserted row
+                $pzid = $pdo->lastInsertId();
+                // echo $pzid;
+                // echo $pzsauce;
+                // echo $ing1;
+                // echo $ing2;
+                // echo $ing3;
 
-                if ($sql){
-                    $_SESSION['success'] = "Menu has been added Successfully";
-                    header("location: menu_management.php");
-                } else {
-                    $_SESSION['error'] = "Menu has not been added Successfully";
-                    header("location: menu_management.php");
+                // Insert to pizza_sauce by using pz_id that just created
+                $instsauce = "INSERT INTO pizza_sauce (pz_id, sauce_id) VALUES (:pzid, :pzsauce)";
+                $stmtsauce = $pdo->prepare($instsauce);
+                $stmtsauce->bindParam(':pzid', $pzid);
+                $stmtsauce->bindParam(':pzsauce', $pzsauce);
+                $stmtsauce->execute();
+
+                // Insert to pizza_ingredient
+                $insting1 = "INSERT INTO pizza_ingredient (pz_id, ing_id) VALUES (:pzid, :ing1)";
+                $stmting1 = $pdo->prepare($insting1);
+                $stmting1->bindParam(':pzid', $pzid);
+                $stmting1->bindParam(':ing1', $ing1);
+                $stmting1->execute();
+
+                if ($ing2 != 0) {
+                    $insting2 = "INSERT INTO pizza_ingredient (pz_id, ing_id) VALUES (:pzid, :ing2)";
+                    $stmting2 = $pdo->prepare($insting2);
+                    $stmting2->bindParam(':pzid', $pzid);
+                    $stmting2->bindParam(':ing2', $ing2);
+                    $stmting2->execute();
                 }
-            }
-        }  
+
+                if ($ing3 != 0) {
+                    $insting3 = "INSERT INTO pizza_ingredient (pz_id, ing_id) VALUES (:pzid, :ing3)";
+                    $stmting3 = $pdo->prepare($insting3);
+                    $stmting3->bindParam(':pzid', $pzid);
+                    $stmting3->bindParam(':ing3', $ing3);
+                    $stmting3->execute();
+                }
+
+                // Insert to pizza_detail
+                $instpzdetail = "INSERT INTO pizza_detail (pz_id, size_id, crust_id, dip_id, fd_id) VALUES (:pzid, :pzsize, :crust, :dip, :fdid)";
+                $stmtpzdetail = $pdo->prepare($instpzdetail);
+                $stmtpzdetail->bindParam(':pzid', $pzid);
+                $stmtpzdetail->bindParam(':pzsize', $pzsize);
+                $stmtpzdetail->bindParam(':crust', $crust);
+                $stmtpzdetail->bindParam(':dip', $dip);
+                $stmtpzdetail->bindParam(':fdid', $fdid);
+                $stmtpzdetail->execute();
+            } 
+        }
     }
+
+    header("Location: menu_management.php");
+    exit();
 }
+
+// Fetch Size
+$sizesql = "SELECT * FROM size";
+$sizestmt = $pdo->query($sizesql);
+$size = $sizestmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch Dipping
+$dipsql = "SELECT * FROM dipping_sauce";
+$dipstmt = $pdo->query($dipsql);
+$dip = $dipstmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch Crust
+$crustsql = "SELECT * FROM crust";
+$cruststmt = $pdo->query($crustsql);
+$crust = $cruststmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch Sauce
+$saucesql = "SELECT * FROM sauce";
+$saucestmt = $pdo->query($saucesql);
+$sauce = $saucestmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch Ingredient
+$ingsql = "SELECT * FROM ingredient";
+$ingstmt = $pdo->query($ingsql);
+$ing = $ingstmt->fetchAll(PDO::FETCH_ASSOC);
+
+
 
 // Check if user is logged in and is an admin
 if ($_SESSION['role_id'] != 3) {
@@ -61,14 +158,13 @@ $userstmt->execute();
 $users = $userstmt->fetchAll();
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Menu</title>
+    <title>Add Pizza</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Custom fonts for template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -77,16 +173,8 @@ $users = $userstmt->fetchAll();
     <!-- Custom styles for template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-    <style>
-    #previewImg{
-        display: block;
-        margin: auto;
-    }
-    </style>
-    
 </head>
 <body>
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -237,46 +325,95 @@ $users = $userstmt->fetchAll();
                     <div class="container">
                         <!-- Page Heading -->
                         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                            <h1 class="h3 mb-0 text-gray-800">Add Menu</h1>
+                            <h1 class="h3 mb-0 text-gray-800">Add Pizza</h1>
                         </div>
 
                         <!-- Content Row -->
                         <div class="row">
                             <div class="col-lg-12">
                                 <!-- Form Content -->
-                                <form action="" method="post" enctype="multipart/form-data">
-                                    <div class="mb-3">
-                                        <label for="foodname" class="col-form-label">Food name :</label>
-                                        <input type="text" required class="form-control" name="menuname">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="price" class="col-form-label">Price :</label>
-                                        <input type="text" required class="form-control" name="price" pattern="\d*\.?\d+">
-                                    </div>
-                                    <div class="mb-3">
-                                        <select class="form-select" aria-label=".form-select-lg example" name="category" required>
-                                            <option value="" selected disabled>Category</option>
-                                            <?php
-                                            $catsql = "SELECT * FROM `category`";
-                                            $catstmt = $pdo->query($catsql);
-                                            $cat = $catstmt->fetchAll(PDO::FETCH_ASSOC);
-                                            foreach ($cat as $categories){
-                                                echo '<option value="' . $categories['cat_id'] . '">' . $categories['cat_name'] . '</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="img" class="col-form-label">Image :</label>
-                                        <input type="file" required class="form-control" id="imgInput" name="img">
-                                        <img loading="lazy" width="100%" id="previewImg" alt="">
-                                    </div>
+                                <form action="" method="POST" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="pizzaname" class="col-form-label">Pizza name :</label>
+                                    <input type="text" value="" required class="form-control" name="pizzaname">
+                                </div>
+                                <div class="mb-3">
+                                    <select class="form-select" aria-label=".form-select-lg example" name="pzsauce" required>
+                                    <option value="" selected disabled>Sauce</option>
+                                    <?php foreach ($sauce as $sa):
+                                        echo '<option value="' . $sa['sauce_id'] . '">' . $sa['sauce_name'] . '</option>';
+                                    endforeach ; ?>
+                                    </select>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <select class="form-select" aria-label=".form-select-lg example" name="pzsize" required>
+                                    <option value="" selected disabled>Size</option>
+                                    <?php foreach ($size as $s):
+                                        echo '<option value="' . $s['size_id'] . '">' . $s['size_name'] . '</option>';
+                                    endforeach; ?>
+                                    </select>
+                                </div>
 
-                                    <div class="modal-footer">
-                                        <a class="btn btn-secondary" href="admin.php">Back</a>
-                                        <button type="submit" name="submit" class="btn btn-success">Submit</button>
-                                    </div>
+                                <div class="mb-3">
+                                    <select class="form-select" aria-label=".form-select-lg example" name="pzcrust" required>
+                                    <option value="" selected disabled>Crust</option>
+                                    <?php foreach ($crust as $c):
+                                        echo '<option value="' . $c['crust_id'] . '">' . $c['crust_name'] . '</option>';
+                                    endforeach ; ?>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <select class="form-select" aria-label=".form-select-lg example" name="pzdip" required>
+                                    <option value="" selected disabled>Dipping</option>
+                                    <?php foreach ($dip as $d):
+                                        echo '<option value="' . $d['dip_id'] . '">' . $d['dip_name'] . '</option>';
+                                    endforeach ; ?>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="ing" class="col-form-label">Ingredient :</label>
+                                    <select class="form-select" aria-label=".form-select-lg example" name="ing1" required>
+                                    <option value="" selected disabled>Ingredient 1</option>
+                                    <?php foreach ($ing as $i):
+                                        echo '<option value="' . $i['ing_id'] . '">' . $i['ing_name'] . '</option>';
+                                    endforeach ; ?>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <select class="form-select" aria-label=".form-select-lg example" name="ing2" >
+                                    <option value="" selected disabled>Ingredient 2</option>
+                                    <?php foreach ($ing as $i):
+                                        echo '<option value="' . $i['ing_id'] . '">' . $i['ing_name'] . '</option>';
+                                    endforeach ; ?>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <select class="form-select" aria-label=".form-select-lg example" name="ing3" >
+                                    <option value="" selected disabled>Ingredient 3</option>
+                                    <?php foreach ($ing as $i):
+                                        echo '<option value="' . $i['ing_id'] . '">' . $i['ing_name'] . '</option>';
+                                    endforeach ; ?>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="col-form-label">Price :</label>
+                                    <input type="text" value="" required class="form-control" name="price" pattern="\d*\.?\d+">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="img" class="col-form-label">Image :</label>
+                                    <input type="file" required class="form-control" id="imgInput" name="img">
+                                    <img loading="lazy" width="100%" id="previewImg" alt="">
+                                </div>
+
+                                <div class="modal-footer">
+                                    <a class="btn btn-secondary" href="admin.php">Back</a>
+                                    <button type="submit" name="add" class="btn btn-success">Submit</button>
+                                </div>
                                 </form>
+                                
                             </div>
 
                         </div>
@@ -310,11 +447,6 @@ $users = $userstmt->fetchAll();
         </div>
     </div>
 
-
-    
-    <!-- bootstrap.bundle.js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    
     <script>
     let imgInput = document.getElementById('imgInput');
     let previewInput = document.getElementById('previewImg');
@@ -326,6 +458,9 @@ $users = $userstmt->fetchAll();
         }
     }
     </script>
+    
+    <!-- bootstrap.bundle.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -336,6 +471,5 @@ $users = $userstmt->fetchAll();
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-    
 </body>
 </html>

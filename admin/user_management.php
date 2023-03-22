@@ -42,7 +42,7 @@ $users = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
+    <title>Customer Management</title>
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- Custom fonts for template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -94,7 +94,8 @@ $users = $stmt->fetchAll();
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Menu:</h6>
+                        <h6 class="collapse-header">Custom Menu :</h6>
+                        <a class="collapse-item" href="../admin/add_pizza.php">Add Pizza</a>
                         <a class="collapse-item" href="../admin/add_menu.php">Add Menu</a>
                         <a class="collapse-item" href="../admin/add_cat.php">Add Category</a>
                     </div>
@@ -111,11 +112,14 @@ $users = $stmt->fetchAll();
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Page Mangement</h6>
+                        <h6 class="collapse-header">User :</h6>
                         <a class="collapse-item" href="../admin/user_management.php">User Management</a>
                         <a class="collapse-item" href="../admin/admin_management.php">Admin Management</a>
                         <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Menu Pages:</h6>
+                        <h6 class="collapse-header">Order :</h6>
+                        <a class="collapse-item" href="#">Order Management</a>
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Menu :</h6>
                         <a class="collapse-item" href="../admin/menu_management.php">Menu Management</a>
                         <a class="collapse-item" href="../admin/cat_management.php">Category Management</a>
                     </div>

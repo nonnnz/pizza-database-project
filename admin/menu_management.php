@@ -22,16 +22,23 @@ $stmt->execute();
 
 // Delete Data from Database food_id
 if (isset($_POST['delete_food'])){
-  $delete_id = $_POST['delete_food'];
-  $deletestmt = $pdo->prepare("DELETE FROM food WHERE fd_id = ?");
-  $deletestmt->execute(['delete_id']);
-  // alert message
-  if ($deletestmt){
-    echo "<script>alert('Data has been deleted successfully!')</script>";
-    $_SESSION['success'] = "Data has been deleted successfully!";
-    header("refresh:2; url=menu_management.php");
-  }
+  $fd_id = $_POST['delete_food'];
+  
+  // delete pizza_detail first before delete food
+  $stmt = $pdo->prepare('DELETE FROM pizza_detail WHERE fd_id = :fd_id');
+  $stmt->bindParam(':fd_id', $fd_id);
+  $stmt->execute();
+
+  // delete food
+  $stmt = $pdo->prepare('DELETE FROM food WHERE fd_id = :fd_id');
+  $stmt->bindParam(':fd_id', $fd_id);
+  $stmt->execute();
+  // Redirect to menu_management.php
+  header("Location: menu_management.php");
+  exit();
+  
 }
+
 
 // Fetch the menu items
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -121,7 +128,8 @@ $users = $userstmt->fetchAll();
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Custom Menu:</h6>
+              <h6 class="collapse-header">Custom Menu :</h6>
+              <a class="collapse-item" href="../admin/add_pizza.php">Add Pizza</a>
               <a class="collapse-item" href="../admin/add_menu.php">Add Menu</a>
               <a class="collapse-item" href="../admin/add_cat.php">Add Category</a>
             </div>
@@ -138,11 +146,14 @@ $users = $userstmt->fetchAll();
       <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
         data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Page Mangement:</h6>
+            <h6 class="collapse-header">User :</h6>
             <a class="collapse-item" href="../admin/user_management.php">User Management</a>
             <a class="collapse-item" href="../admin/admin_management.php">Admin Management</a>
             <div class="collapse-divider"></div>
-            <h6 class="collapse-header">Menu Pages:</h6>
+            <h6 class="collapse-header">Order :</h6>
+            <a class="collapse-item" href="#">Order Management</a>
+            <div class="collapse-divider"></div>
+            <h6 class="collapse-header">Menu :</h6>
             <a class="collapse-item" href="../admin/menu_management.php">Menu Management</a>
             <a class="collapse-item" href="../admin/cat_management.php">Category Management</a>
         </div>
@@ -237,7 +248,7 @@ $users = $userstmt->fetchAll();
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
-                          <th scope="col">Category Name</th>
+                          <th scope="col">Image</th>
                           <th scope="col">Food Name</th>
                           <th scope="col">Price</th>
                           <th scope="col">Category</th>
@@ -258,7 +269,7 @@ $users = $userstmt->fetchAll();
                               <form method="post" action="">
                                 <input type="hidden" name="delete_food" value="<?php echo $item['fd_id']; ?>" />
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
-                                <!-- <a href="?delete=<?php echo $item['fd_id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</a> -->
+                                
                               </form>
                             </td>          
                           </tr>

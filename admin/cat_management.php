@@ -10,6 +10,16 @@ $stmt->execute();
 $categories = $stmt->fetchAll();
 
 
+// Delete cat_id 
+if(isset($_POST['delete'])) {
+    $catid = $_POST['delete'];
+    $delstmt = $pdo->prepare('DELETE FROM category WHERE cat_id = ?');
+    $delstmt->execute([$catid]);
+    header('Location: cat_management.php');
+    exit();
+}
+
+
 // Check if user is logged in and is an admin
 if ($_SESSION['role_id'] != 3) {
     // User is logged in and is an admin
@@ -94,7 +104,8 @@ $users = $stmt->fetchAll();
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Menu:</h6>
+                        <h6 class="collapse-header">Custom Menu :</h6>
+                        <a class="collapse-item" href="../admin/add_pizza.php">Add Pizza</a>
                         <a class="collapse-item" href="../admin/add_menu.php">Add Menu</a>
                         <a class="collapse-item" href="../admin/add_cat.php">Add Category</a>
                     </div>
@@ -111,11 +122,14 @@ $users = $stmt->fetchAll();
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Page Mangement</h6>
+                        <h6 class="collapse-header">User :</h6>
                         <a class="collapse-item" href="../admin/user_management.php">User Management</a>
                         <a class="collapse-item" href="../admin/admin_management.php">Admin Management</a>
                         <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Menu Pages:</h6>
+                        <h6 class="collapse-header">Order :</h6>
+                        <a class="collapse-item" href="#">Order Management</a>
+                        <div class="collapse-divider"></div>
+                        <h6 class="collapse-header">Menu :</h6>
                         <a class="collapse-item" href="../admin/menu_management.php">Menu Management</a>
                         <a class="collapse-item" href="../admin/cat_management.php">Category Management</a>
                     </div>
@@ -219,7 +233,7 @@ $users = $stmt->fetchAll();
                                         <td><?php echo $cat['cat_name']; ?></td>
                                         <td>
                                         <form method="post" action="">
-                                            <input type="hidden" name="delete_food" value="<?php echo $cat['cat_id']; ?>" />
+                                            <input type="hidden" name="delete" value="<?php echo $cat['cat_id']; ?>" />
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</button>
                                             <!-- <a href="?delete=<?php echo $cat['cat_id']; ?>" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete?')">Delete</a> -->
                                         </form>
