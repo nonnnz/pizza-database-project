@@ -227,41 +227,54 @@ if(isset($_POST['submit'])) {
 
         <div class="order-bill" style="border-top: 1px solid #008556;" >
             <?php foreach ($menu_items as $menu_item): ?>
-                <div class="row" style="margin-top: 1em;">
-                    <div class="col">
-                        <h6><?php echo $menu_item['crust_name']; ?></h6>
-                        <p style="margin-bottom:0;"><?php echo $menu_item['pz_name']; ?> (<?php echo number_format($menu_item['fd_price'],0); ?> ฿)</p>
-                        <?php 
-                            $sql = "SELECT `cartitem_ingredient`.*, `ingredient`.`ing_name`, `ingredient`.`ing_price`
-                            FROM `cartitem_ingredient` 
-                                LEFT JOIN `ingredient` ON `cartitem_ingredient`.`ing_id` = `ingredient`.`ing_id`
-                                WHERE `cartitem_ingredient`.`cart_itemid` = ?;";
-                            $result_ing = $pdo->prepare($sql);
-                            $result_ing->execute([$menu_item['cart_itemid']]);
-                            $row_ing = $result_ing->fetchAll(PDO::FETCH_ASSOC);
-                            if($result_ing->rowCount() != 0) {
-                                foreach ($row_ing as $ing):
-                                    if($ing['ing_quantity'] < 0) echo '<p style="margin-bottom:0;">'.'<small>'.'<i style="margin-right:10px;margin-left:10px" class="fa fa-minus"></i>'.$ing['ing_name'].'</small>'."</p>";
-                                    else echo '<p style="margin-bottom:0;">'.'<small>'.'<i style="margin-right:10px;margin-left:10px" class="fa fa-plus"></i>'.$ing['ing_name'].' ('.$ing['ing_price'].' ฿)'.' x '.$ing['ing_quantity'].'</small>'."</p>";
-                                endforeach;
-                            }
-                        ?>
-                    </div> 
-                    <div class="col" style="text-align: center;">
-                        <p> x <?php echo $menu_item['quantity']; ?></p>
+                <?php if($menu_item['cat_id'] == 1) {?>
+                    <div class="row" style="margin-top: 1em;">
+                        <div class="col">
+                            <h6><?php echo $menu_item['crust_name']; ?></h6>
+                            <p style="margin-bottom:0;"><?php echo $menu_item['pz_name']; ?> (<?php echo number_format($menu_item['fd_price'],0); ?> ฿)</p>
+                            <?php 
+                                $sql = "SELECT `cartitem_ingredient`.*, `ingredient`.`ing_name`, `ingredient`.`ing_price`
+                                FROM `cartitem_ingredient` 
+                                    LEFT JOIN `ingredient` ON `cartitem_ingredient`.`ing_id` = `ingredient`.`ing_id`
+                                    WHERE `cartitem_ingredient`.`cart_itemid` = ?;";
+                                $result_ing = $pdo->prepare($sql);
+                                $result_ing->execute([$menu_item['cart_itemid']]);
+                                $row_ing = $result_ing->fetchAll(PDO::FETCH_ASSOC);
+                                if($result_ing->rowCount() != 0) {
+                                    foreach ($row_ing as $ing):
+                                        if($ing['ing_quantity'] < 0) echo '<p style="margin-bottom:0;">'.'<small>'.'<i style="margin-right:10px;margin-left:10px" class="fa fa-minus"></i>'.$ing['ing_name'].'</small>'."</p>";
+                                        else echo '<p style="margin-bottom:0;">'.'<small>'.'<i style="margin-right:10px;margin-left:10px" class="fa fa-plus"></i>'.$ing['ing_name'].' ('.$ing['ing_price'].' ฿)'.' x '.$ing['ing_quantity'].'</small>'."</p>";
+                                    endforeach;
+                                }
+                            ?>
+                        </div> 
+                        <div class="col" style="text-align: center;">
+                            <p> x <?php echo $menu_item['quantity']; ?></p>
+                        </div>
+                        <div class="col" style="text-align: end;">
+                        <?php echo number_format($menu_item['quantity']*$menu_item['cartit_total'], 2) ?> ฿
+                        </div> 
                     </div>
-                    <div class="col" style="text-align: end;">
-                    <?php echo $menu_item['quantity']*$menu_item['cartit_total']; ?> ฿
-                    </div> 
-                    
-                </div>
+                <?php } else { ?>
+                    <div class="row" style="margin-top: 1em;">
+                        <div class="col">
+                            <h6><?php echo $menu_item['fd_name']; ?></h6>
+                        </div> 
+                        <div class="col" style="text-align: center;">
+                            <p> x <?php echo $menu_item['quantity']; ?></p>
+                        </div>
+                        <div class="col" style="text-align: end;">
+                        <?php echo number_format($menu_item['quantity']*$menu_item['cartit_total'], 2); ?> ฿
+                        </div> 
+                    </div>
+                <?php }?>
             <?php endforeach; ?>
             <div class="row" style="margin-top: 1em;">
                 <div class="col"style="text-align: end;">
                     sub - Total
                 </div>
                 <div class="col" style="text-align: end;">
-                <?php echo number_format($cart_total,0); ?> ฿
+                <?php echo number_format($cart_total,2); ?> ฿
                 </div>
                 <div class="col-1">
                    
@@ -272,7 +285,7 @@ if(isset($_POST['submit'])) {
                     Total
                 </div>
                 <div class="col" style="text-align: end;">
-                <?php echo number_format($cart_total,0); ?> ฿
+                <?php echo number_format($cart_total,2); ?> ฿
                 </div>
                 <div class="col-1">
                    
