@@ -118,7 +118,7 @@ $adds = $query->fetchAll(PDO::FETCH_ASSOC);
             
 
     
-            <!--address status --> 
+            <!-- address status --> 
             <section class="form-container ">
                 <div style="display: flex; justify-content: center; align-items: center; min-height: 30vh; margin: auto;">
                     <form method="post" action="" style="border:1px solid black; padding: 3rem; border-radius : 1rem ; border-color: green ;min-width:65rem" class="shadow">
@@ -135,6 +135,39 @@ $adds = $query->fetchAll(PDO::FETCH_ASSOC);
                     </form>    
                 </div>    
             </section>
+
+            <!-- display detail -->
+            <div class="address-box" style = "display :none">
+                <div class="address-detail" style="border-bottom: 0.7px solid black;">
+                    <div class="head-detail">
+                        <p>316/70 ซ.วงศ์สว่าง11 ถ.วงศสว่าง</p>
+                    </div>
+                    <div class="detail">
+                        <p>--------------------------, Wong Sawang , Bang Sue , Bangkok 10800</p>
+                    </div>
+                    <div class="phonenumber">
+                        <p>Phone Number : 09xxxxxxxx</p>
+                    </div>
+                </div>
+                <div class="row pt-4">
+                    <div class="col">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            This is your default address
+                        </label>
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="btn btn-success" style="padding-left: 1rem; padding-right: 1rem;">
+                            Edit
+
+                        </button>
+                    </div>
+                    <div class="col-1">
+                        <a class="btn btn-inline btn-small remove"><img class="img-profile"
+                                src="https://1112.com/images/remove_icons.svg" style="width : 17px;"></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
