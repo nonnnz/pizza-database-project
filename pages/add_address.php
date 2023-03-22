@@ -25,21 +25,49 @@ $provinces = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if(isset($_POST['submit'])) {
     $buildingNo = $_POST['buildingNo'];
     $street = $_POST['street'];
-    $prov = $_POST['province'];
-    $dist = $_POST['district'];
-    $subdist = $_POST['subdistrict'];
+    $prov_id = $_POST['province'];
+    $dist_id = $_POST['district'];
+    $subdist_id = $_POST['subdistrict'];
+    // get prov
+    $query_p = $pdo->prepare("SELECT `provinces`.`name_th`
+    FROM `provinces` WHERE `provinces`.`code` = :code;");
+    $query_p->bindParam(':code', $prov_id);
+    $query_p->execute();
+    $row_p = $query_p->fetch(PDO::FETCH_ASSOC);
+    $prov = $row_p['name_th'];
+
+    // get dist
+    $query_d = $pdo->prepare("SELECT `district`.`name_th`
+    FROM `district` WHERE `district`.`code` = :code;");
+    $query_d->bindParam(':code', $dist_id);
+    $query_d->execute();
+    $row_d = $query_d->fetch(PDO::FETCH_ASSOC);
+    $dist = $row_d['name_th'];
+
+    // get subdist
+    $query_sd = $pdo->prepare("SELECT `subdistrict`.`name_th`
+    FROM `subdistrict` WHERE `subdistrict`.`code` = :code;");
+    $query_sd->bindParam(':code', $subdist_id);
+    $query_sd->execute();
+    $row_sd = $query_sd->fetch(PDO::FETCH_ASSOC);
+    $subdist = $row_sd['name_th'];
+
+
+
     // get zipcode
     $query = $pdo->prepare("SELECT `subdistrict`.`zip_code`
     FROM `subdistrict` WHERE `subdistrict`.`code` = :code;");
-    $query->bindParam(':code', $subdist);
+    $query->bindParam(':code', $subdist_id);
     $query->execute();
     $row = $query->fetch(PDO::FETCH_ASSOC);
     $zipcode = $row['zip_code'];
     $phone = $_POST['phone'];
 
+    // echo $prov . $dist . $subdist . $zipcode;
+
     $insert_addb = $pdo->prepare("INSERT INTO address_book (user_id, addb_buildingNo, addb_street, addb_prov,
-     addb_dist, addb_subdist, addb_phone) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $insert_addb->execute([$user_id ,$buildingNo, $street, $prov, $dist, $subdist, $phone]);
+     addb_dist, addb_subdist, addb_zipcode, addb_phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $insert_addb->execute([$user_id ,$buildingNo, $street, $prov, $dist, $subdist, $zipcode, $phone]);
     
 
     // get lastest id
@@ -104,7 +132,7 @@ if(isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>add_address_book</title>
+    <title>add address book</title>
     <!-- font awesome cdn link  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 

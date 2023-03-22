@@ -22,6 +22,14 @@ $query->bindParam(':id', $user_id);
 $query->execute();
 $adds = $query->fetchAll(PDO::FETCH_ASSOC);
 
+if(isset($_POST['delete_add'])) {
+    // echo $_POST['delete_add'];
+    $addb_id = $_POST['delete_add'];
+    $stmt = $pdo->prepare('DELETE FROM address_book WHERE addb_id = ?');
+    $stmt->execute([$addb_id]);
+    header('Location: address-book.php');
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -121,18 +129,52 @@ $adds = $query->fetchAll(PDO::FETCH_ASSOC);
             <!-- address status --> 
             <section class="form-container ">
                 <div style="display: flex; justify-content: center; align-items: center; min-height: 30vh; margin: auto;">
-                    <form method="post" action="" style="border:1px solid black; padding: 3rem; border-radius : 1rem ; border-color: green ;min-width:65rem" class="shadow">
-                        <fieldset name="Order Status">
-                            <?php if($query->rowCount() == 0) {
-                                echo "<h3 class='text-center' style='padding-bottom:1rem'>You don't have any Address Book!</h3>";
+                    
+                        <fieldset name="address list">
+                            <?php if($query->rowCount() == 0) { ?>
+                                <div style="border:1px solid black; padding: 3rem; border-radius : 1rem ; border-color: green ;min-width:65rem; margin-bottom:45px;" class="shadow">
+                                    <h3 class='text-center' style='padding-bottom:1rem'>You don't have any Address Book!</h3>
+                                </div>
+                                <?php
                             } else {
-                                foreach ($adds as $add):
-                                    echo "<h3 class='text-center' style='padding-bottom:1rem'>". $add['addb_name'] ."</h3>";
-                                endforeach;
+                                foreach ($adds as $add): ?>
+                                <form method="post" action="" >
+                                    <div style="border:1px solid black; padding: 3rem; border-radius : 1rem ; border-color: green ;min-width:65rem; margin-bottom:45px;" class="shadow">
+                                        <div class="address-box" >
+                                            <div class="address-detail" style="border-bottom: 0.7px solid black;">
+                                                <div class="head-detail">
+                                                    <h4><?= $add['addb_name'] ?></h4>
+                                                </div>
+                                                <div class="detail">
+                                                    <p><?php echo $add['addb_buildingNo'] . ' ' . $add['addb_street'] . ' ,' . $add['addb_subdist'] . ' ,' . $add['addb_dist'] . ' ,' . $add['addb_prov'] . ' ' . $add['addb_zipcode'] ?></p>
+                                                </div>
+                                                <div>
+                                                    <p>Directions : <?= $add['addb_directionguide'] ?></p>
+                                                </div>
+                                                <div class="phonenumber">
+                                                    <h5>Phone Number : <?= $add['addb_phone'] ?></h5>
+                                                </div>
+                                            </div>
+                                            <div class="row pt-4">
+                                                <!-- <div class="col-1">
+                                                    <button type="button" class="btn btn-success" style="padding-left: 1rem; padding-right: 1rem;">
+                                                        Edit
+                                                    </button>
+                                                </div> -->
+                                                <div class="col-1">
+                                                    <input type="hidden" name="delete_add" value="<?php echo $add['addb_id'] ?>">
+                                                    <button class="btn btn-inline btn-small remove"><img class="img-profile"
+                                                            src="https://1112.com/images/remove_icons.svg" style="width : 17px;"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>    
+                                </form>                                
+                                <?php endforeach;
                             }
                             ?>
                         </fieldset>
-                    </form>    
+                    
                 </div>    
             </section>
 
